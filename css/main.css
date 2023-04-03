@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  height: 100vh;
+  /* background-color: aquamarine; */
+}
+
+svg {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.title {
+  font-size: 3.5rem;
+  line-height: 1.2;
+  max-height: 8rem;
+  min-height: 2rem;
+  margin-left: 3.5rem;
+  font-weight: bold;
+  color: #62350e;
+  /* trying to add an effect on the title */
+  /* text-shadow: 0 0 0.1rem white, 0 0 0.1rem white, 0 0 0.1rem #502c2c,
+    0 0 0.1rem #502c2c; */
+}
+
+@media (max-width: 768px) {
+  /* for small screens */
+  .title {
+    font-size: 3rem;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 480px) {
+  /* for very small screens */
+  .title {
+    font-size: 2rem;
+    line-height: 1;
+  }
+}

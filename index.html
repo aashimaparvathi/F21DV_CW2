@@ -1,9 +1,32 @@
 <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>F21DV-CW2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      target="_blank"
+      href="css/main.css"
+    />
+    <!-- Any other styles -->
+    <style></style>
+  </head>
+  <body>
+    <div class="container" id="main-container">
+      <div class="container" id="swarm-container">
+        <h1 class="title" id="swarm-title" align="left" class="double-line">
+          Caffeine Champions
+        </h1>
+        <div class="svg-container" id="swarm-svg-container"></div>
+      </div>
+    </div>
 
-<head>
-
-</head>
-
-<body>
-
-</body>
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module" src="./js/data.js"></script>
+    <script type="module" src="./js/map.js"></script>
+    <script type="module" src="./js/swarm.js"></script>
+  </body>
+</html>

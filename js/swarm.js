@@ -2,14 +2,20 @@ import dataPromise from "./data.js";
 
 var coffeepercap;
 
-const margin = { top: 0, right: 100, bottom: 0, left: 30 };
+const margin = { top: 0, right: 60, bottom: 0, left: 60 };
 const padding = { top: 0, right: 0, bottom: 0, left: 10 };
 const centerX = 0;
 const width = 1000 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 
-/* Color from https://colorable.jxnblk.com/62350e/ffffff */
+/*
+  Color from https://colorable.jxnblk.com/62350e/ffffff
+  10.32AAA
+  https://coolors.co/contrast-checker/62350e-ffffff
+*/
 const brown = "#62350e";
+const contrast = "#6291d3";
+const grey = "#b4b2b2";
 
 const tooltip = d3
   .select("body")
@@ -50,6 +56,7 @@ function fixData() {
 }
 
 function drawSwarm() {
+  //draw svg
   const svg = d3
     .select("#swarm-svg-container")
     .append("svg")
@@ -60,10 +67,10 @@ function drawSwarm() {
       }`
     )
     .attr("preserveAspectRatio", "xMidYMid meet")
-    .style("width", "90%")
+    .style("width", "100%")
     .style("height", "auto")
     .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+    .attr("transform", `translate(${0},${0})`);
 
   const xScale = d3
     .scaleLinear()
@@ -72,7 +79,7 @@ function drawSwarm() {
 
   const yScale = d3
     .scaleLinear()
-    .domain([0, 1])
+    .domain([0, 12])
     .range([height / 2, height / 2]);
 
   const gAxis = svg
@@ -84,21 +91,39 @@ function drawSwarm() {
         .ticks(9)
         .tickFormat((d) => d + "kg")
     )
+    .attr("color", "#909090")
     .call((g) => g.select(".domain").remove())
     .call((g) =>
       g
         .selectAll(".tick line")
         .clone()
-        .attr("y2", -height / 4)
-        .attr("stroke-opacity", 0.1)
-        .attr("color", brown)
+        .attr("y2", function (d) {
+          if (d != 12) return -height / 6;
+          else return -height / 6;
+        })
+        .attr("stroke-opacity", function (d) {
+          if (d < 8) return 0.2;
+          else return 0.5;
+        })
+        .attr("class", "axis-line")
+        .attr("id", "swarm-axis-line")
+        .attr("stroke", function (d) {
+          if (d == 12) return contrast;
+          else return grey;
+        })
     )
     .call((g) =>
       g
         .selectAll(".tick text")
-        .attr("y", -height / 4)
+        .attr("y", -height / 4 + 10)
         .attr("dy", "-0.5em")
-        .attr("color", brown)
+        .attr("color", function (d) {
+          if (d < 8) return grey;
+          else if (d != 12) return brown;
+          else return contrast;
+        })
+        .attr("class", "axis-text")
+        .attr("id", "swarm-axis-text")
     );
 
   const gCircles = svg
@@ -128,7 +153,7 @@ function drawSwarm() {
     // const angleStep = d.y;
 
     for (let i = 0; i < numCircles; i++) {
-      const radius = 30 + 10 * i;
+      const radius = 30; //* i;
       const angle = i * angleStep + Math.PI / 2;
       const cx = xScale(tick) + radius * Math.cos(angle);
       const cy = yScale(Math.random()) + radius * Math.sin(angle);
@@ -140,14 +165,24 @@ function drawSwarm() {
       /* TODO: Set alt-text for image */
       gCircles
         .append("image")
-        .attr("xlink:href", "./images/bean2.png")
-        // .data(nestedData.get(tick)[i])
+        .attr("xlink:href", function (d) {
+          if (tick < 8) {
+            return "./images/bean_grey.png";
+          } else if (tick < 12) {
+            return "./images/bean_average.png";
+          } else {
+            return "./images/bean_extreme.png";
+          }
+        })
         .attr("x", cx - 8)
-        .attr("y", cy - 8)
-        .attr("width", 16)
-        .attr("height", 16)
+        .attr("y", cy - 20)
+        .attr("width", 20)
+        .attr("height", 20)
         .attr("class", "bean")
         .datum(nestedData.get(tick)[i])
+        .attr("id", function (d) {
+          return d.country + "-bean";
+        })
         .on("mouseover", (event, d) => {
           var country = d.country;
           tooltip
@@ -159,9 +194,50 @@ function drawSwarm() {
         })
         .on("mouseout", () => {
           tooltip.style("opacity", 0);
-        });
+        })
+        .transition()
+        .duration(1000)
+        .delay(i * 250)
+        .attr("y", cy - 8);
     }
   });
+
+  // finland tick
+  const tickFinland = gAxis.select(".tick:nth-of-type(9)");
+
+  tickFinland
+    .append("rect")
+    .attr("transform", `translate(${-50}, ${height / 3})`)
+    .attr("x", -53)
+    .attr("y", -height / 4 - 30)
+    // .attr("fill", "white")
+    .attr("stroke", brown)
+    .attr("stroke-width", 2)
+    .attr("class", "tick-box")
+    .attr("id", "swarm-tick-box");
+
+  const finlandText = tickFinland
+    .append("text")
+    .attr("transform", `translate(${centerX}, ${height / 3 + 15})`)
+    .attr("x", 0)
+    .attr("y", -height / 4 - 20)
+    .attr("class", "tick-box-text");
+
+  finlandText
+    .text("FINLAND")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("class", "tick-text")
+    .attr("id", "swarm-tick-box-title");
+
+  finlandText
+    .append("tspan")
+    .text("Third line hello how are you")
+    .attr("x", 0)
+    .attr("dy", "2em")
+    .attr("text-anchor", "left")
+    .style("font-size", "12px");
 
   // Window resize behavior
   d3.select(window).on("resize", () => {

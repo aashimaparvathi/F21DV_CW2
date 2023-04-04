@@ -9,23 +9,51 @@ body {
 }
 
 svg {
-  display: block;
+  /* display: block; */
   margin: auto;
   max-width: 100%;
   max-height: 100%;
+  width: 100%;
+  align-self: center;
+  /* background-color: azure; */
 }
 
 .title {
+  font-family: "Times New Roman", Times, serif;
   font-size: 3.5rem;
-  line-height: 1.2;
+  /* line-height: 1em; */
   max-height: 8rem;
   min-height: 2rem;
   margin-left: 3.5rem;
   font-weight: bold;
-  color: #62350e;
+  color: #6291d3;
+  padding: 0%;
+  /* background-color: beige; */
+  width: 50%;
   /* trying to add an effect on the title */
   /* text-shadow: 0 0 0.1rem white, 0 0 0.1rem white, 0 0 0.1rem #502c2c,
     0 0 0.1rem #502c2c; */
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.sub-title {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.5rem;
+  /* line-height: 1em; */
+  max-height: 8rem;
+  min-height: 2rem;
+  margin-left: 3.6rem;
+  font-weight: bold;
+  color: #62350e;
+  /* background-color: beige; */
+  width: 50%;
 }
 
 @media (max-width: 768px) {
@@ -42,4 +70,28 @@ svg {
     font-size: 2rem;
     line-height: 1;
   }
+}
+
+/* .axis-line {
+  color: #b4b2b2;
+} */
+
+/* .axis-text {
+  color: #b4b2b2;
+} */
+
+#swarm-tick-box {
+  width: 13rem;
+  height: 9rem;
+  fill: #6291d3;
+  stroke: #6291d3;
+}
+
+#swarm-tick-box-title {
+  font-size: medium;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.tick-box-text {
+  font-family: "Times New Roman", Times, serif;
 }

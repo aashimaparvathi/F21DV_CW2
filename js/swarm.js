@@ -2,7 +2,7 @@ import dataPromise from "./data.js";
 
 var coffeepercap;
 
-const margin = { top: 0, right: 60, bottom: 0, left: 60 };
+const margin = { top: -20, right: 60, bottom: 0, left: 60 };
 const padding = { top: 0, right: 0, bottom: 0, left: 10 };
 const centerX = 0;
 const width = 1000 - margin.left - margin.right;
@@ -16,6 +16,10 @@ const height = 500 - margin.top - margin.bottom;
 const brown = "#62350e";
 const contrast = "#6291d3";
 const grey = "#b4b2b2";
+const darkgrey = "#909090";
+const duration_small = 500;
+const duration_medium = 1000;
+const duration_large = 2000;
 
 const tooltip = d3
   .select("body")
@@ -72,6 +76,16 @@ function drawSwarm() {
     .append("g")
     .attr("transform", `translate(${0},${0})`);
 
+  svg
+    .append("text")
+    .text(
+      "Annual coffee consumption per person in various countries (quantity of dry coffee in kilogram kg)"
+    )
+    .attr("fill", "#b4b2b2")
+    .attr("transform", `translate(${margin.left - 5}, ${height / 8})`)
+    .attr("class", "caption")
+    .attr("id", "swarm-caption");
+
   const xScale = d3
     .scaleLinear()
     .domain([4, 13])
@@ -102,13 +116,14 @@ function drawSwarm() {
           else return -height / 6;
         })
         .attr("stroke-opacity", function (d) {
-          if (d < 8) return 0.2;
+          if (d < 8 || d == 11 || d == 13 || d == 10) return 0.2;
           else return 0.5;
         })
         .attr("class", "axis-line")
         .attr("id", "swarm-axis-line")
         .attr("stroke", function (d) {
           if (d == 12) return contrast;
+          else if (d == 10) return brown;
           else return grey;
         })
     )
@@ -202,42 +217,20 @@ function drawSwarm() {
     }
   });
 
-  // finland tick
-  const tickFinland = gAxis.select(".tick:nth-of-type(9)");
+  finlandAnnotation(svg, gAxis);
+  norwayAnnotation(svg, gAxis);
+  averageAnnotation(svg, gAxis);
+  othersAnnotations(svg, gAxis);
 
-  tickFinland
-    .append("rect")
-    .attr("transform", `translate(${-50}, ${height / 3})`)
-    .attr("x", -53)
-    .attr("y", -height / 4 - 30)
-    // .attr("fill", "white")
-    .attr("stroke", brown)
-    .attr("stroke-width", 2)
-    .attr("class", "tick-box")
-    .attr("id", "swarm-tick-box");
+  nextStop(svg);
 
-  const finlandText = tickFinland
-    .append("text")
-    .attr("transform", `translate(${centerX}, ${height / 3 + 15})`)
-    .attr("x", 0)
-    .attr("y", -height / 4 - 20)
-    .attr("class", "tick-box-text");
-
-  finlandText
-    .text("FINLAND")
-    .attr("font-weight", "bold")
-    .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .attr("class", "tick-text")
-    .attr("id", "swarm-tick-box-title");
-
-  finlandText
-    .append("tspan")
-    .text("Third line hello how are you")
-    .attr("x", 0)
-    .attr("dy", "2em")
-    .attr("text-anchor", "left")
-    .style("font-size", "12px");
+  // svg
+  //   .append("image")
+  //   .attr("xlink:href", "./images/context1.png")
+  //   .attr("width", "50%")
+  //   .attr("height", "30%")
+  //   .attr("x", -60)
+  //   .attr("y", height / 1.5 + 20);
 
   // Window resize behavior
   d3.select(window).on("resize", () => {
@@ -264,6 +257,369 @@ function drawSwarm() {
         .style("top", `${event.pageY}px`);
     });
   });
+}
+
+function finlandAnnotation(svg, gAxis) {
+  // finland tick
+  const tickFinland = gAxis.select(".tick:nth-of-type(9)");
+
+  tickFinland.attr("color", contrast);
+
+  tickFinland
+    .append("rect")
+    .attr("transform", `translate(${-50}, ${height / 3})`)
+    .attr("x", -53)
+    .attr("y", -height / 4 - 30)
+    // .attr("fill", "white")
+    .attr("stroke", brown)
+    .attr("stroke-width", 2)
+    .attr("class", "tick-box")
+    .attr("id", "swarm-tick-box")
+    .attr("opacity", 0)
+    .transition()
+    .duration(2000)
+    .delay(1000)
+    .attr("opacity", 1);
+
+  const finlandText = tickFinland
+    .append("text")
+    .attr("transform", `translate(${centerX}, ${height / 3 + 15})`)
+    .attr("x", 0)
+    .attr("y", -height / 4 - 20)
+    .attr("class", "tick-box-text");
+
+  finlandText
+    .text("FINLAND")
+    .attr("font-weight", "bold")
+    .attr("fill", "white")
+    .attr("dy", "0.5em")
+    .attr("class", "tick-box-text")
+    .attr("id", "swarm-tick-box-title");
+
+  finlandText
+    .append("tspan")
+    .text("Home to the biggest 'Kahvi' lovers !")
+    .attr("x", 0)
+    .attr("dy", "3em")
+    .attr("class", "tick-box-content")
+    .attr("id", "swarm-tick-box-line1");
+
+  finlandText
+    .append("tspan")
+    .text("At 20% higher than the next country,")
+    .attr("x", 0)
+    .attr("dy", "1em")
+    .attr("class", "tick-box-content")
+    .attr("id", "swarm-tick-box-line2");
+
+  finlandText
+    .append("tspan")
+    .text("and miles above the global average.")
+    .attr("x", 0)
+    .attr("dy", "1em")
+    .attr("class", "tick-box-content")
+    .attr("id", "swarm-tick-box-line3");
+
+  finlandText
+    .append("tspan")
+    .text("It's the only country in the world with")
+    .attr("x", 0)
+    .attr("dy", "1em")
+    .attr("class", "tick-box-content")
+    .attr("id", "swarm-tick-box-line4");
+
+  finlandText
+    .append("tspan")
+    .text("coffee breaks mandated by law.")
+    .attr("font-weight", "bold")
+    .attr("x", 0)
+    .attr("dy", "1em")
+    .attr("class", "tick-box-content")
+    .attr("id", "swarm-tick-box-line4");
+}
+
+function norwayAnnotation(svg, gAxis) {
+  const tickNorway = gAxis.select(".tick:nth-of-type(7)");
+
+  tickNorway.attr("color", brown).attr("stroke-opacity", 0.5);
+
+  const transform = tickNorway.attr("transform");
+  const [, pos] = transform.split("(");
+  const [x, y] = pos.split(",").map(parseFloat);
+
+  // End position of line and rectangle
+  const lineEndY = y + height - 420;
+  const rectX = x - 10;
+  const rectY = lineEndY + 5; // for aligning line and rectangle
+
+  // Create a group g for the line and rectangle
+  const gLineRect = svg
+    .append("g")
+    .attr("transform", `translate(${centerX}, ${height / 2 + 10})`);
+
+  // Append a line element to the group
+  gLineRect
+    .append("line")
+    .attr("x1", x)
+    .attr("y1", y)
+    .attr("x2", x)
+    .attr("y2", lineEndY)
+    .attr("stroke", brown)
+    .attr("stroke-opacity", 0.2)
+    .attr("opacity", 0)
+    .transition()
+    .duration(duration_medium)
+    .delay(500)
+    .attr("opacity", 1);
+
+  // Append a rect element to the group
+  const norwayRect = gLineRect
+    .append("rect")
+    .attr("transform", `translate(${0}, ${0})`)
+    .attr("class", "tick-box")
+    .attr("id", "norway-tick-box")
+    .attr("x", rectX - 70)
+    .attr("y", rectY)
+    .attr("fill", brown)
+    .attr("opacity", 0)
+    .transition()
+    .duration(duration_medium)
+    .delay(500)
+    .attr("opacity", 1);
+
+  // Append text element to the rectangle
+  const norwayText = gLineRect
+    .append("text")
+    .attr("opacity", 0)
+    .text("NORWAY")
+    .attr("x", rectX + 10)
+    .attr("y", rectY + 20)
+    .attr("dy", "0.5em")
+    .transition()
+    .duration(duration_medium)
+    .delay(500)
+    .attr("opacity", 1)
+    .attr("text-anchor", "middle")
+    .attr("class", "tick-box-text")
+    .attr("id", "norway-tick-box-title");
+
+  gLineRect
+    .append("text")
+    .text("Second with their 'kaffeslabberas'")
+    .attr("x", rectX + 10)
+    .attr("y", rectY + 50)
+    .attr("class", "tick-box-text")
+    .attr("id", "norway-tick-box-line1");
+
+  gLineRect
+    .append("text")
+    .text("or Coffee parties!")
+    .attr("x", rectX + 10)
+    .attr("y", rectY + 60)
+    .attr("class", "tick-box-content")
+    .attr("id", "norway-tick-box-line1");
+}
+
+function averageAnnotation(svg, gAxis) {
+  const tickAverages = gAxis.select(".tick:nth-of-type(5)");
+
+  tickAverages
+    .append("rect")
+    .attr("transform", `translate(${0}, ${height / 3})`)
+    .attr("x", -30)
+    .attr("y", -height / 4 - 30)
+    .attr("class", "tick-box")
+    .attr("id", "averages-tick-box");
+
+  const averagesText = tickAverages
+    .append("text")
+    .attr("transform", `translate(${centerX}, ${height / 3 + 15})`)
+    .attr("x", 50)
+    .attr("y", -height / 4 - 30)
+    .attr("class", "tick-box-content");
+
+  averagesText
+    .text("Iceland, Denmark, Netherlands, Sweden, Switzerland")
+    .attr("fill", brown)
+    .attr("class", "tick-box-avg-content")
+    .attr("opacity", 0)
+    .transition()
+    .duration(duration_medium)
+    .delay(250)
+    .attr("opacity", 1);
+
+  averagesText
+    .append("tspan")
+    .attr("x", 50)
+    .attr("dy", "1em")
+    .text("we have all 5 Nordic countries in the top 10! ->")
+    .attr("font-weight", "bold")
+    .attr("fill", brown)
+    .attr("class", "tick-box-avg-content");
+}
+
+function othersAnnotations(svg, gAxis) {
+  const tickOthers = gAxis.select(".tick:nth-of-type(3)");
+
+  tickOthers
+    .append("rect")
+    .attr("transform", `translate(${0}, ${height / 3})`)
+    .attr("x", -80)
+    .attr("y", -height / 4 - 30)
+    .attr("class", "tick-box")
+    .attr("id", "others-tick-box")
+    .attr("opacity", 0)
+    .transition()
+    .duration(duration_large)
+    .delay(1500)
+    .attr("opacity", 1);
+
+  const othersText = tickOthers
+    .append("text")
+    .attr("transform", `translate(${centerX}, ${height / 3 + 15})`)
+    .attr("x", -95)
+    .attr("y", -height / 4 - 30)
+    .attr("class", "tick-box-content")
+    .attr("text-anchor", "start")
+    .attr("text-align", "justify");
+  othersText
+    .text("Belgium, Luxembourg, Canada")
+    .attr("fill", grey)
+    .attr("class", "tick-box-other-content");
+
+  var countries_others = [
+    // "Canada",
+    "Bosnia and Herzegovina",
+    "Austria",
+    "Italy",
+    "Slovenia",
+    "Brazil",
+    "Germany",
+    "France",
+    "Greece",
+    "Croatia",
+    "Cyprus",
+    "Lebanon",
+    "Spain",
+    "Estonia",
+    "Portugal",
+    "United States of America",
+  ];
+
+  for (var i = 0; i < countries_others.length; i++) {
+    othersText
+      .append("tspan")
+      .attr("x", -95)
+      .attr("dy", "1em")
+      .attr("text-anchor", "start")
+      .transition()
+      .duration(duration_medium)
+      .delay(i * 10)
+      .text(function (d) {
+        return (
+          countries_others[i] +
+          ", " +
+          countries_others[++i] +
+          ", " +
+          countries_others[++i]
+        );
+      })
+      .attr("fill", grey)
+      .attr("class", "tick-box-others-content");
+  }
+}
+
+function nextStop(svg) {
+  const gButton = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${height - 150})`);
+
+  const button = gButton
+    .append("circle")
+    .attr("r", 25)
+    .attr("cx", 50)
+    .attr("cy", 45)
+    .attr("class", "next-button")
+    .attr("id", "swarm-next-button");
+
+  button
+    .attr("opacity", 0)
+    .transition()
+    .duration(1000)
+    .delay(2000)
+    .attr("opacity", 1);
+
+  const buttonText = gButton
+    .append("text")
+    .text("Next")
+    // .attr("transform", `translate(30, 30)`)
+    .attr("x", 49)
+    .attr("y", 44)
+    .attr("text-anchor", "middle")
+    .attr("class", "next-button-text")
+    .attr("id", "swarm-next-button-text")
+    .attr("dominant-baseline", "central")
+    .attr("fill", "white")
+    .style("font-size", "14px")
+    .style("font-weight", "bold")
+    .style("pointer-events", "none")
+    .attr("opacity", 0)
+    .transition()
+    .duration(1000)
+    .delay(2000)
+    .attr("opacity", 1);
+
+  setTimeout(function () {
+    animateButton();
+  }, 3000);
+
+  button.on("click", function () {
+    // const currentDiv = document.querySelector(".active");
+    // const nextDiv = document.getElementById("#map-container");
+    // console.log(nextDiv);
+    // window.scrollTo({ top: nextDiv.offsetTop, behavior: "smooth" });
+
+    // Navigate to the next div on the same page with a given ID
+    const nextDiv = d3.select("#map-container");
+    const yOffset = 0;
+    const y =
+      nextDiv.node().getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  });
+}
+
+function animateButton() {
+  d3.select("#swarm-next-button")
+    .transition()
+    .duration(duration_medium)
+    .delay(2000)
+    .ease(d3.easeBounceOut)
+    .attr("transform", "translate(0, 0)")
+    .transition()
+    .duration(duration_medium)
+    .ease(d3.easeBounceOut)
+    .attr("transform", "translate(0, 20)")
+    .transition()
+    .duration(duration_medium)
+    .ease(d3.easeBounceOut)
+    .attr("transform", "translate(0, 0)")
+    .on("end", animateButton);
+
+  d3.select("#swarm-next-button-text")
+    .transition()
+    .duration(duration_medium)
+    .delay(2000)
+    .ease(d3.easeBounceOut)
+    .attr("transform", "translate(0, 0)")
+    .transition()
+    .duration(duration_medium)
+    .ease(d3.easeBounceOut)
+    .attr("transform", "translate(0, 20)")
+    .transition()
+    .duration(duration_medium)
+    .ease(d3.easeBounceOut)
+    .attr("transform", "translate(0, 0)")
+    .on("end", animateButton);
 }
 
 // function drawSwarm() {

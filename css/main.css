@@ -1,11 +1,15 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: "Times New Roman", Times, serif;
 }
 
-.container {
-  height: 100vh;
-  /* background-color: aquamarine; */
+#main-container,
+#swarm-container {
+  height: 98vh;
+  width: 100%;
+  font-family: "Times New Roman", Times, serif;
+  background-color: aquamarine;
 }
 
 svg {
@@ -19,56 +23,132 @@ svg {
 }
 
 .title {
-  font-family: "Times New Roman", Times, serif;
+  /* font-family: "Times New Roman", Times, serif; */
   font-size: 3.5rem;
-  /* line-height: 1em; */
-  max-height: 8rem;
+  line-height: 1.4em;
+  max-height: 5rem;
   min-height: 2rem;
-  margin-left: 3.5rem;
+  margin-left: 4.7rem;
   font-weight: bold;
   color: #6291d3;
   padding: 0%;
+  margin-top: 0.5rem;
   /* background-color: beige; */
-  width: 50%;
+  width: 80%;
   /* trying to add an effect on the title */
   /* text-shadow: 0 0 0.1rem white, 0 0 0.1rem white, 0 0 0.1rem #502c2c,
     0 0 0.1rem #502c2c; */
 }
 
+/* Don't want h1 and h2 elements to be too separated */
 h1 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0rem;
 }
 
 h2 {
   margin-top: 0;
+  margin: 0;
+}
+
+#swarm-title {
+  display: inline-block; /* Make heading display as inline block */
+}
+
+#title-container {
+  position: relative;
+}
+
+#title-image {
+  position: absolute;
+  top: 0;
+  left: 60%;
+  width: 5rem;
+  height: 5rem;
 }
 
 .sub-title {
-  font-family: "Times New Roman", Times, serif;
+  /* font-family: "Times New Roman", Times, serif; */
   font-size: 1.5rem;
   /* line-height: 1em; */
   max-height: 8rem;
   min-height: 2rem;
-  margin-left: 3.6rem;
-  font-weight: bold;
+  margin-left: 5rem;
+  margin-top: 0%;
+  font-weight: normal;
   color: #62350e;
-  /* background-color: beige; */
+  /* background-color: blanchedalmond; */
+  width: 50%;
+}
+
+#swarm-caption {
+  /* font-family: "Times New Roman", Times, serif; */
+  font-size: 0.9rem;
+  max-height: 10rem;
+  min-height: 5rem;
+  margin-left: 3.6rem;
+  margin-top: 0%;
+  fill: #727171;
+  /* background-color: blanchedalmond; */
   width: 50%;
 }
 
 @media (max-width: 768px) {
   /* for small screens */
   .title {
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 1.1;
+  }
+  /* for small screens */
+  .sub-title {
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+  #title-image {
+    position: absolute;
+    top: 0;
+    left: 60%;
+    width: 3rem;
+    height: 3rem;
   }
 }
 
 @media (max-width: 480px) {
   /* for very small screens */
   .title {
-    font-size: 2rem;
+    font-size: 1rem;
     line-height: 1;
+  }
+  /* for very small screens */
+  .sub-title {
+    font-size: 0.5rem;
+    line-height: 1;
+  }
+  #title-image {
+    position: absolute;
+    top: 0;
+    left: 80%;
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+@media (max-width: 100px) {
+  /* for very small screens */
+  .title {
+    font-size: 0.5rem;
+    line-height: 1;
+  }
+  /* for very small screens */
+  .sub-title {
+    font-size: 0.1rem;
+    line-height: 1;
+  }
+  #title-image {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 1rem;
+    height: 1rem;
   }
 }
 
@@ -88,10 +168,93 @@ h2 {
 }
 
 #swarm-tick-box-title {
-  font-size: medium;
-  font-family: "Times New Roman", Times, serif;
+  font-size: 2rem;
+  text-align: center;
 }
 
 .tick-box-text {
   font-family: "Times New Roman", Times, serif;
+  fill: white;
+}
+
+#norway-tick-box {
+  width: 10rem;
+  height: 5rem;
+  fill: #62350e;
+  stroke: #62350e;
+}
+
+#norway-tick-box-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.tick-box-content,
+#swarm-tick-box-line1,
+#norway-tick-box-line1 {
+  font-size: 0.7rem;
+  font-weight: normal;
+  text-anchor: middle;
+  fill: white;
+}
+
+#swarm-tick-box-line2 {
+  text-align: left;
+}
+
+#averages-tick-box {
+  width: 10rem;
+  height: 5rem;
+  fill: none;
+  stroke: none;
+}
+
+#tick-box-avg-content {
+  font-family: "Times New Roman", Times, serif;
+}
+
+#others-tick-box {
+  width: 10rem;
+  height: 5rem;
+  fill: none;
+  /* stroke: #62350e; */
+}
+
+.next-button {
+  width: 5rem;
+  height: 3rem;
+  border-radius: 10px;
+  fill: #6291d3;
+}
+
+#swarm-next-button,
+#swarm-next-button-text {
+  position: absolute;
+  bottom: 50px;
+  left: 50px;
+  width: 100px;
+  height: 50px;
+  font-size: 1.2rem;
+  background-color: #6291d3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+#swarm-next-button:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }

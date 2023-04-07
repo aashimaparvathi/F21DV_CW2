@@ -1,6 +1,20 @@
-import dataPromise, { lightgrey, grey } from "./data.js";
+import dataPromise, {
+  lightgrey,
+  grey,
+  contrast,
+  brown,
+  darkgrey,
+  danger_red,
+} from "./data.js";
 
 var coffeepercap1, coffeetotal, world;
+
+/*
+TODO: Add legend for the map
+Add caption for the map
+Add annotation about the continent and northern hemisphere
+And if possible, point to the divs of each correspondng parameter
+*/
 
 const margin = { top: -20, right: 60, bottom: 0, left: 60 };
 const width = 1000 - margin.left - margin.right;
@@ -14,10 +28,31 @@ const continentByCode = new Map();
 const perCapByCode = new Map();
 const continents = new Set();
 const mapgrey = "#949494";
+const mapLabelOffset = 3;
+const labelZoomFactor = 2.8;
+
+const tooltip = d3
+  .select("body")
+  .append("div")
+  .attr("class", "map-tooltip")
+  .style("opacity", 0)
+  .style("width", "500px")
+  .style("height", "250px")
+  .style("position", "absolute")
+  .style("pointer-events", "none")
+  .style("background-color", "#fff")
+  .style("padding", "10px")
+  .style("border-radius", "5px")
+  .style("box-shadow", "0 2px 2px rgba(0,0,0,0.1)")
+  .html(
+    '<svg id="svgToolTip" viewBox="0 0 500 250" class="countryTip" width="100%" height="100%"></svg>'
+  );
 
 var circleRadiusScale, circleColorScale;
-var projection;
+var projection, path, isocodes, filteredFeatures;
 var minMaxPerCap;
+var isEnabled = false;
+var isocode_group, countries_group;
 
 dataPromise.then(function ([coffeepercap1data, coffeetotaldata, worlddata]) {
   console.log("map.js");
@@ -76,11 +111,15 @@ function fixData() {
 
   // TODO: Remove unwanted groups later
   var continents_group = d3.group(coffeepercap1, (d) => d.continent);
-  var countries_group = d3.group(coffeepercap1, (d) => d.country);
-  var isocode_group = d3.group(coffeepercap1, (d) => d.isocode);
+  countries_group = d3.group(coffeepercap1, (d) => d.country);
+  isocode_group = d3.group(coffeetotal, (d) => d.isocode);
   // console.log(continents_group);
   // console.log(countries_group);
-  // console.log(isocode_group);
+  console.log("countriesGroup");
+  console.log(countries_group);
+
+  console.log("isoCodeGroup");
+  console.log(isocode_group);
 
   const perCapValues = coffeepercap1.map((d) => d.twodecimalplaces);
   minMaxPerCap = d3.extent(perCapValues);
@@ -111,6 +150,15 @@ function fixData() {
     .domain(continents)
     .range(["#de1f1f", "#1f9bde", "#6b1fde", "#de1f78"]);
   // .range(["#007e08", "#00697e", "#02007e", "#7e0037"]);
+
+  isocodes = coffeepercap1.map(function (d) {
+    return d.isocode;
+  });
+
+  // Filter the world.features array to include only the features whose id matches any of the isocodes
+  filteredFeatures = world.features.filter(function (d) {
+    return isocodes.includes(d.id);
+  });
 }
 
 function drawMap() {
@@ -124,14 +172,17 @@ function drawMap() {
     .attr("class", "map-svg")
     .attr("id", "map-svg");
 
+  //svg.append("text").text("Hello");
+
   projection = d3
     .geoMercator()
     .rotate([-10, 0]) // Adjust the rotation of the projection
     .translate([width / 2 + xOffset, height / 2 + yOffset])
     .scale(mapscale);
 
-  var path = d3.geoPath(projection);
+  path = d3.geoPath(projection);
 
+  console.log("world features");
   console.log(world.features);
 
   var countries = svg
@@ -149,7 +200,8 @@ function drawMap() {
     .attr("stroke-width", 0.5);
 
   var gCircles = svg.append("g").attr("id", "gCircles");
-  var circles = drawCircles(svg, projection);
+  var zoomfactor = 1;
+  var circles = drawCircles(svg, zoomfactor);
   var gMap = d3.select("#map");
 
   var zoom = d3
@@ -158,10 +210,10 @@ function drawMap() {
     .on("zoom", function (event, d) {
       handleZoom(svg, event, d);
     });
-  addZoom(svg, zoom);
+  addZoom(svg);
 }
 
-function drawCircles(svg) {
+function drawCircles(svg, zoomfactor) {
   var circles = svg
     .select("#gCircles")
     .selectAll("circle")
@@ -170,6 +222,13 @@ function drawCircles(svg) {
     });
 
   circles.exit().remove();
+
+  var labels = svg.selectAll(".country-label");
+  // .data(world.features, function (d) {
+  //   return d.properties.name;
+  // });
+
+  labels.exit().remove();
 
   var count = 0;
 
@@ -184,73 +243,215 @@ function drawCircles(svg) {
     .attr("fill", (d) => circleColorScale(continentByCode.get(d.id)))
     .attr("class", "map-circle")
     .attr("id", (d) => {
-      count++;
       return d.id;
     })
     .attr("stroke", (d) => circleColorScale(continentByCode.get(d.id)))
     // .attr("stroke-width", "2px")
-    .attr("fill-opacity", 0.4)
-    .attr("stroke-opacity", 0.5)
+    .attr("fill-opacity", (d) => {
+      // console.log(zoomfactor);
+      if (zoomfactor == 1) return 0.4;
+      else if (zoomfactor < 2) return 0.6;
+      else if (zoomfactor < 3) return 0.7;
+      else if (zoomfactor < 5) return 0.8;
+      else if (zoomfactor < 8) return 1;
+      else return 1;
+    })
+    .attr("stroke-opacity", (d) => {
+      if (zoomfactor == 1) return 1;
+      else if (zoomfactor < 2) return 0.8;
+      else if (zoomfactor < 3) return 0.5;
+      else if (zoomfactor < 5) return 0.1;
+      else if (zoomfactor < 8) return 0;
+      else return 1;
+    })
     .attr("class", "hightlight")
     // .classed("highlight", true)
     .style("transition", "0.4s")
     .on("mouseover", function (event, d) {
-      circleMouseOver(this, event, d);
+      // circleMouseOver(this, event, d);
+      // Show tooltip
+      var data = isocode_group.get(d.id);
+      var country = d.properties.name;
+
+      if (!(typeof data === "undefined"))
+        tooltip.transition().duration(200).style("opacity", 0.9);
+      // Position tooltip at mouse pointer
+      console.log(d.id);
+      tooltip
+        // .html(getLineChartHtml1(d.id))
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 28 + "px");
+
+      var svgToolTip = d3.select("#svgToolTip");
+      // const svgToolTipWidth = +svgToolTip.attr("width");
+      // const svgToolTipHeight = +svgToolTip.attr("height");
+
+      // Extract viewBox values
+      const viewBox = svgToolTip.attr("viewBox").split(" ");
+      const svgToolTipWidth = viewBox[2];
+      const svgToolTipHeight = viewBox[3];
+
+      console.log("tooltip width and height");
+      console.log(svgToolTipWidth + ", " + svgToolTipHeight);
+
+      /* Margins if using line chart for total consumption */
+      /* var margin = { top: 0, right: 0, bottom: 50, left: 50 }; */
+      /* Margins if using lollipop chart for total consumption */
+      var margin = { top: 20, right: 10, bottom: 30, left: 40 };
+
+      var innerWidth = svgToolTipWidth - margin.left - margin.right; //this is the width of the barchart
+      var innerHeight = svgToolTipHeight - margin.top - margin.bottom; // this is the height of the barchart
+
+      // append the svg object to the body of the page
+      var svg = svgToolTip
+        .append("g")
+        .attr("id", "line-group")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      svg
+        .append("text")
+        .text(
+          "Total coffee consumed by " +
+            country +
+            " per year (in thousands of 60kg-bags)"
+        )
+        .attr("transform", `translate(${200},${-5})`)
+        .attr("font-size", "0.9em")
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle");
+      const color = d3.scaleOrdinal().range(["red"]);
+
+      /* Uncomment drawLineChart if using line chart */
+      /* drawLineChart(svg, d.id, innerHeight, innerWidth, color); */
+      createLollipopChart(svg, d.id, innerWidth, innerHeight, country);
     })
     .on("mouseout", function (event, d) {
-      circleMouseOut(this, event, d);
+      tooltip.transition().duration(500).style("opacity", 0);
+      const chartGroup = d3.select("#line-group");
+
+      // Remove all the elements inside the group
+      chartGroup.selectAll("*").remove();
+      chartGroup.remove();
     });
 
-  console.log(count);
+  if (zoomfactor > labelZoomFactor) {
+    // show country names
+    var labels = svg
+      .selectAll(".country-label")
+      .data(filteredFeatures)
+      .enter()
+      .append("text")
+      .attr("class", "country-label")
+      // .attr("fill", "#1f315e")
+      .attr("fill", brown)
+      .attr("background-color", "white")
+      .attr("visibility", "hidden")
+      .text(function (d) {
+        //console.log(d.properties.name);
+        return d.properties.name;
+      })
+      .attr("x", function (d) {
+        return (
+          projection(d3.geoPath().centroid(d.geometry))[0] + mapLabelOffset
+        );
+      })
+      .attr("y", function (d) {
+        return projection(d3.geoPath().centroid(d.geometry))[1];
+      })
+      /*
+      .attr("x", function (d) {
+        return path.centroid(d)[0];
+      })
+      .attr("y", function (d) {
+        return path.centroid(d)[1];
+      })*/
+      .style("text-anchor", "right");
+
+    svg.selectAll(".country-label").attr("visibility", "visible");
+  } else {
+    // hide country names
+    svg.selectAll(".country-label").attr("visibility", "hidden");
+  }
+
   return circles;
 }
 
-function circleMouseOver(thisCircle, event, data) {
-  // console.log(data);
-  // var continentColor = circleColorScale(data.continent);
-  // d3.selectAll(".map-circle").attr("fill", grey).attr("stroke-opacity", 1);
-  // d3.selectAll("circle").classed("highlight", false);
-  //d3.select(thisCircle).attr("fill", continentColor).attr("fill-opacity", 1);
-  // d3.selectAll(thisCircle).classed("highlight", true);
-}
-
-function circleMouseOut(thisCircle, event, data) {
-  // console.log(data);
-  // var continentColor = circleColorScale(data.continent);
-  // d3.selectAll(".map-circle").attr("fill", grey).attr("stroke-opacity", 1);
-  // // .classed("highlight", false);
-  // d3.select(thisCircle).attr("fill", continentColor).attr("fill-opacity", 1);
-  // // .classed("highlight", true);
-}
-
-function addZoom(svg, zoom) {
+function addZoom(svg) {
+  var zoom = "";
   // create a button
   var button = svg
     .append("g")
-    .attr("transform", "translate(" + width / 2 + ", " + (height + 70) + ")") // position the button below the map
+    .attr("transform", "translate(" + width / 2 + ", " + (height + 30) + ")") // position the button below the map
     .attr("class", "zoom-button")
-    .attr("id", "zoom-button")
-    .on("click", function (event) {
-      svg.call(zoom);
-    });
+    .attr("id", "zoom-button");
 
   // create a rectangle to act as the button
   button
     .append("rect")
     .attr("width", 60)
-    .attr("height", 20)
-    .attr("fill", "lightgrey");
+    .attr("height", 40)
+    .attr("rx", 10)
+    .attr("ry", 10)
+    .attr("class", "button-rect")
+    .attr("fill", contrast)
+    .on("click", function (event) {
+      d3.select(this).classed("clicked", !d3.select(this).classed("clicked"));
+    });
 
   // add the text "Zoom" to the button
   button
     .append("text")
     .attr("x", 30)
-    .attr("y", 14)
+    .attr("y", 25)
     .attr("text-anchor", "middle")
-    .text("Zoom");
+    .attr("class", "button-text")
+    .text("Zoom")
+    .on("click", function () {
+      d3.select(this.parentNode)
+        .select("rect")
+        .classed(
+          "clicked",
+          !d3.select(this.parentNode).select("rect").classed("clicked")
+        );
+    });
+
+  button.on("click", function (event) {
+    isEnabled = d3.select(this).select("rect").classed("clicked");
+    console.log(
+      isEnabled
+        ? "zoom is disabled, enabling..."
+        : "zoom is enabled, disalbing..."
+    );
+    // console.log(d3.select(this).select("rect").classed("clicked"));
+    d3.select(this).classed("clicked", !d3.select(this).classed("clicked"));
+    if (isEnabled == true) {
+      console.log("zooming...");
+      zoom = d3
+        .zoom()
+        .scaleExtent([1, 8])
+        .on("zoom", function (event, d) {
+          // console.log("inside event handler set up");
+          handleZoom(svg, event, d);
+        });
+      svg.call(zoom);
+    } else if (isEnabled == false) {
+      console.log("not zooming...");
+      // svg.call(zoom.transform, d3.zoomIdentity);
+      svg.on(".zoom", null);
+      svg
+        .transition()
+        .duration(750)
+        .call(
+          zoom.transform,
+          d3.zoomIdentity,
+          d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
+        );
+    }
+  });
 }
 
 function handleZoom(svg, event, data) {
+  // console.log("inside actual event handler");
   const { transform } = event;
   var gMap = svg.select("#map");
 
@@ -258,28 +459,224 @@ function handleZoom(svg, event, data) {
   var gCircle = svg.select("#gCircles");
   gCircle.attr("transform", transform);
 
+  var labels = svg.selectAll(".country-label");
+  // labels.exit().remove();
+
+  labels
+    .attr("transform", transform)
+    .attr("font-size", 18 / transform.k)
+    .attr("zindex", 9999);
+
   if (transform.k > 1 && transform.k < 1.5) {
     var circleRange = [10, 50];
     circleRadiusScale = d3.scaleSqrt().domain(minMaxPerCap).range(circleRange);
 
-    drawCircles(svg);
+    drawCircles(svg, transform.k);
   }
   if (transform.k > 1.5 && transform.k < 2) {
     var circleRange = [5, 40];
     circleRadiusScale = d3.scaleSqrt().domain(minMaxPerCap).range(circleRange);
 
-    drawCircles(svg);
+    drawCircles(svg, transform.k);
   }
   if (transform.k > 2 && transform.k < 2.5) {
     var circleRange = [2, 20];
     circleRadiusScale = d3.scaleSqrt().domain(minMaxPerCap).range(circleRange);
 
-    drawCircles(svg);
+    drawCircles(svg, transform.k);
   }
   if (transform.k > 2.5 && transform.k < 3) {
     var circleRange = [2, 10];
     circleRadiusScale = d3.scaleSqrt().domain(minMaxPerCap).range(circleRange);
 
-    drawCircles(svg);
+    drawCircles(svg, transform.k);
+  }
+  if (transform.k > 5) {
+    var circleRange = [0.5, 3];
+    circleRadiusScale = d3.scaleSqrt().domain(minMaxPerCap).range(circleRange);
+
+    drawCircles(svg, transform.k);
+  }
+}
+
+function drawLineChart(svg, isocode, innerHeight, innerWidth, color) {
+  const chartGroup = d3.select("#line-group");
+
+  // Remove all the elements inside the group
+  chartGroup.selectAll("*").remove();
+
+  var data = isocode_group.get(isocode);
+  console.log(data);
+
+  if (typeof data === "undefined") {
+    console.log("myVariable is undefined");
+    const chartGroup = d3.select("#line-group");
+
+    // Remove all the elements inside the group
+    chartGroup.selectAll("*").remove();
+  } else {
+    console.log("myVariable is defined");
+
+    const consumption = Object.values(data[0]).slice(3); // Get consumption data
+    console.log(consumption);
+
+    const yearValues = Object.entries(data[0])
+      .filter(([key, value]) => key.startsWith("year"))
+      .map(([key, value]) => ({ year: +key.slice(4), value: value }));
+
+    console.log(yearValues);
+
+    var minYear = d3.min(yearValues, (d) => +d.year);
+    var maxYear = d3.max(yearValues, (d) => +d.year);
+
+    console.log(minYear + ", " + maxYear);
+
+    var linexScale = d3
+      .scaleLinear()
+      .domain([minYear, maxYear])
+      .range([0, innerWidth]);
+    var lineyScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(yearValues, (d) => d.value)])
+      .range([innerHeight, 0]);
+
+    const xAxis = d3.axisBottom(linexScale).tickFormat(d3.format("d"));
+    const yAxis = d3.axisLeft(lineyScale);
+
+    svg
+      .append("g")
+      .attr("class", "x-axis")
+      .attr("transform", "translate(0," + innerHeight + ")")
+      .call(
+        xAxis.ticks(10)
+        // .tickValues(
+        //   d3.timeMonth.every(1).range(new Date(2000, 2), new Date(2019, 2))
+        // )
+      );
+
+    svg.append("g").attr("class", "y-axis").call(yAxis.ticks(6));
+
+    var deathLine = svg.append("path").attr("class", "death-line");
+
+    const deathLineFunction = d3
+      .line()
+      .x(function (d, i) {
+        return linexScale(d.year);
+      })
+      .y(function (d) {
+        console.log(d.value);
+        console.log(lineyScale(d.value));
+        return lineyScale(d.value);
+      });
+
+    deathLine
+      .datum(yearValues)
+      .attr("d", deathLineFunction)
+      .attr("fill", "none")
+      .attr("stroke", "black")
+      .style("stroke-width", "1px");
+  }
+}
+
+function createLollipopChart(group, isocode, innerWidth, innerHeight, country) {
+  // const chartGroup = d3.select("#line-group");
+  // // Remove all the elements inside the group
+  // chartGroup.selectAll("*").remove();
+  // chartGroup.remove();
+
+  var data = isocode_group.get(isocode);
+  console.log(data);
+
+  if (typeof data === "undefined") {
+    console.log("myVariable is undefined");
+    tooltip.style("opacity", 0);
+    const chartGroup = d3.select("#line-group");
+
+    // Remove all the elements inside the group
+    chartGroup.selectAll("*").remove();
+  } else {
+    console.log("myVariable is defined");
+
+    const consumption = Object.values(data[0]).slice(3); // Get consumption data
+    console.log(consumption);
+
+    const yearValues = Object.entries(data[0])
+      .filter(([key, value]) => key.startsWith("year"))
+      .map(([key, value]) => ({ year: +key.slice(4), value: value }));
+
+    console.log(yearValues);
+
+    var minYear = d3.min(yearValues, (d) => +d.year);
+    var maxYear = d3.max(yearValues, (d) => +d.year);
+
+    console.log(minYear + ", " + maxYear);
+
+    // Sort the data in ascending order
+    const sortedData = yearValues;
+    //.sort((a, b) => a.value - b.value);
+    //console.log(sortedData);
+
+    // Define the scales for the chart
+    const xScale = d3
+      .scaleBand()
+      .domain(sortedData.map((d) => d.year))
+      .range([0, innerWidth])
+      .paddingInner(0.5)
+      .paddingOuter(0.5);
+
+    var maxValue = d3.max(sortedData, (d) => d.value);
+    var extra = maxValue / 10;
+
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(sortedData, (d) => d.value) + extra])
+      .range([innerHeight, 0]);
+
+    // Draw the circles for the lollipop chart
+    const circles = group
+      .selectAll("circle")
+      .data(sortedData)
+      .join("circle")
+      .attr("cx", (d) => xScale(d.year) + xScale.bandwidth() / 2)
+      .attr("cy", (d) => yScale(d.value))
+      .attr("r", 7)
+      .attr("fill", function (d) {
+        if (d.value >= 10000) return danger_red;
+        else return contrast;
+      })
+      .attr("fill-opacity", 1);
+
+    // Draw the vertical lines for the lollipop chart
+    const lines = group
+      .selectAll("line")
+      .data(sortedData)
+      .join("line")
+      .attr("x1", (d) => xScale(d.year) + xScale.bandwidth() / 2)
+      .attr("y1", (d) => yScale(d.value) + 6)
+      .attr("x2", (d) => xScale(d.year) + xScale.bandwidth() / 2)
+      .attr("y2", innerHeight - 1)
+      .attr("stroke", brown)
+      .attr("stroke-width", 1);
+
+    // Add x-axis
+    const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
+    group
+      .append("g")
+      .attr("transform", `translate(0, ${innerHeight})`)
+      .call(xAxis)
+      .attr("class", "axis")
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("transform", "rotate(-45)")
+      .attr("fill", darkgrey);
+
+    // Add y-axis
+    const yAxis = d3.axisLeft(yScale);
+    group
+      .append("g")
+      .call(yAxis.ticks(6))
+      .attr("class", "axis")
+      .selectAll("text")
+      .attr("fill", darkgrey);
   }
 }

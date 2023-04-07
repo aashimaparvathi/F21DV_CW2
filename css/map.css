@@ -5,3 +5,31 @@
 #zoom-button {
   cursor: pointer;
 }
+
+.clicked {
+  fill: #39557c;
+  stroke: white;
+}
+
+.button-text {
+  fill: white;
+}
+
+.map-tooltip {
+  overflow: visible;
+}
+
+.map-tooltip {
+  position: absolute;
+  z-index: 9999;
+}
+
+.axis line,
+.axis path {
+  stroke: #747373;
+}
+
+#map-sub-title {
+  width: 100%;
+  margin-left: 0rem;
+}

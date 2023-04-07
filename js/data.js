@@ -26,10 +26,11 @@ const brown = "#62350e";
 const contrast = "#6291d3";
 const lightgrey = "#dfdede";
 const grey = "#b4b2b2";
-const darkgrey = "#909090";
+const darkgrey = "#747373";
 const duration_small = 500;
 const duration_medium = 1000;
 const duration_large = 2000;
+const danger_red = "#d02305";
 
 export {
   brown,
@@ -37,6 +38,7 @@ export {
   lightgrey,
   grey,
   darkgrey,
+  danger_red,
   duration_large,
   duration_medium,
   duration_small,

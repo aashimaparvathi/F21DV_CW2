@@ -17,6 +17,8 @@ const centerX = 0;
 const width = 1000 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 
+var annotateDelay = 1000;
+const delayOffset = 1500;
 /*
   Color from https://colorable.jxnblk.com/62350e/ffffff
   10.32AAA
@@ -219,10 +221,10 @@ function drawSwarm() {
     }
   });
 
-  finlandAnnotation(svg, gAxis);
-  norwayAnnotation(svg, gAxis);
-  averageAnnotation(svg, gAxis);
   othersAnnotations(svg, gAxis);
+  averageAnnotation(svg, gAxis);
+  norwayAnnotation(svg, gAxis);
+  finlandAnnotation(svg, gAxis);
 
   nextStop(svg);
 
@@ -267,6 +269,8 @@ function finlandAnnotation(svg, gAxis) {
 
   tickFinland.attr("color", contrast);
 
+  annotateDelay = annotateDelay + delayOffset;
+
   tickFinland
     .append("rect")
     .attr("transform", `translate(${-50}, ${height / 3})`)
@@ -280,7 +284,7 @@ function finlandAnnotation(svg, gAxis) {
     .attr("opacity", 0)
     .transition()
     .duration(2000)
-    .delay(1000)
+    .delay(annotateDelay)
     .attr("opacity", 1);
 
   const finlandText = tickFinland
@@ -359,6 +363,7 @@ function norwayAnnotation(svg, gAxis) {
     .append("g")
     .attr("transform", `translate(${centerX}, ${height / 2 + 10})`);
 
+  annotateDelay = annotateDelay + delayOffset;
   // Append a line element to the group
   gLineRect
     .append("line")
@@ -371,7 +376,7 @@ function norwayAnnotation(svg, gAxis) {
     .attr("opacity", 0)
     .transition()
     .duration(duration_medium)
-    .delay(500)
+    .delay(annotateDelay)
     .attr("opacity", 1);
 
   // Append a rect element to the group
@@ -386,7 +391,7 @@ function norwayAnnotation(svg, gAxis) {
     .attr("opacity", 0)
     .transition()
     .duration(duration_medium)
-    .delay(500)
+    .delay(annotateDelay)
     .attr("opacity", 1);
 
   // Append text element to the rectangle
@@ -399,7 +404,7 @@ function norwayAnnotation(svg, gAxis) {
     .attr("dy", "0.5em")
     .transition()
     .duration(duration_medium)
-    .delay(500)
+    .delay(annotateDelay)
     .attr("opacity", 1)
     .attr("text-anchor", "middle")
     .attr("class", "tick-box-text")
@@ -516,7 +521,7 @@ function othersAnnotations(svg, gAxis) {
       .attr("text-anchor", "start")
       .transition()
       .duration(duration_medium)
-      .delay(i * 10)
+      // .delay(i * 10)
       .text(function (d) {
         return (
           countries_others[i] +
@@ -544,11 +549,13 @@ function nextStop(svg) {
     .attr("class", "next-button")
     .attr("id", "swarm-next-button");
 
+  annotateDelay = annotateDelay + delayOffset;
+
   button
     .attr("opacity", 0)
     .transition()
     .duration(1000)
-    .delay(2000)
+    .delay(annotateDelay)
     .attr("opacity", 1);
 
   const buttonText = gButton
@@ -568,12 +575,12 @@ function nextStop(svg) {
     .attr("opacity", 0)
     .transition()
     .duration(1000)
-    .delay(2000)
+    .delay(annotateDelay)
     .attr("opacity", 1);
 
   setTimeout(function () {
     animateButton();
-  }, 3000);
+  }, annotateDelay);
 
   button.on("click", function () {
     // Navigate to the next div on the same page with a given ID

@@ -10,6 +10,13 @@
       target="_blank"
       href="css/main.css"
     />
+    <link rel="stylesheet" type="text/css" target="_blank" href="css/why.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      target="_blank"
+      href="css/styles.css"
+    />
     <link rel="stylesheet" type="text/css" target="_blank" href="css/map.css" />
     <!-- Any other styles -->
     <style></style>
@@ -21,14 +28,6 @@
           <h1 class="title" id="swarm-title" align="left">
             CAFFEINE CHAMPIONS
           </h1>
-          <!-- <img
-            src="./images/mug.png"
-            alt="Image description"
-            width="16"
-            height="16"
-            class="image"
-            id="title-image"
-          /> -->
         </div>
         <h2 class="sub-title" id="swarm-sub-title" align="left">
           The most <strong>saturated</strong> coffee drinkers of the world!
@@ -36,15 +35,27 @@
         </h2>
         <div class="svg-container" id="swarm-svg-container"></div>
       </div>
-      <div class="container" id="map-container">
-        <h1 class="title" id="map-title" align="left">
+      <div class="why-container" id="why-container">
+        <h1 class="why-title" id="why-title" align="left">
           ROOTS OF THE COFFEE CULTURE
         </h1>
+        <div class="why-container" id="parent-container">
+          <div class="left-container">
+            <div class="div" id="map-div"></div>
+            <!-- <div class="div" id="correlate-div"></div> -->
+          </div>
+          <div class="right-container">
+            <div class="div" id="param1-div"></div>
+            <div class="div" id="param2-div"></div>
+            <div class="div" id="param3-div"></div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Scripts -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="http://d3js.org/topojson.v3.min.js"></script>
     <script type="module" src="./js/data.js"></script>
     <script type="module" src="./js/map.js"></script>
     <script type="module" src="./js/swarm.js"></script>

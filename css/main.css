@@ -9,7 +9,7 @@ body {
   height: 98vh;
   width: 100%;
   font-family: "Times New Roman", Times, serif;
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
 }
 
 svg {
@@ -23,7 +23,6 @@ svg {
 }
 
 .title {
-  /* font-family: "Times New Roman", Times, serif; */
   font-size: 3.5rem;
   line-height: 1.4em;
   max-height: 5rem;
@@ -35,9 +34,6 @@ svg {
   margin-top: 0.5rem;
   /* background-color: beige; */
   width: 80%;
-  /* trying to add an effect on the title */
-  /* text-shadow: 0 0 0.1rem white, 0 0 0.1rem white, 0 0 0.1rem #502c2c,
-    0 0 0.1rem #502c2c; */
 }
 
 /* Don't want h1 and h2 elements to be too separated */
@@ -56,14 +52,6 @@ h2 {
 
 #title-container {
   position: relative;
-}
-
-#title-image {
-  position: absolute;
-  top: 0;
-  left: 60%;
-  width: 5rem;
-  height: 5rem;
 }
 
 .sub-title {
@@ -90,66 +78,6 @@ h2 {
   fill: #727171;
   /* background-color: blanchedalmond; */
   width: 50%;
-}
-
-@media (max-width: 768px) {
-  /* for small screens */
-  .title {
-    font-size: 2rem;
-    line-height: 1.1;
-  }
-  /* for small screens */
-  .sub-title {
-    font-size: 1rem;
-    line-height: 1.1;
-  }
-  #title-image {
-    position: absolute;
-    top: 0;
-    left: 60%;
-    width: 3rem;
-    height: 3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  /* for very small screens */
-  .title {
-    font-size: 1rem;
-    line-height: 1;
-  }
-  /* for very small screens */
-  .sub-title {
-    font-size: 0.5rem;
-    line-height: 1;
-  }
-  #title-image {
-    position: absolute;
-    top: 0;
-    left: 80%;
-    width: 1rem;
-    height: 1rem;
-  }
-}
-
-@media (max-width: 100px) {
-  /* for very small screens */
-  .title {
-    font-size: 0.5rem;
-    line-height: 1;
-  }
-  /* for very small screens */
-  .sub-title {
-    font-size: 0.1rem;
-    line-height: 1;
-  }
-  #title-image {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 1rem;
-    height: 1rem;
-  }
 }
 
 /* .axis-line {

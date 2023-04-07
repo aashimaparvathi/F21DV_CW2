@@ -1,9 +1,18 @@
 import dataPromise from "./data.js";
+import {
+  brown,
+  contrast,
+  lightgrey,
+  grey,
+  darkgrey,
+  duration_large,
+  duration_medium,
+  duration_small,
+} from "./data.js";
 
 var coffeepercap;
 
 const margin = { top: -20, right: 60, bottom: 0, left: 60 };
-const padding = { top: 0, right: 0, bottom: 0, left: 10 };
 const centerX = 0;
 const width = 1000 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
@@ -13,13 +22,6 @@ const height = 500 - margin.top - margin.bottom;
   10.32AAA
   https://coolors.co/contrast-checker/62350e-ffffff
 */
-const brown = "#62350e";
-const contrast = "#6291d3";
-const grey = "#b4b2b2";
-const darkgrey = "#909090";
-const duration_small = 500;
-const duration_medium = 1000;
-const duration_large = 2000;
 
 const tooltip = d3
   .select("body")
@@ -38,7 +40,7 @@ dataPromise.then(function ([coffeepercapdata]) {
   coffeepercap = coffeepercapdata;
 
   /* Test that data is retrieved correctly */
-  testData();
+  //testData();
   fixData();
   console.log(coffeepercap);
 
@@ -147,7 +149,7 @@ function drawSwarm() {
 
   // group the data by percapitaconsumption
   const nestedData = d3.group(coffeepercap, (d) => d.percapitaconsumption);
-  console.log(nestedData);
+  //console.log(nestedData);
 
   // create an array of objects with tick and numCircles properties
   const ticksData = Array.from(nestedData, ([key, values]) => {
@@ -157,7 +159,7 @@ function drawSwarm() {
     };
   });
 
-  console.log(ticksData);
+  //console.log(ticksData);
 
   // execute the rest of your code with ticksData
 
@@ -174,8 +176,8 @@ function drawSwarm() {
       const cy = yScale(Math.random()) + radius * Math.sin(angle);
 
       const country = nestedData.get(tick)[i].country;
-      console.log(country);
-      console.log(nestedData.get(tick)[i]);
+      // console.log(country);
+      // console.log(nestedData.get(tick)[i]);
 
       /* TODO: Set alt-text for image */
       gCircles
@@ -350,7 +352,7 @@ function norwayAnnotation(svg, gAxis) {
   // End position of line and rectangle
   const lineEndY = y + height - 420;
   const rectX = x - 10;
-  const rectY = lineEndY + 5; // for aligning line and rectangle
+  const rectY = lineEndY; // for aligning line and rectangle
 
   // Create a group g for the line and rectangle
   const gLineRect = svg
@@ -363,7 +365,7 @@ function norwayAnnotation(svg, gAxis) {
     .attr("x1", x)
     .attr("y1", y)
     .attr("x2", x)
-    .attr("y2", lineEndY)
+    .attr("y2", lineEndY - 5)
     .attr("stroke", brown)
     .attr("stroke-opacity", 0.2)
     .attr("opacity", 0)
@@ -574,13 +576,8 @@ function nextStop(svg) {
   }, 3000);
 
   button.on("click", function () {
-    // const currentDiv = document.querySelector(".active");
-    // const nextDiv = document.getElementById("#map-container");
-    // console.log(nextDiv);
-    // window.scrollTo({ top: nextDiv.offsetTop, behavior: "smooth" });
-
     // Navigate to the next div on the same page with a given ID
-    const nextDiv = d3.select("#map-container");
+    const nextDiv = d3.select("#why-container");
     const yOffset = 0;
     const y =
       nextDiv.node().getBoundingClientRect().top + window.pageYOffset + yOffset;

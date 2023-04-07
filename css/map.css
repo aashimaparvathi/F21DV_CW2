@@ -1,6 +1,7 @@
-#map-container {
-  height: 98vh;
-  width: 100%;
-  font-family: "Times New Roman", Times, serif;
-  background-color: lightcyan;
+.map-svg {
+  background-color: whitesmoke;
+}
+
+#zoom-button {
+  cursor: pointer;
 }

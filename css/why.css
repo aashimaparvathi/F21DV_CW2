@@ -1,0 +1,93 @@
+/* html,
+body {
+  height: 100%;
+  margin: 0;
+} */
+
+#why-container {
+  height: 98vh;
+  width: 100%;
+  font-family: "Times New Roman", Times, serif;
+  /* background-color: lightcyan; */
+}
+
+.why-title {
+  font-size: 3.5rem;
+  line-height: 0.9em;
+  max-height: 4rem;
+  min-height: 2rem;
+  margin-left: 4.7rem;
+  font-weight: bold;
+  color: #6291d3;
+  padding: 0%;
+  margin-top: 0.5rem;
+  background-color: beige;
+  width: 90%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#why-container {
+  position: relative;
+  /* height: 100vh; */
+}
+
+.why-container {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  display: flex;
+}
+
+.left-container {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#map-div {
+  height: 100%;
+  width: 100%;
+}
+
+.right-container {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#param1-div,
+#param2-div,
+#param3-div {
+  height: 33.33%;
+  width: 100%;
+}
+
+#map-div {
+  /* background-color: lightblue; */
+}
+#correlate-div {
+  background-color: lightcoral;
+}
+#param1-div {
+  background-color: lightcyan;
+}
+#param2-div {
+  background-color: lightgoldenrodyellow;
+}
+#param3-div {
+  background-color: lightgreen;
+}
+
+@media screen and (max-width: 768px) {
+  .left-container,
+  .right-container {
+    width: 100%;
+  }
+}

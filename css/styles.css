@@ -1,0 +1,50 @@
+@media (max-width: 1150px) {
+  /* Medium screen */
+  .title,
+  .why-title {
+    font-size: 1.8rem;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 768px) {
+  /* for small screens */
+  .title,
+  .why-title {
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
+  /* for small screens */
+  .sub-title {
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 480px) {
+  /* for very small screens */
+  .title,
+  .why-title {
+    font-size: 1rem;
+    line-height: 1;
+  }
+  /* for very small screens */
+  .sub-title {
+    font-size: 0.5rem;
+    line-height: 1;
+  }
+}
+
+@media (max-width: 100px) {
+  /* for very small screens */
+  .title,
+  .why-title {
+    font-size: 0.5rem;
+    line-height: 1;
+  }
+  /* for very small screens */
+  .sub-title {
+    font-size: 0.1rem;
+    line-height: 1;
+  }
+}

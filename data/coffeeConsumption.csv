@@ -1,26 +1,26 @@
-﻿country,continent,isocode,totCons2019,perCapitaConsumption,percapitaconsumption
-Cyprus,Asia,CYP,115,10.8,5
-Lebanon,Asia,LBN,,10.58,5
-Spain,Europe,ESP,3253,9.92,5
-Estonia,Europe,EST,123,9.92,5
-Portugal,Europe,PRT,931,9.48,5
-United States of America,North America,USA,27310,9.26,5
-Italy,Europe,ITA,5469,13,6
-Slovenia,Europe,SVN,204,12.79,6
-Brazil,South America,BRA,,12.79,6
-Germany,Europe,DEU,8670,12.13,6
-France,Europe,FRA,6192,11.9,6
-Greece,Europe,GRC,1139,11.9,6
-Croatia,Europe,HRV,381,11.24,6
-Belgium,Europe,BEL,1185,15,7
-Luxembourg,Europe,LUX,224,14.33,7
-Canada,North America,CAN,,14.33,7
-Bosnia and Herzegovina,Europe,BIH,,13.67,7
-Austria,Europe,AUT,1173,13.45,7
-Switzerland,Europe,CHE,1073,17.42,8
-Iceland,Europe,ISL,,19.84,9
-Denmark,Europe,DNK,778,19.18,9
-Netherlands,Europe,NLD,2030,18.52,9
-Sweden,Europe,SWE,1769,18,9
-Norway,Europe,NOR,771,21.82,10
-Finland,Europe,FIN,1348,26.45,12
+﻿country,continent,isocode,totCons2019,perCapitaConsumption,percapitaconsumption,twodecimalplaces
+Cyprus,Asia,CYP,115,10.8,5,4.9
+Lebanon,Asia,LBN,,10.58,5,4.8
+Spain,Europe,ESP,3253,9.92,5,4.5
+Estonia,Europe,EST,123,9.92,5,4.5
+Portugal,Europe,PRT,931,9.48,5,4.3
+United States of America,North America,USA,27310,9.26,5,4.2
+Italy,Europe,ITA,5469,13,6,5.9
+Slovenia,Europe,SVN,204,12.79,6,5.81
+Brazil,South America,BRA,,12.79,6,5.81
+Germany,Europe,DEU,8670,12.13,6,5.51
+France,Europe,FRA,6192,11.9,6,5.4
+Greece,Europe,GRC,1139,11.9,6,5.4
+Croatia,Europe,HRV,381,11.24,6,5.1
+Belgium,Europe,BEL,1185,15,7,6.81
+Luxembourg,Europe,LUX,224,14.33,7,6.5
+Canada,North America,CAN,,14.33,7,6.5
+Bosnia and Herzegovina,Europe,BIH,,13.67,7,6.2
+Austria,Europe,AUT,1173,13.45,7,6.1
+Switzerland,Europe,CHE,1073,17.42,8,7.91
+Iceland,Europe,ISL,,19.84,9,9
+Denmark,Europe,DNK,778,19.18,9,8.7
+Netherlands,Europe,NLD,2030,18.52,9,8.4
+Sweden,Europe,SWE,1769,18,9,8.17
+Norway,Europe,NOR,771,21.82,10,9.9
+Finland,Europe,FIN,1348,26.45,12,12

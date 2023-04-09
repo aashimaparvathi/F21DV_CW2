@@ -1,5 +1,5 @@
 .map-svg {
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
 }
 
 #zoom-button {
@@ -31,5 +31,20 @@
 
 #map-sub-title {
   width: 100%;
-  margin-left: 0rem;
+  color: #6291d3;
+  /* margin-left: 0rem; */
+}
+
+#map-caption {
+  font-family: "Times New Roman", Times, serif;
+  /* font-size: 0.9rem; */
+  font-weight: normal;
+  max-height: 10rem;
+  min-height: 5rem;
+  margin-left: 5rem;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  color: #727171;
+  /* background-color: blanchedalmond; */
+  width: 100%;
 }

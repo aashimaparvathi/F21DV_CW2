@@ -1,206 +1,180 @@
-﻿Country,Last ,Previous ,Reference,Unit
-Greenland,-17.56,-18.46,01/12/2021,celsius
-Canada,-3.71,-4.27,01/12/2021,celsius
-Russia,-3.64,-1.72,01/12/2021,celsius
-Norway,2.06,3.34,01/12/2021,celsius
-Mongolia,2.07,1.53,01/12/2021,celsius
-Finland,2.3,4.11,01/12/2021,celsius
-Iceland,2.4,2,01/12/2021,celsius
-Sweden,3.02,4.47,01/12/2021,celsius
-Kyrgyzstan,3.35,2.74,01/12/2021,celsius
-Tajikistan,4.52,3.59,01/12/2021,celsius
-Estonia,6.28,8.12,01/12/2021,celsius
-Switzerland,6.42,7.67,01/12/2021,celsius
-Faroe Islands,6.5,6.66,01/12/2021,celsius
-Latvia,6.81,8.56,01/12/2021,celsius
-Lithuania,7.28,8.96,01/12/2021,celsius
-Belarus,7.33,9.09,01/12/2021,celsius
-Austria,7.35,8.24,01/12/2021,celsius
-Liechtenstein,7.42,8.63,01/12/2021,celsius
-North Korea,7.79,7.51,01/12/2021,celsius
-Kazakhstan,7.88,8.35,01/12/2021,celsius
-China,8.19,7.89,01/12/2021,celsius
-Andorra,8.43,9.09,01/12/2021,celsius
-Czech Republic,8.5,9.61,01/12/2021,celsius
-Poland,8.75,10.03,01/12/2021,celsius
-Slovakia,8.78,9.63,01/12/2021,celsius
-Armenia,8.84,8.43,01/12/2021,celsius
-Denmark,8.92,10.04,01/12/2021,celsius
-Ukraine,9.38,10.86,01/12/2021,celsius
-United Kingdom,9.38,9.68,01/12/2021,celsius
-Germany,9.49,10.79,01/12/2021,celsius
-Luxembourg,9.81,11.33,01/12/2021,celsius
-Chile,9.88,9.97,01/12/2021,celsius
-Isle of Man,9.89,9.92,01/12/2021,celsius
-Slovenia,9.9,10.55,01/12/2021,celsius
-Ireland,9.95,9.79,01/12/2021,celsius
-United States,10,10,01/12/2021,celsius
-Georgia,10.06,9.92,01/12/2021,celsius
-Montenegro,10.2,10.61,01/12/2021,celsius
-Romania,10.35,11.3,01/12/2021,celsius
-Netherlands,10.39,11.66,01/12/2021,celsius
-Belgium,10.47,11.88,01/12/2021,celsius
-Bosnia and Herzegovina,10.66,11.07,01/12/2021,celsius
-Bhutan,10.8,10.4,01/12/2021,celsius
-Moldova,10.94,12.41,01/12/2021,celsius
-New Zealand,11.23,10.91,01/12/2021,celsius
-Macedonia,11.42,11.63,01/12/2021,celsius
-France,11.57,12.71,01/12/2021,celsius
-Hungary,11.57,12.25,01/12/2021,celsius
-Serbia,11.67,12.21,01/12/2021,celsius
-Croatia,11.95,12.46,01/12/2021,celsius
-Bulgaria,11.98,12.5,01/12/2021,celsius
-Lesotho,12.26,12.63,01/12/2021,celsius
-Japan,12.36,12.32,01/12/2021,celsius
-Turkey,12.63,12.66,01/12/2021,celsius
-Albania,12.92,13.1,01/12/2021,celsius
-San Marino,12.95,13.33,01/12/2021,celsius
-South Korea,13.04,12.54,01/12/2021,celsius
-Italy,13.5,13.85,01/12/2021,celsius
-Monaco,13.62,14.21,01/12/2021,celsius
-Spain,14.25,14.65,01/12/2021,celsius
-Azerbaijan,14.29,13.76,01/12/2021,celsius
-Afghanistan,14.3,12.88,01/12/2021,celsius
-Nepal,14.32,13.97,01/12/2021,celsius
-Uzbekistan,14.78,13.9,01/12/2021,celsius
-Greece,14.89,14.8,01/12/2021,celsius
-Argentina,15.4,15.52,01/12/2021,celsius
-Portugal,16.09,16.42,01/12/2021,celsius
-Lebanon,16.23,15.97,01/12/2021,celsius
-Turkmenistan,17.65,16.44,01/12/2021,celsius
-South Africa,18.06,18.47,01/12/2021,celsius
-Uruguay,18.06,18.12,01/12/2021,celsius
-Morocco,18.48,18.57,01/12/2021,celsius
-Rwanda,19.21,19.13,01/12/2021,celsius
-Iran,19.54,18.35,01/12/2021,celsius
-Syria,19.72,19.38,01/12/2021,celsius
-Peru,19.79,19.95,01/12/2021,celsius
-Cyprus,19.84,19.73,01/12/2021,celsius
-Namibia,20.12,20.31,01/12/2021,celsius
-Malta,20.28,20.04,01/12/2021,celsius
-Jordan,20.36,19.92,01/12/2021,celsius
-Palestine,20.36,19.92,01/12/2021,celsius
-Burundi,20.53,20.44,01/12/2021,celsius
-Swaziland,20.55,20.87,01/12/2021,celsius
-Bolivia,20.82,21.35,01/12/2021,celsius
-Israel,20.87,20.41,01/12/2021,celsius
-Taiwan,21.03,20.92,01/12/2021,celsius
-Tunisia,21.33,20.87,01/12/2021,celsius
-Ecuador,21.38,21.78,01/12/2021,celsius
-Pakistan,21.68,20.81,01/12/2021,celsius
-Angola,21.74,21.73,01/12/2021,celsius
-Botswana,21.74,22.06,01/12/2021,celsius
-Mexico,21.86,22.08,01/12/2021,celsius
-Zimbabwe,21.87,21.92,01/12/2021,celsius
-Australia,22.06,22.57,01/12/2021,celsius
-Zambia,22.12,22.03,01/12/2021,celsius
-French Polynesia,22.19,22.21,01/12/2021,celsius
-Malawi,22.79,22.8,01/12/2021,celsius
-Madagascar,22.87,22.89,01/12/2021,celsius
-Tanzania,23,23.09,01/12/2021,celsius
-New Caledonia,23.04,23.12,01/12/2021,celsius
-Libya,23.05,22.63,01/12/2021,celsius
-Uganda,23.22,23.37,01/12/2021,celsius
-Ethiopia,23.35,23.38,01/12/2021,celsius
-Cape Verde,23.45,23.65,01/12/2021,celsius
-Comoros,23.51,23.76,01/12/2021,celsius
-Mauritius,23.67,23.53,01/12/2021,celsius
-Egypt,23.88,23.18,01/12/2021,celsius
-Algeria,23.93,23.79,01/12/2021,celsius
-Macau,23.96,23.77,01/12/2021,celsius
-Paraguay,24.01,24.62,01/12/2021,celsius
-Myanmar,24.08,24.05,01/12/2021,celsius
-Guatemala,24.09,24.35,01/12/2021,celsius
-Iraq,24.22,23.45,01/12/2021,celsius
-Hong Kong,24.24,24.09,01/12/2021,celsius
-Laos,24.32,24.71,01/12/2021,celsius
-Mozambique,24.53,24.61,01/12/2021,celsius
-Dominican Republic,24.7,24.86,01/12/2021,celsius
-Sao Tome and Principe,24.7,24.49,01/12/2021,celsius
-Vanuatu,24.72,24.76,01/12/2021,celsius
-Papua New Guinea,24.73,24.75,01/12/2021,celsius
-Tonga,24.74,25.02,01/12/2021,celsius
-Costa Rica,24.94,25.08,01/12/2021,celsius
-Colombia,24.97,25.36,01/12/2021,celsius
-India,24.99,24.8,01/12/2021,celsius
-Fiji,25.01,25.29,01/12/2021,celsius
-Vietnam,25.03,25.22,01/12/2021,celsius
-Honduras,25.05,25.21,01/12/2021,celsius
-Haiti,25.06,25.26,01/12/2021,celsius
-Equatorial Guinea,25.08,25.08,01/12/2021,celsius
-Mayotte,25.08,25.3,01/12/2021,celsius
-Puerto Rico,25.11,25.23,01/12/2021,celsius
-Cameroon,25.21,25.22,01/12/2021,celsius
-Congo,25.23,25.37,01/12/2021,celsius
-Kenya,25.23,25.43,01/12/2021,celsius
-Republic of the Congo,25.23,25.37,01/12/2021,celsius
-Bahamas,25.5,25.99,01/12/2021,celsius
-El Salvador,25.56,25.79,01/12/2021,celsius
-Brazil,25.58,25.93,01/12/2021,celsius
-Solomon Islands,25.6,25.6,01/12/2021,celsius
-Venezuela,25.61,25.93,01/12/2021,celsius
-Panama,25.62,25.9,01/12/2021,celsius
-Yemen,25.62,25.62,01/12/2021,celsius
-Gabon,25.65,25.73,01/12/2021,celsius
-Bangladesh,25.68,25.38,01/12/2021,celsius
-Central African Republic,25.78,25.67,01/12/2021,celsius
-Jamaica,25.8,26.05,01/12/2021,celsius
-Liberia,25.87,25.73,01/12/2021,celsius
-Indonesia,25.99,26.18,01/12/2021,celsius
-Cuba,26.05,26.43,01/12/2021,celsius
-Belize,26.15,26.38,01/12/2021,celsius
-Guyana,26.15,26.52,01/12/2021,celsius
-St Vincent and the Grenadines,26.17,26.33,01/12/2021,celsius
-Nicaragua,26.19,26.33,01/12/2021,celsius
-Malaysia,26.46,26.67,01/12/2021,celsius
-Grenada,26.49,26.67,01/12/2021,celsius
-Trinidad and Tobago,26.54,26.78,01/12/2021,celsius
-Suriname,26.56,26.9,01/12/2021,celsius
-Guinea,26.59,26.33,01/12/2021,celsius
-Philippines,26.6,26.64,01/12/2021,celsius
-Barbados,26.64,26.8,01/12/2021,celsius
-Saudi Arabia,26.8,26.18,01/12/2021,celsius
-Virgin Islands,26.83,26.97,01/12/2021,celsius
-Eritrea,26.87,26.38,01/12/2021,celsius
-Somalia,26.88,27.08,01/12/2021,celsius
-Dominica,26.91,27.03,01/12/2021,celsius
-Thailand,26.91,27.43,01/12/2021,celsius
-Micronesia,27.01,27.34,01/12/2021,celsius
-St Lucia,27.04,27.18,01/12/2021,celsius
-Seychelles,27.07,27.26,01/12/2021,celsius
-Sierra Leone,27.19,27.01,01/12/2021,celsius
-Antigua and Barbuda,27.33,27.44,01/12/2021,celsius
-American Samoa,27.34,27.52,01/12/2021,celsius
-Ivory Coast,27.37,27.19,01/12/2021,celsius
-Sri Lanka,27.41,27.66,01/12/2021,celsius
-Cambodia,27.44,27.9,01/12/2021,celsius
-Kiribati,27.49,27.49,01/12/2021,celsius
-Palau,27.56,27.72,01/12/2021,celsius
-Samoa,27.56,27.75,01/12/2021,celsius
-St Kitts and Nevis,27.61,27.73,01/12/2021,celsius
-Northern Mariana Islands,27.65,27.84,01/12/2021,celsius
-Nigeria,27.67,27.43,01/12/2021,celsius
-Chad,27.72,27.37,01/12/2021,celsius
-Maldives,27.74,27.78,01/12/2021,celsius
-Singapore,27.74,28.02,01/12/2021,celsius
-Guam,27.88,28.02,01/12/2021,celsius
-Kuwait,27.89,26.89,01/12/2021,celsius
-Cayman Islands,27.99,28.3,01/12/2021,celsius
-Togo,28.05,27.82,01/12/2021,celsius
-Marshall Islands,28.07,28.43,01/12/2021,celsius
-Niger,28.09,27.85,01/12/2021,celsius
-Oman,28.1,27.82,01/12/2021,celsius
-Sudan,28.17,27.42,01/12/2021,celsius
-Ghana,28.3,28.1,01/12/2021,celsius
-Djibouti,28.46,28.43,01/12/2021,celsius
-Benin,28.7,28.43,01/12/2021,celsius
-Guinea Bissau,28.76,28.71,01/12/2021,celsius
-Gambia,29,29.03,01/12/2021,celsius
-Aruba,29.03,29.37,01/12/2021,celsius
-United Arab Emirates,29.08,28.38,01/12/2021,celsius
-Bahrain,29.15,28.15,01/12/2021,celsius
-Mauritania,29.3,29.1,01/12/2021,celsius
-Qatar,29.42,28.45,01/12/2021,celsius
-Senegal,29.63,29.56,01/12/2021,celsius
-Mali,29.78,29.4,01/12/2021,celsius
-Burkina Faso,30.01,29.63,01/12/2021,celsius
+﻿country,isocode,last,previous
+Canada,CAN,-3.71,-4.27
+Norway,NOR,2.06,3.34
+Finland,FIN,2.3,4.11
+Iceland,ISL,2.4,2
+Sweden,SWE,3.02,4.47
+Switzerland,CHE,6.42,7.67
+Denmark,DNK,8.92,10.04
+Luxembourg,LUX,9.81,11.33
+United States of America,USA,10,10
+Netherlands,NLD,10.39,11.66
+Belgium,BEL,10.47,11.88
+Greenland,GRL,-17.56,-18.46
+Russian Federation,RUS,-3.64,-1.72
+Mongolia,MNG,2.07,1.53
+Kyrgyzstan,KGZ,3.35,2.74
+Tajikistan,TJK,4.52,3.59
+Estonia,EST,6.28,8.12
+Faroe Islands,FRO,6.5,6.66
+Latvia,LVA,6.81,8.56
+Lithuania,LTU,7.28,8.96
+Belarus,BLR,7.33,9.09
+Austria,AUT,7.35,8.24
+Liechtenstein,LIE,7.42,8.63
+Kazakhstan,KAZ,7.88,8.35
+China,CHN,8.19,7.89
+Andorra,AND,8.43,9.09
+Poland,POL,8.75,10.03
+Slovakia,SVK,8.78,9.63
+Armenia,ARM,8.84,8.43
+Ukraine,UKR,9.38,10.86
+United Kingdom,GBR,9.38,9.68
+Germany,DEU,9.49,10.79
+Chile,CHL,9.88,9.97
+Isle of Man,IMN,9.89,9.92
+Slovenia,SVN,9.9,10.55
+Ireland,IRL,9.95,9.79
+Georgia,GEO,10.06,9.92
+Montenegro,MNE,10.2,10.61
+Romania,ROU,10.35,11.3
+Bosnia and Herzegovina,BIH,10.66,11.07
+Bhutan,BTN,10.8,10.4
+New Zealand,NZL,11.23,10.91
+France,FRA,11.57,12.71
+Hungary,HUN,11.57,12.25
+Serbia,SRB,11.67,12.21
+Croatia,HRV,11.95,12.46
+Bulgaria,BGR,11.98,12.5
+Lesotho,LSO,12.26,12.63
+Japan,JPN,12.36,12.32
+Turkey,TUR,12.63,12.66
+Albania,ALB,12.92,13.1
+San Marino,SMR,12.95,13.33
+Italy,ITA,13.5,13.85
+Monaco,MCO,13.62,14.21
+Spain,ESP,14.25,14.65
+Azerbaijan,AZE,14.29,13.76
+Afghanistan,AFG,14.3,12.88
+Nepal,NPL,14.32,13.97
+Uzbekistan,UZB,14.78,13.9
+Greece,GRC,14.89,14.8
+Argentina,ARG,15.4,15.52
+Portugal,PRT,16.09,16.42
+Lebanon,LBN,16.23,15.97
+Turkmenistan,TKM,17.65,16.44
+South Africa,ZAF,18.06,18.47
+Uruguay,URY,18.06,18.12
+Morocco,MAR,18.48,18.57
+Rwanda,RWA,19.21,19.13
+Peru,PER,19.79,19.95
+Cyprus,CYP,19.84,19.73
+Namibia,NAM,20.12,20.31
+Malta,MLT,20.28,20.04
+Jordan,JOR,20.36,19.92
+Burundi,BDI,20.53,20.44
+Israel,ISR,20.87,20.41
+Tunisia,TUN,21.33,20.87
+Ecuador,ECU,21.38,21.78
+Pakistan,PAK,21.68,20.81
+Angola,AGO,21.74,21.73
+Botswana,BWA,21.74,22.06
+Mexico,MEX,21.86,22.08
+Zimbabwe,ZWE,21.87,21.92
+Australia,AUS,22.06,22.57
+Zambia,ZMB,22.12,22.03
+French Polynesia,PYF,22.19,22.21
+Malawi,MWI,22.79,22.8
+Madagascar,MDG,22.87,22.89
+New Caledonia,NCL,23.04,23.12
+Libya,LBY,23.05,22.63
+Uganda,UGA,23.22,23.37
+Ethiopia,ETH,23.35,23.38
+Comoros,COM,23.51,23.76
+Mauritius,MUS,23.67,23.53
+Egypt,EGY,23.88,23.18
+Algeria,DZA,23.93,23.79
+Paraguay,PRY,24.01,24.62
+Myanmar,MMR,24.08,24.05
+Guatemala,GTM,24.09,24.35
+Iraq,IRQ,24.22,23.45
+Mozambique,MOZ,24.53,24.61
+Dominican Republic,DOM,24.7,24.86
+Sao Tome and Principe,STP,24.7,24.49
+Vanuatu,VUT,24.72,24.76
+Papua New Guinea,PNG,24.73,24.75
+Tonga,TON,24.74,25.02
+Costa Rica,CRI,24.94,25.08
+Colombia,COL,24.97,25.36
+India,IND,24.99,24.8
+Fiji,FJI,25.01,25.29
+Honduras,HND,25.05,25.21
+Haiti,HTI,25.06,25.26
+Equatorial Guinea,GNQ,25.08,25.08
+Mayotte,MYT,25.08,25.3
+Puerto Rico,PRI,25.11,25.23
+Cameroon,CMR,25.21,25.22
+Congo,COG,25.23,25.37
+Kenya,KEN,25.23,25.43
+Bahamas,BHS,25.5,25.99
+El Salvador,SLV,25.56,25.79
+Brazil,BRA,25.58,25.93
+Solomon Islands,SLB,25.6,25.6
+Panama,PAN,25.62,25.9
+Yemen,YEM,25.62,25.62
+Gabon,GAB,25.65,25.73
+Bangladesh,BGD,25.68,25.38
+Central African Republic,CAF,25.78,25.67
+Jamaica,JAM,25.8,26.05
+Liberia,LBR,25.87,25.73
+Indonesia,IDN,25.99,26.18
+Cuba,CUB,26.05,26.43
+Belize,BLZ,26.15,26.38
+Guyana,GUY,26.15,26.52
+Nicaragua,NIC,26.19,26.33
+Malaysia,MYS,26.46,26.67
+Grenada,GRD,26.49,26.67
+Trinidad and Tobago,TTO,26.54,26.78
+Suriname,SUR,26.56,26.9
+Guinea,GIN,26.59,26.33
+Philippines,PHL,26.6,26.64
+Barbados,BRB,26.64,26.8
+Saudi Arabia,SAU,26.8,26.18
+Eritrea,ERI,26.87,26.38
+Somalia,SOM,26.88,27.08
+Dominica,DMA,26.91,27.03
+Thailand,THA,26.91,27.43
+Seychelles,SYC,27.07,27.26
+Sierra Leone,SLE,27.19,27.01
+Antigua and Barbuda,ATG,27.33,27.44
+American Samoa,ASM,27.34,27.52
+Sri Lanka,LKA,27.41,27.66
+Cambodia,KHM,27.44,27.9
+Kiribati,KIR,27.49,27.49
+Palau,PLW,27.56,27.72
+Samoa,WSM,27.56,27.75
+Northern Mariana Islands,MNP,27.65,27.84
+Nigeria,NGA,27.67,27.43
+Chad,TCD,27.72,27.37
+Maldives,MDV,27.74,27.78
+Singapore,SGP,27.74,28.02
+Guam,GUM,27.88,28.02
+Kuwait,KWT,27.89,26.89
+Cayman Islands,CYM,27.99,28.3
+Togo,TGO,28.05,27.82
+Marshall Islands,MHL,28.07,28.43
+Niger,NER,28.09,27.85
+Oman,OMN,28.1,27.82
+Sudan,SDN,28.17,27.42
+Ghana,GHA,28.3,28.1
+Djibouti,DJI,28.46,28.43
+Benin,BEN,28.7,28.43
+Gambia,GMB,29,29.03
+Aruba,ABW,29.03,29.37
+United Arab Emirates,ARE,29.08,28.38
+Bahrain,BHR,29.15,28.15
+Mauritania,MRT,29.3,29.1
+Qatar,QAT,29.42,28.45
+Senegal,SEN,29.63,29.56
+Mali,MLI,29.78,29.4
+Burkina Faso,BFA,30.01,29.63

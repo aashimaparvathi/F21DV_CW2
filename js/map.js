@@ -8,6 +8,9 @@ import dataPromise, {
 } from "./data.js";
 
 var coffeepercap1, coffeetotal, world;
+var annotateDelay = 1000;
+const delayOffset = 1500;
+const shortDelayOffset = 500;
 
 /*
 TODO: Add legend for the map
@@ -204,6 +207,51 @@ function drawMap() {
   var circles = drawCircles(svg, zoomfactor);
   var gMap = d3.select("#map");
 
+  // Define the legend items
+  const legendItems = [
+    { label: "Asia", color: circleColorScale("Asia") },
+    { label: "Europe", color: circleColorScale("Europe") },
+    { label: "North America", color: circleColorScale("North America") },
+    { label: "South America", color: circleColorScale("South America") },
+  ];
+
+  // Create a group element for the legend and position it
+  const legend = svg
+    .append("g")
+    .attr("class", "legend")
+    .attr("id", "map-legend")
+    .attr("transform", "translate(10, " + (height - 50) + ")");
+
+  // Append a rectangle and text element for each legend item
+  legend
+    .selectAll("rect")
+    .data(legendItems)
+    .enter()
+    .append("rect")
+    .attr("x", 50)
+    .attr("y", (d, i) => i * 25)
+    .attr("width", 20)
+    .attr("height", 20)
+    .attr("rx", 10)
+    .attr("ry", 10)
+    .attr("fill", (d) => d.color)
+    .attr("fill-opacity", 0.8)
+    .attr("stroke", (d) => d.color);
+
+  legend
+    .selectAll("text")
+    .data(legendItems)
+    .enter()
+    .append("text")
+    .attr("x", 50 + 25)
+    .attr("y", (d, i) => i * 25 + 3.5)
+    .attr("text-anchor", "start")
+    .attr("dominant-baseline", "hanging")
+    .text((d) => d.label)
+    .attr("fill", darkgrey);
+
+  mapAnnotate(svg);
+
   var zoom = d3
     .zoom()
     .scaleExtent([1, 8])
@@ -224,9 +272,6 @@ function drawCircles(svg, zoomfactor) {
   circles.exit().remove();
 
   var labels = svg.selectAll(".country-label");
-  // .data(world.features, function (d) {
-  //   return d.properties.name;
-  // });
 
   labels.exit().remove();
 
@@ -371,6 +416,14 @@ function drawCircles(svg, zoomfactor) {
   } else {
     // hide country names
     svg.selectAll(".country-label").attr("visibility", "hidden");
+  }
+
+  if (zoomfactor < 1.5) {
+    d3.select("#map-legend").attr("opacity", 1);
+    d3.select(".annotate-group").attr("opacity", 1);
+  } else {
+    d3.select("#map-legend").attr("opacity", 0);
+    d3.select(".annotate-group").attr("opacity", 0);
   }
 
   return circles;
@@ -679,4 +732,143 @@ function createLollipopChart(group, isocode, innerWidth, innerHeight, country) {
       .selectAll("text")
       .attr("fill", darkgrey);
   }
+}
+
+function mapAnnotate(svg) {
+  var isocode = "DNK";
+  var countryGeometry;
+  var countryFeature = world.features.find(function (d) {
+    return d.id === isocode;
+  });
+  if (countryFeature) {
+    console.log("Country found");
+    countryGeometry = countryFeature.geometry;
+  } else {
+    console.log("Country not found");
+  }
+
+  var x = projection(d3.geoPath().centroid(countryGeometry))[0];
+  var y = projection(d3.geoPath().centroid(countryGeometry))[1];
+
+  console.log("x : " + x + ", y: " + y);
+
+  const lineLength = height / 2;
+  const lineLength2 = height / 3;
+  const rectWidth = width / 5;
+  const rectHeight = height / 5;
+  const titleFontSize = "2rem";
+  const textFontSize = "1rem";
+
+  // Select the element to be observed
+  const observerTarget = document.querySelector("#map-div");
+
+  // Set up  observer
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1, // trigger when the element is 100% in view
+  };
+
+  // Create observer
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        // Animate annotation
+
+        var gAnnotate = svg.append("g").attr("class", "annotate-group");
+
+        // First line
+        const line1 = gAnnotate
+          .append("line")
+          .attr("x1", x)
+          .attr("y1", y)
+          .attr("x2", x)
+          .attr("y2", y)
+          .style("stroke", "black")
+          .style("stroke-width", 1)
+          .transition()
+          .duration(annotateDelay)
+          .attr("y1", y - lineLength);
+
+        annotateDelay = annotateDelay + shortDelayOffset;
+
+        // second line
+        const line2 = gAnnotate
+          .append("line")
+          .attr("x1", x)
+          .attr("y1", y - lineLength)
+          .attr("x2", x)
+          .attr("y2", y - lineLength)
+          .style("stroke", "black")
+          .style("stroke-width", 1)
+          .transition()
+          .duration(annotateDelay)
+          .attr("x2", x - lineLength2);
+
+        // Add the Europe cluster annotation
+        const rect = gAnnotate
+          .append("rect")
+          .attr("x", x - lineLength2 - rectWidth)
+          .attr("y", y - lineLength - rectHeight)
+          .attr("width", 0)
+          .attr("height", rectHeight)
+          .style("fill", "white")
+          .style("stroke", "black")
+          .style("stroke-width", 1)
+          .transition()
+          .duration(annotateDelay)
+          .attr("width", rectWidth);
+
+        const title = gAnnotate
+          .append("text")
+          .attr("x", x - lineLength - lineLength2 / 2 + 5)
+          .attr("y", y - lineLength - rectHeight + 20)
+          .text("Europe")
+          .style("font-size", titleFontSize)
+          .attr("font-weight", "bold")
+          .attr("fill", (d) => circleColorScale("Europe"))
+          .attr("dy", "0.5em")
+          .attr("class", "annotate-title")
+          .style("opacity", 0)
+          .transition()
+          .delay(shortDelayOffset)
+          .duration(annotateDelay)
+          .style("opacity", 1);
+
+        const text = gAnnotate
+          .append("text")
+          .attr("x", x - lineLength - lineLength2 / 2 + 5)
+          .attr("y", y - lineLength - rectHeight + 50)
+          .text("A clear cluster in the")
+          .style("font-size", textFontSize)
+          .attr("dy", "1em")
+          .attr("class", "annotate-content")
+          .style("opacity", 0)
+          .transition()
+          .delay(shortDelayOffset)
+          .duration(annotateDelay)
+          .style("opacity", 1);
+
+        const text2 = gAnnotate
+          .append("text")
+          .attr("x", x - lineLength - lineLength2 / 2 + 5)
+          .attr("y", y - lineLength - rectHeight + 70)
+          .text("North West.")
+          .style("font-size", textFontSize)
+          .attr("dy", "1em")
+          .attr("class", "annotate-content")
+          .style("opacity", 0)
+          .transition()
+          .delay(shortDelayOffset)
+          .duration(annotateDelay)
+          .style("opacity", 1);
+
+        // Disconnect observer
+        observer.disconnect();
+      }
+    });
+  }, observerOptions);
+
+  // begin observing target element
+  observer.observe(observerTarget);
 }

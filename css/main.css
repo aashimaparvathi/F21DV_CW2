@@ -46,6 +46,10 @@ h2 {
   margin: 0;
 }
 
+h3 {
+  margin-top: 0;
+}
+
 #swarm-title {
   display: inline-block; /* Make heading display as inline block */
 }

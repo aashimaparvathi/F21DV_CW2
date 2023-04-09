@@ -19,6 +19,19 @@
     font-size: 1rem;
     line-height: 1.1;
   }
+
+  .h3-sub-title {
+    /* width: 50%; */
+    font-size: 0.8rem;
+    line-height: 0.9;
+  }
+
+  .title,
+  .why-title,
+  .sub-title,
+  .h3-sub-title {
+    margin-left: 3rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -31,7 +44,18 @@
   /* for very small screens */
   .sub-title {
     font-size: 0.5rem;
-    line-height: 1;
+    line-height: 0.6;
+  }
+  .h3-sub-title {
+    /* width: 50%; */
+    font-size: 0.5rem;
+    line-height: 0.6;
+  }
+  .title,
+  .why-title,
+  .sub-title,
+  .h3-sub-title {
+    margin-left: 2rem;
   }
 }
 
@@ -40,11 +64,25 @@
   .title,
   .why-title {
     font-size: 0.5rem;
-    line-height: 1;
+    line-height: 0.6;
   }
   /* for very small screens */
   .sub-title {
     font-size: 0.1rem;
-    line-height: 1;
+    line-height: 0.2;
   }
+  .h3-sub-title {
+    /* width: 50%; */
+    font-size: 0.1rem;
+    line-height: 0.2;
+  }
+  .title,
+  .why-title,
+  .sub-title {
+    margin-left: 1rem;
+  }
+  /* .h3-sub-title {
+    margin-left: 0rem;
+    margin-right: 5rem;
+  } */
 }

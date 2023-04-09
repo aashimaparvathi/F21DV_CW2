@@ -19,6 +19,7 @@ const height = 500 - margin.top - margin.bottom;
 
 var annotateDelay = 1000;
 const delayOffset = 1500;
+
 /*
   Color from https://colorable.jxnblk.com/62350e/ffffff
   10.32AAA
@@ -269,7 +270,7 @@ function finlandAnnotation(svg, gAxis) {
 
   tickFinland.attr("color", contrast);
 
-  annotateDelay = annotateDelay + delayOffset;
+  annotateDelay = annotateDelay + delayOffset / 2;
 
   tickFinland
     .append("rect")
@@ -304,7 +305,7 @@ function finlandAnnotation(svg, gAxis) {
 
   finlandText
     .append("tspan")
-    .text("Home to the biggest 'Kahvi' lovers !")
+    .text("Kudos to the biggest 'Kahvi' lovers !")
     .attr("x", 0)
     .attr("dy", "3em")
     .attr("class", "tick-box-content")

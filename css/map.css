@@ -1,5 +1,17 @@
 .map-svg {
-  /* background-color: whitesmoke; */
+  background-color: whitesmoke;
+}
+
+.h3-sub-title {
+  /* font-family: "Times New Roman", Times, serif; */
+  font-size: 1.2rem;
+  max-height: 2rem;
+  min-height: 2rem;
+  margin-left: 5rem;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  font-weight: normal;
+  /* background-color: blanchedalmond; */
 }
 
 #zoom-button {

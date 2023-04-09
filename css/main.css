@@ -48,6 +48,8 @@ h2 {
 
 h3 {
   margin-top: 0;
+  margin-bottom: 0rem;
+  line-height: 1em;
 }
 
 #swarm-title {
@@ -68,7 +70,7 @@ h3 {
   margin-top: 0%;
   font-weight: normal;
   color: #62350e;
-  /* background-color: blanchedalmond; */
+  background-color: blanchedalmond;
   width: 50%;
 }
 

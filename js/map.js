@@ -7,32 +7,34 @@ import dataPromise, {
   danger_red,
 } from "./data.js";
 
-var coffeepercap1, coffeetotal, world;
+import { drawParallelPlot } from "./parallel.js";
+
+var coffeepercap1, coffeetotal, world, sunshine, temperature, leisure;
 var annotateDelay = 1000;
 const delayOffset = 1500;
 const shortDelayOffset = 500;
 
-/*
-TODO: Add legend for the map
-Add caption for the map
-Add annotation about the continent and northern hemisphere
-And if possible, point to the divs of each correspondng parameter
-*/
-
 const margin = { top: -20, right: 60, bottom: 0, left: 60 };
 const width = 1000 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
-const mapscale = 130;
-const yOffset = 185,
-  xOffset = 0;
+const mapscale = 140;
+const yOffset = 170,
+  xOffset = 0,
+  buttonOffset = 15;
 const circleRange = [10, 50];
-const countryByCode = new Map();
+export const countryByCode = new Map();
 const continentByCode = new Map();
 const perCapByCode = new Map();
 const continents = new Set();
 const mapgrey = "#949494";
 const mapLabelOffset = 3;
 const labelZoomFactor = 2.8;
+
+/*
+ TODO: Increase width of zoom button
+ and change text to zoom in
+ Toggle it to say zoom out when clicked
+*/
 
 const tooltip = d3
   .select("body")
@@ -57,11 +59,21 @@ var minMaxPerCap;
 var isEnabled = false;
 var isocode_group, countries_group;
 
-dataPromise.then(function ([coffeepercap1data, coffeetotaldata, worlddata]) {
+dataPromise.then(function ([
+  coffeepercap1data,
+  coffeetotaldata,
+  worlddata,
+  sunshinedata,
+  temperaturedata,
+  leisuredata,
+]) {
   console.log("map.js");
   coffeepercap1 = coffeepercap1data;
   coffeetotal = coffeetotaldata;
   world = worlddata;
+  sunshine = sunshinedata;
+  temperature = temperaturedata;
+  leisure = leisuredata;
 
   /* Test that data is retrieved correctly */
   testData();
@@ -72,6 +84,10 @@ dataPromise.then(function ([coffeepercap1data, coffeetotaldata, worlddata]) {
 function testData() {
   console.log(coffeepercap1);
   console.log(coffeetotal);
+  console.log(world);
+  // console.log(sunshine);
+  // console.log(temperature);
+  // console.log(leisure);
 }
 
 function fixData() {
@@ -167,6 +183,9 @@ function fixData() {
 function drawMap() {
   var svg = d3
     .select("#map-div")
+    .append("g")
+    .attr("class", "gMap")
+    .attr("id", "map-group")
     .append("svg")
     .attr("width", "100%")
     .attr("height", "100%")
@@ -175,12 +194,21 @@ function drawMap() {
     .attr("class", "map-svg")
     .attr("id", "map-svg");
 
+  // Get the window height
+  const windowHeight = window.innerHeight;
+
+  // Select the group element
+  const g = svg.select("g");
+
+  // Set the height of the group element to the window height
+  g.attr("height", windowHeight);
+
   //svg.append("text").text("Hello");
 
   projection = d3
     .geoMercator()
     .rotate([-10, 0]) // Adjust the rotation of the projection
-    .translate([width / 2 + xOffset, height / 2 + yOffset])
+    .translate([width / 2 + xOffset, height / 2 + yOffset - 30])
     .scale(mapscale);
 
   path = d3.geoPath(projection);
@@ -220,7 +248,7 @@ function drawMap() {
     .append("g")
     .attr("class", "legend")
     .attr("id", "map-legend")
-    .attr("transform", "translate(10, " + (height - 50) + ")");
+    .attr("transform", "translate(10, " + (height - 70) + ")");
 
   // Append a rectangle and text element for each legend item
   legend
@@ -259,6 +287,8 @@ function drawMap() {
       handleZoom(svg, event, d);
     });
   addZoom(svg);
+
+  drawParallelPlot(sunshine, temperature, leisure, coffeepercap1);
 }
 
 function drawCircles(svg, zoomfactor) {
@@ -313,8 +343,8 @@ function drawCircles(svg, zoomfactor) {
     // .classed("highlight", true)
     .style("transition", "0.4s")
     .on("mouseover", function (event, d) {
-      // circleMouseOver(this, event, d);
-      // Show tooltip
+      var isoHover = d.id;
+
       var data = isocode_group.get(d.id);
       var country = d.properties.name;
 
@@ -369,14 +399,39 @@ function drawCircles(svg, zoomfactor) {
       /* Uncomment drawLineChart if using line chart */
       /* drawLineChart(svg, d.id, innerHeight, innerWidth, color); */
       createLollipopChart(svg, d.id, innerWidth, innerHeight, country);
+
+      const mapCircles = d3.selectAll(".map-circle");
+      const plotLines = d3.selectAll(".parallel-plot-line");
+
+      const hoveredCircle = d3.select(this);
+
+      // Set the selected circle to full opacity and all others to lower opacity
+      mapCircles.classed("unselected", true);
+      hoveredCircle.classed("selected", true);
+      hoveredCircle.classed("unselected", false);
+
+      const hoveredLineId = "#" + hoveredCircle.attr("id") + "-line";
+      const hoveredLine = d3.select(hoveredLineId);
+
+      plotLines.classed("unselected", true);
+      hoveredLine.classed("selected", true);
+      hoveredLine.classed("unselected", false);
     })
     .on("mouseout", function (event, d) {
+      const mapCircles = d3.selectAll(".map-circle");
+      const plotLines = d3.selectAll(".parallel-plot-line");
+
       tooltip.transition().duration(500).style("opacity", 0);
       const chartGroup = d3.select("#line-group");
 
       // Remove all the elements inside the group
       chartGroup.selectAll("*").remove();
       chartGroup.remove();
+
+      mapCircles.classed("selected", false);
+      mapCircles.classed("unselected", false);
+      plotLines.classed("selected", false);
+      plotLines.classed("unselected", false);
     });
 
   if (zoomfactor > labelZoomFactor) {
@@ -434,7 +489,10 @@ function addZoom(svg) {
   // create a button
   var button = svg
     .append("g")
-    .attr("transform", "translate(" + width / 2 + ", " + (height + 30) + ")") // position the button below the map
+    .attr(
+      "transform",
+      "translate(" + width / 2 + ", " + (height - buttonOffset) + ")"
+    ) // position the button below the map
     .attr("class", "zoom-button")
     .attr("id", "zoom-button");
 
@@ -752,7 +810,7 @@ function mapAnnotate(svg) {
 
   console.log("x : " + x + ", y: " + y);
 
-  const lineLength = height / 2;
+  const lineLength = height / 3;
   const lineLength2 = height / 3;
   const rectWidth = width / 5;
   const rectHeight = height / 5;
@@ -821,7 +879,7 @@ function mapAnnotate(svg) {
 
         const title = gAnnotate
           .append("text")
-          .attr("x", x - lineLength - lineLength2 / 2 + 5)
+          .attr("x", x - lineLength - lineLength2 + 10)
           .attr("y", y - lineLength - rectHeight + 20)
           .text("Europe")
           .style("font-size", titleFontSize)
@@ -837,7 +895,7 @@ function mapAnnotate(svg) {
 
         const text = gAnnotate
           .append("text")
-          .attr("x", x - lineLength - lineLength2 / 2 + 5)
+          .attr("x", x - lineLength - lineLength2 + 10)
           .attr("y", y - lineLength - rectHeight + 50)
           .text("A clear cluster in the")
           .style("font-size", textFontSize)
@@ -851,7 +909,7 @@ function mapAnnotate(svg) {
 
         const text2 = gAnnotate
           .append("text")
-          .attr("x", x - lineLength - lineLength2 / 2 + 5)
+          .attr("x", x - lineLength - lineLength2 + 10)
           .attr("y", y - lineLength - rectHeight + 70)
           .text("North West.")
           .style("font-size", textFontSize)

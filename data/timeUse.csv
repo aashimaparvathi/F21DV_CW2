@@ -1,0 +1,34 @@
+﻿country,isocode,leisuretime,inhours
+Norway,NOR,231,3.86
+Italy,ITA,214,3.57
+Finland,FIN,205,3.42
+Sweden,SWE,199,3.33
+Greece,GRC,199,3.33
+Germany,DEU,199,3.32
+Denmark,DNK,198,3.31
+Netherlands,NLD,196,3.26
+Belgium,BEL,193,3.23
+India,IND,188,3.14
+Slovenia,SVN,186,3.1
+Ireland,IRL,185,3.1
+Estonia,EST,179,2.99
+Spain,ESP,177,2.96
+Japan,JPN,175,2.92
+Austria,AUT,173,2.89
+New Zealand,NZL,171,2.85
+South Africa,ZAF,169,2.82
+UK,UGA,165,2.76
+France,FRA,165,2.75
+Canada,CAN,164,2.74
+Poland,POL,162,2.7
+Turkey,TUR,159,2.66
+Korea,KIR,152,2.54
+Luxembourg,LUX,148,2.47
+Hungary,HUN,142,2.37
+Latvia,LVA,141,2.35
+Australia,AUS,135,2.26
+United States of America,USA,135,2.25
+Portugal,PRT,116,1.94
+Lithuania,LTU,108,1.81
+Mexico,MEX,99,1.66
+China,CHN,99,1.65

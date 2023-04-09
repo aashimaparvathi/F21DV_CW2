@@ -1,21 +1,16 @@
 ﻿country,isocode,last,previous
+Greenland,GRL,-17.56,-18.46
 Canada,CAN,-3.71,-4.27
+Russian Federation,RUS,-3.64,-1.72
 Norway,NOR,2.06,3.34
+Mongolia,MNG,2.07,1.53
 Finland,FIN,2.3,4.11
 Iceland,ISL,2.4,2
 Sweden,SWE,3.02,4.47
-Switzerland,CHE,6.42,7.67
-Denmark,DNK,8.92,10.04
-Luxembourg,LUX,9.81,11.33
-United States of America,USA,10,10
-Netherlands,NLD,10.39,11.66
-Belgium,BEL,10.47,11.88
-Greenland,GRL,-17.56,-18.46
-Russian Federation,RUS,-3.64,-1.72
-Mongolia,MNG,2.07,1.53
 Kyrgyzstan,KGZ,3.35,2.74
 Tajikistan,TJK,4.52,3.59
 Estonia,EST,6.28,8.12
+Switzerland,CHE,6.42,7.67
 Faroe Islands,FRO,6.5,6.66
 Latvia,LVA,6.81,8.56
 Lithuania,LTU,7.28,8.96
@@ -28,16 +23,21 @@ Andorra,AND,8.43,9.09
 Poland,POL,8.75,10.03
 Slovakia,SVK,8.78,9.63
 Armenia,ARM,8.84,8.43
+Denmark,DNK,8.92,10.04
 Ukraine,UKR,9.38,10.86
 United Kingdom,GBR,9.38,9.68
 Germany,DEU,9.49,10.79
+Luxembourg,LUX,9.81,11.33
 Chile,CHL,9.88,9.97
 Isle of Man,IMN,9.89,9.92
 Slovenia,SVN,9.9,10.55
 Ireland,IRL,9.95,9.79
+United States of America,USA,10,10
 Georgia,GEO,10.06,9.92
 Montenegro,MNE,10.2,10.61
 Romania,ROU,10.35,11.3
+Netherlands,NLD,10.39,11.66
+Belgium,BEL,10.47,11.88
 Bosnia and Herzegovina,BIH,10.66,11.07
 Bhutan,BTN,10.8,10.4
 New Zealand,NZL,11.23,10.91

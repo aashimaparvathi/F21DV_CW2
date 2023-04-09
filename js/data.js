@@ -12,7 +12,7 @@ const dataPromise = Promise.all([
   d3.json("./data/map/world.geojson"),
   d3.csv("./data/sunshineDuration.csv"),
   d3.csv("./data/countryTemperatures.csv"),
-  d3.csv("./data/totalLeisure.csv"),
+  d3.csv("./data/timeUse.csv"),
   d3.csv("./data/happinessIndex.csv"),
   d3.csv("./data/laborProductivity.csv"),
   d3.csv("./data/landUsePer100g.csv"),
@@ -48,6 +48,7 @@ export {
 
 // coffeepercapdata,
 // coffeetotaldata,
+// worlddata,
 // sunshinedata,
 // temperaturedata,
 // leisuredata,
@@ -59,6 +60,7 @@ export {
 
 // coffeepercap,
 // coffeetotal,
+// world,
 // sunshine,
 // temperature,
 // leisure,

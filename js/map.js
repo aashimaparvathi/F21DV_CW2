@@ -722,10 +722,7 @@ function createLollipopChart(group, isocode, innerWidth, innerHeight, country) {
 
     console.log(minYear + ", " + maxYear);
 
-    // Sort the data in ascending order
     const sortedData = yearValues;
-    //.sort((a, b) => a.value - b.value);
-    //console.log(sortedData);
 
     // Define the scales for the chart
     const xScale = d3

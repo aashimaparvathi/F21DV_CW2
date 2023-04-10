@@ -66,8 +66,9 @@ dataPromise.then(function ([
   /* Test that data is retrieved correctly */
   testData();
   fixData();
-  //dracoffeeMap();
-  drawCorrelationMatrix1();
+  rankParameter("happiness");
+  rankParameter("productivity");
+  //drawCorrelationMatrix();
 });
 
 function testData() {
@@ -171,226 +172,7 @@ function fixData() {
   console.log(combinedPositiveData);
 }
 
-function dracoffeeMap() {
-  var svg = d3
-    .select("#heatmap-div")
-    .append("g")
-    .attr("class", "gHeatMap")
-    .attr("id", "heatmap-group")
-    .append("svg")
-    .attr("width", "100%")
-    .attr("height", "100%")
-    .attr("viewBox", "0 0 " + width + " " + height)
-    .attr("class", "svg")
-    .attr("class", "heatmap-svg")
-    .attr("id", "heatmap-svg");
-
-  // Determine the range and domain of the data
-  var coffeeValues = mergedPositiveData.map(function (d) {
-    return +d.twodecimalplaces;
-  });
-  var happinessValues = mergedPositiveData.map(function (d) {
-    return +d.cantrilladderscore;
-  });
-  var productivityValues = mergedPositiveData.map(function (d) {
-    return +d.productivity;
-  });
-
-  var xScale = d3
-    .scaleLinear()
-    .domain([d3.min(coffeeValues), d3.max(coffeeValues)])
-    .range([0, 400]);
-
-  var yScale = d3
-    .scaleLinear()
-    .domain([d3.min(happinessValues), d3.max(happinessValues)])
-    .range([400, 0]);
-
-  var colorScale = d3
-    .scaleSequential()
-    .domain([d3.min(productivityValues), d3.max(productivityValues)])
-    .interpolator(d3.interpolateViridis);
-
-  // Create the axes for the heatmap
-  var xAxis = d3.axisBottom(xScale);
-  var yAxis = d3.axisLeft(yScale);
-
-  svg
-    .append("g")
-    .attr("transform", "translate(" + height / 3 + "," + width / 2 + ")")
-    .call(xAxis);
-
-  svg
-    .append("g")
-    .attr("transform", "translate(" + height / 3 + "," + 50 + ")")
-    .call(yAxis);
-
-  // Bind the data to the heatmap cells
-  var cells = svg
-    .selectAll("rect")
-    .data(mergedPositiveData)
-    .enter()
-    .append("rect")
-    .attr("x", function (d) {
-      return xScale(d.twodecimalplaces) + 50;
-    })
-    .attr("y", function (d) {
-      return yScale(d.cantrilladderscore) + 50;
-    })
-    .attr("width", 40)
-    .attr("height", 40)
-    .attr("fill", function (d) {
-      return colorScale(d.productivity);
-    });
-}
-
-/*
 function drawCorrelationMatrix() {
-  // Define the dimensions of the heatmap
-  var width = 500;
-  var height = 500;
-  var margin = { top: 50, right: 50, bottom: 50, left: 50 };
-  var innerWidth = width - margin.left - margin.right;
-  var innerHeight = height - margin.top - margin.bottom;
-
-  // Create the SVG container
-  var svg = d3
-    .select("#heatmap-div")
-    .append("svg")
-    .attr("viewBox", "0 0 " + innerWidth + " " + innerHeight)
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-  var data = combinedPositiveData;
-
-  var corr = [];
-  for (var i = 0; i < data.length; i++) {
-    corr[i] = [];
-    for (var j = 0; j < data.length; j++) {
-      var var1 = +data[i]["twodecimalplaces"];
-      var var2 = +data[i]["cantrilladderscore"];
-      var var3 = +data[i]["productivity"];
-      var mean1 = d3.mean(data, function (d) {
-        return +d["twodecimalplaces"];
-      });
-      var mean2 = d3.mean(data, function (d) {
-        return +d["cantrilladderscore"];
-      });
-      var mean3 = d3.mean(data, function (d) {
-        return +d["productivity"];
-      });
-      var std1 = d3.deviation(data, function (d) {
-        return +d["twodecimalplaces"];
-      });
-      var std2 = d3.deviation(data, function (d) {
-        return +d["cantrilladderscore"];
-      });
-      var std3 = d3.deviation(data, function (d) {
-        return +d["productivity"];
-      });
-      var cov12 =
-        d3.sum(data, function (d) {
-          return (
-            (+d["twodecimalplaces"] - mean1) *
-            (+d["cantrilladderscore"] - mean2)
-          );
-        }) /
-        (data.length - 1);
-      var cov13 =
-        d3.sum(data, function (d) {
-          return (
-            (+d["twodecimalplaces"] - mean1) * (+d["productivity"] - mean3)
-          );
-        }) /
-        (data.length - 1);
-      var cov23 =
-        d3.sum(data, function (d) {
-          return (
-            (+d["cantrilladderscore"] - mean2) * (+d["productivity"] - mean3)
-          );
-        }) /
-        (data.length - 1);
-      if (i == j) {
-        corr[i][j] = 1;
-      } else if (i > j) {
-        corr[i][j] = corr[j][i];
-      } else {
-        corr[i][j] =
-          cov12 / (std1 * std2) + cov13 / (std1 * std3) + cov23 / (std2 * std3);
-      }
-    }
-  }
-
-  // Create a scale for the correlation values
-  // var colorScale = d3.scaleSequential(d3.interpolateRdBu).domain([-1, 1]);
-
-  var colorScale = d3
-    .scaleLinear()
-    .domain([-1, 0, 1])
-    .range(["#DB4437", "#F4B400", "#0F9D58"]);
-
-  var matrix = svg.append("g").attr("transform", "translate(0,0)");
-
-  // Create a rectangle for each pair of variables
-  var rects = matrix
-    .selectAll("rect")
-    .data(corr)
-    .enter()
-    .append("g")
-    .attr("transform", function (d, i) {
-      return "translate(0," + i * 25 + ")";
-    })
-    .selectAll("rect")
-    .data(function (d, i) {
-      return d.map(function (e, j) {
-        return {
-          i: i,
-          j: j,
-          value: e,
-        };
-      });
-    })
-    .enter()
-    .append("rect")
-    .attr("x", function (d) {
-      return d.j * 25;
-    })
-    .attr("width", 25)
-    .attr("height", 25)
-    .style("fill", function (d) {
-      return colorScale(d.value);
-    });
-
-  // Add text labels for each variable
-  var labels = matrix
-    .selectAll("text")
-    .data(data.columns.slice(1))
-    .enter()
-    .append("text")
-    .text(function (d) {
-      return d;
-    })
-    .attr("x", function (d, i) {
-      return i * 25 + 12.5;
-    })
-    .attr("y", -30)
-    .style("text-anchor", "middle");
-
-  // Add tooltips to show correlation values on hover
-  rects.append("title").text(function (d) {
-    return (
-      data.columns[d.i + 1] +
-      " vs " +
-      data.columns[d.j + 1] +
-      ": " +
-      d.value.toFixed(2)
-    );
-  });
-}
-*/
-
-function drawCorrelationMatrix1() {
   var data = combinedPositiveData;
   console.log(data);
 
@@ -536,11 +318,11 @@ function drawCorrelationMatrix1() {
     .text(function (d) {
       return d;
     })
-    .attr("x", 150)
+    .attr("x", 0)
     .attr("y", function (d, i) {
       return i * smallRectHeight + 25;
     })
-    .attr("text-anchor", "start")
+    .attr("text-anchor", "end")
     .attr("class", "yLabel");
   // Add tooltips for each rectangle showing the correlation value
   rects.append("title").text(function (d) {
@@ -589,4 +371,179 @@ function drawCorrelationMatrix1() {
     .attr("x", 30)
     .attr("y", 200)
     .style("text-anchor", "start");
+}
+
+function rankParameter(divIDStart) {
+  const margin = { top: -20, right: 60, bottom: 0, left: 60 };
+  const width = 1000 - margin.left - margin.right;
+  const height = 500 - margin.top - margin.bottom;
+
+  var divID = "#" + divIDStart + "-div";
+  var groupClass = "g" + divIDStart;
+  var groupID = divIDStart + "-group";
+  var svgClass = divIDStart + "-svg";
+  var svgID = divIDStart + "-svg";
+
+  var svg = d3
+    .select(divID)
+    .append("g")
+    .attr("class", groupClass)
+    .attr("id", groupID)
+    .append("svg")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("viewBox", "0 0 " + width + " " + height)
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("class", "svg")
+    .attr("class", svgClass)
+    .attr("id", svgID);
+
+  // Get the window height
+  const windowHeight = window.innerHeight;
+
+  // Select the group element
+  const g = svg.select("g");
+
+  // Set the height of the group element to the window height
+  g.attr("height", windowHeight);
+
+  var lol_margin = { top: 50, right: 0, bottom: 100, left: 90 };
+
+  var innerWidth = width - lol_margin.left - lol_margin.right + 50; //this is the width of the barchart
+  var innerHeight = height - lol_margin.top - lol_margin.bottom; // this is the height of the barchart
+
+  svg
+    .append("text")
+    .text(function (d) {
+      if (divIDStart == "happiness")
+        return "Countries ranked by the happiness of its people (Scale 1 to 10)";
+      else
+        return "Countries ranked by overall productivity of its people (GDP per hour worked $)";
+    })
+    .attr("transform", `translate(${lol_margin.left},${lol_margin.top - 15})`)
+    .attr("font-size", "1.4em")
+    // .attr("font-weight", "bold")
+    .attr("text-anchor", "start")
+    .attr("fill", darkgrey);
+
+  var svgg = svg
+    .append("g")
+    .attr("id", "lollipop-group")
+    .attr("transform", `translate(${lol_margin.left},${lol_margin.top})`)
+    .attr("border", "1px solid black");
+  // .attr();
+
+  svgg
+    .append("rect")
+    .attr("x", -50)
+    .attr("y", -5)
+    .attr("width", innerWidth + 80)
+    .attr("height", innerHeight + 90)
+    .attr("rx", 10) // Set the horizontal radius of the corners
+    .attr("ry", 10) // Set the vertical radius of the corners
+    .style("fill", "none") // Set the fill to none to make it transparent
+    .style("stroke", lightgrey) // Set the color of the border to black
+    .style("stroke-width", 1); // Set the width of the border to 2 pixels
+
+  createLollipopChart(svgg, innerWidth, innerHeight, divIDStart);
+}
+
+function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
+  const colorScale = d3
+    .scaleOrdinal()
+    .domain(selectedCountries)
+    .range(d3.schemeCategory10);
+  console.log("createLollipop Chart");
+
+  /* Sort data based on chosen indicator */
+
+  const indicator =
+    divIDStart == "happiness" ? "cantrilladderscore" : "productivity";
+  console.log(indicator);
+
+  var data;
+
+  if (divIDStart == "happiness") {
+    console.log("1");
+    data = filteredHappiness.sort(function (a, b) {
+      return b.value - a.value;
+    });
+  } else {
+    console.log("2");
+    data = filteredProductivity.sort(function (a, b) {
+      return b.value - a.value;
+    });
+  }
+  console.log(data);
+
+  var minInd = d3.min(data, (d) => +d.value);
+  var maxInd = d3.max(data, (d) => +d.value);
+
+  console.log(minInd + ", " + maxInd);
+
+  // Define the scales for the chart
+  const xScale = d3
+    .scaleBand()
+    .domain(data.map((d) => d.country))
+    .range([0, innerWidth])
+    .paddingInner(17)
+    .paddingOuter(0.6);
+
+  var extra = maxInd / 10;
+
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, maxInd + extra])
+    .range([innerHeight, 0]);
+
+  // Draw the circles for the lollipop chart
+  const circles = svg
+    .selectAll("circle")
+    .data(data)
+    .join("circle")
+    .attr("cx", (d) => xScale(d.country) + xScale.bandwidth() / 2)
+    .attr("cy", (d) => yScale(d.value))
+    .attr("r", 10)
+    .attr("fill", function (d) {
+      return colorScale(d.isocode);
+    })
+    .attr("fill-opacity", 1);
+
+  // Draw the vertical lines for the lollipop chart
+  const lines = svg
+    .selectAll("line")
+    .data(data)
+    .join("line")
+    .attr("x1", (d) => xScale(d.country) + xScale.bandwidth() / 2)
+    .attr("y1", (d) => yScale(d.value) + 10)
+    .attr("x2", (d) => xScale(d.country) + xScale.bandwidth() / 2)
+    .attr("y2", innerHeight - 2)
+    .attr("stroke", darkgrey)
+    .attr("stroke-width", 1);
+
+  // Add x-axis
+  const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
+
+  svg
+    .append("g")
+    .attr("transform", `translate(0, ${innerHeight})`)
+    .call(xAxis)
+    .attr("class", "axis")
+    .call((g) => g.selectAll(".tick text").attr("font-size", "1.5em"))
+    .call((g) => g.selectAll(".tick line").attr("color", lightgrey))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("transform", "rotate(-45)")
+    .attr("fill", darkgrey);
+
+  // Add y-axis
+  const yAxis = d3.axisLeft(yScale);
+  svg
+    .append("g")
+    .call(yAxis.ticks(5))
+    .attr("class", "axis")
+    .call((g) => g.selectAll(".tick text").attr("font-size", "1.5em"))
+    .call((g) => g.selectAll(".tick line").attr("color", lightgrey))
+    .selectAll("text")
+    .attr("fill", darkgrey);
 }

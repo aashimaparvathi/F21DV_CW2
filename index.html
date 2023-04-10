@@ -18,6 +18,12 @@
       href="css/styles.css"
     />
     <link rel="stylesheet" type="text/css" target="_blank" href="css/map.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      target="_blank"
+      href="css/posneg.css"
+    />
     <!-- Any other styles -->
     <style></style>
   </head>
@@ -72,14 +78,35 @@
           </div>
         </div>
       </div>
+
+      <div class="posneg-container" id="posneg-container">
+        <h1 class="title" id="posneg-title" align="left">
+          THE IMPACT OF THE ADDICTION
+        </h1>
+        <div class="posneg-container" id="parent-container">
+          <div class="positive-container">
+            <div class="div" id="pos-div">
+              <div class="title-div" id="pos-title-div"></div>
+              <div class="div" id="heatmap-div"></div>
+            </div>
+          </div>
+          <div class="negative-container">
+            <div class="div" id="neg-div">
+              <div class="title-div" id="neg-title-div"></div>
+              <div class="div" id="smth-div"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Scripts -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="http://d3js.org/topojson.v3.min.js"></script>
     <script type="module" src="./js/data.js"></script>
-    <script type="module" src="./js/map.js"></script>
     <script type="module" src="./js/swarm.js"></script>
+    <script type="module" src="./js/map.js"></script>
     <script type="module" src="./js/parallel.js"></script>
+    <script type="module" src="./js/posneg.js"></script>
   </body>
 </html>

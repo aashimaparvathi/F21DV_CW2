@@ -1,71 +1,64 @@
 country,isocode,productivity
-Norway,,103.2668538
-Ireland,,76.3801438
-Switzerland,,67.86572335
-Netherlands,,66.43895445
-Luxembourg,,66.3150421
-United States,,65.7236431
-Belgium,,63.09866315
-Denmark,,62.7894472
-Germany,,62.6226585
-France,,61.629258
-Sweden,,58.2807925
-Austria,,55.71640285
-Australia,,54.6302944
-Finland,,54.26936255
-Iceland,,53.8253607
-Canada,,52.8672303
-Italy,,51.2683192
-United Kingdom,,50.39536945
-Hong Kong,,47.89952975
-Spain,,47.8561523
-Singapore,,43.9685852
-Taiwan,,42.78243463
-Japan,,42.1820336
-Cyprus,,39.4662189
-New Zealand,,38.6161347
-Israel,,38.5165622
-Slovenia,,36.91398675
-Czechia,,33.8719063
-Grand,,33.74528779
-Malta,,33.49220725
-Greece,,33.29232395
-Slovakia,,32.8579836
-Turkey,,32.3961258
-South Korea,,31.84231725
-Portugal,,31.2954423
-Hungary,,30.3245921
-Poland,,27.2766466
-Estonia,,26.9509154
-Croatia,,26.58510425
-Lithuania,,26.2781838
-Argentina,,24.2809352
-Latvia,,23.94214705
-Chile,,22.10415755
-Russia,,22.07231685
-Uruguay,,21.89971165
-Romania,,21.84962255
-Bulgaria,,21.5887724
-Trinidad and Tobago,,21.27570033
-Malaysia,,20.56644275
-Mexico,,19.5915853
-South Africa,,17.35809044
-Brazil,,16.9057418
-Costa Rica,,14.77418443
-Dominican Republic,,14.28872988
-Colombia,,13.52455645
-Venezuela,,13.11054536
-Sri Lanka,,12.66224205
-Ecuador,,12.58930075
-Thailand,,10.50329955
-Peru,,8.874981175
-Indonesia,,8.220217995
-Jamaica,,8.207783567
-China,,7.665054365
-Philippines,,7.346075245
-Pakistan,,6.690608375
-India,,5.392356875
-Vietnam,,3.882373865
-Myanmar,,3.17109153
-Bangladesh,,2.96088374
-Cambodia,,2.17096934
+Norway,NOR,103.2668538
+Ireland,IRL,76.3801438
+Switzerland,CHE,67.86572335
+Netherlands,NLD,66.43895445
+Luxembourg,LUX,66.3150421
+United States of America,USA,65.7236431
+Belgium,BEL,63.09866315
+Denmark,DNK,62.7894472
+Germany,DEU,62.6226585
+France,FRA,61.629258
+Sweden,SWE,58.2807925
+Austria,AUT,55.71640285
+Australia,AUS,54.6302944
+Finland,FIN,54.26936255
+Iceland,ISL,53.8253607
+Canada,CAN,52.8672303
+Italy,ITA,51.2683192
+United Kingdom,GBR,50.39536945
+Spain,ESP,47.8561523
+Singapore,SGP,43.9685852
+Japan,JPN,42.1820336
+Cyprus,CYP,39.4662189
+New Zealand,NZL,38.6161347
+Israel,ISR,38.5165622
+Slovenia,SVN,36.91398675
+Czechia,CZE,33.8719063
+Malta,MLT,33.49220725
+Greece,GRC,33.29232395
+Slovakia,SVK,32.8579836
+Turkey,TUR,32.3961258
+Portugal,PRT,31.2954423
+Hungary,HUN,30.3245921
+Poland,POL,27.2766466
+Estonia,EST,26.9509154
+Croatia,HRV,26.58510425
+Lithuania,LTU,26.2781838
+Argentina,ARG,24.2809352
+Latvia,LVA,23.94214705
+Chile,CHL,22.10415755
+Uruguay,URY,21.89971165
+Romania,ROU,21.84962255
+Bulgaria,BGR,21.5887724
+Trinidad and Tobago,TTO,21.27570033
+Malaysia,MYS,20.56644275
+Mexico,MEX,19.5915853
+South Africa,ZAF,17.35809044
+Brazil,BRA,16.9057418
+Costa Rica,CRI,14.77418443
+Dominican Republic,DOM,14.28872988
+Colombia,COL,13.52455645
+Sri Lanka,LKA,12.66224205
+Ecuador,ECU,12.58930075
+Thailand,THA,10.50329955
+Peru,PER,8.874981175
+Indonesia,IDN,8.220217995
+Jamaica,JAM,8.207783567
+China,CHN,7.665054365
+Philippines,PHL,7.346075245
+Pakistan,PAK,6.690608375
+India,IND,5.392356875
+Myanmar,MMR,3.17109153
+Bangladesh,BGD,2.96088374
+Cambodia,KHM,2.17096934

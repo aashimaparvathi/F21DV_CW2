@@ -34,6 +34,8 @@ const selectedCountries = [
 
   Add hover over line (code nearly in place) to show the country corresponding to the ISO code.
   Go to: Set up tooltip here
+
+  Add a next-stop button without the bounce
 */
 
 var filteredSunshine,
@@ -64,6 +66,8 @@ function testData(sunshine, temperature, leisure, coffeepercap2) {
 }
 
 function fixData(sunshine, temperature, leisure, coffeepercap2) {
+  /* Filter data */
+
   filteredSunshine = sunshine.filter((d) =>
     selectedCountries.includes(d.isocode)
   );
@@ -79,7 +83,7 @@ function fixData(sunshine, temperature, leisure, coffeepercap2) {
     selectedCountries.includes(d.isocode)
   );
 
-  /* Filter and sort data */
+  /* Sort data */
 
   filteredSunshine.sort(function (a, b) {
     return a.Dec - b.Dec;
@@ -159,131 +163,6 @@ function fixData(sunshine, temperature, leisure, coffeepercap2) {
 
   console.log(mergedData);
 }
-
-/*
-function renderParallelPlot() {
-  // Set up the dimensions and margins of the chart
-  const margin = { top: 30, right: 10, bottom: 10, left: 10 },
-    width =
-      document.querySelector("#param1-div").getBoundingClientRect().width -
-      margin.left -
-      margin.right,
-    height = window.innerHeight * 0.7 - margin.top - margin.bottom;
-
-  // Create the svg element with viewBox for responsive design
-  const svg = d3
-    .select("#param1-div")
-    .append("svg")
-    .attr(
-      "viewBox",
-      `0 0 ${width + margin.left + margin.right} ${
-        height + margin.top + margin.bottom
-      }`
-    )
-    .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-  // Define the dimensions of the parallel coordinates plot
-  const dimensions = [
-    {
-      key: "leisuretime",
-      name: "Leisure Hours",
-      unit: "hours",
-      type: "number",
-    },
-    { key: "temperature", name: "Temperature", unit: "°C", type: "number" },
-    {
-      key: "sunshine",
-      name: "Sunshine Duration",
-      unit: "hours",
-      type: "number",
-    },
-  ];
-
-  // Define the scales for each dimension
-  const yScales = {};
-  dimensions.forEach((dim) => {
-    yScales[dim.key] = d3
-      .scaleLinear()
-      .domain(d3.extent(mergedData, (d) => d[dim.key]))
-      .range([height, 0]);
-  });
-
-  // Define the lines for each country
-  const line = d3
-    .line()
-    .defined(
-      (d) =>
-        !isNaN(d[dimensions[0].key]) &&
-        !isNaN(d[dimensions[1].key]) &&
-        !isNaN(d[dimensions[2].key])
-    )
-    .x((d) => x(dimensions[0].key))
-    .y((d, i) => yScales[dimensions[i].key](d[dimensions[i].key]));
-
-  // Define the x scale for the dimensions
-  const x = d3
-    .scalePoint()
-    .domain(dimensions.map((d) => d.key))
-    .range([0, width])
-    .padding(0.5);
-
-  // Create a group for each dimension
-  const dimensionGroups = svg
-    .selectAll(".dimension")
-    .data(dimensions)
-    .enter()
-    .append("g")
-    .attr("class", "dimension");
-
-  // Add the x axis for each dimension group
-  dimensionGroups
-    .append("g")
-    .attr("class", "axis")
-    .attr("transform", (d) => `translate(${x(d.key)},0)`)
-    .each(function (d) {
-      d3.select(this).call(d3.axisLeft().scale(yScales[d.key]).ticks(5));
-    })
-    .append("text")
-    .attr("class", "title")
-    .attr("y", -10)
-    .text((d) => `${d.name} (${d.unit})`);
-  /*
-  // Create a group for each country
-  const countryGroups = svg
-    .selectAll(".country")
-    .data(mergedData)
-    .enter()
-    .append("g")
-    .attr("class", "country");
-
-  // Draw the lines for each country
-  countryGroups
-    .append("path")
-    .attr("class", "line")
-    .attr("d", (d) =>
-      line(dimensions.map((dim) => ({ [dim.key]: d[dim.key] })))
-    );
-
-
-  // Create a group for each country
-  const countryGroups = svg
-    .selectAll(".country")
-    .data(mergedData)
-    .enter()
-    .append("g")
-    .attr("class", "country");
-
-  // Draw the lines for each country
-  countryGroups
-    .append("path")
-    .attr("class", "line")
-    .attr("d", (d) => {
-      console.log(d);
-      line(dimensions.map((dim) => ({ [dim.key]: d[dim.key] })));
-    });
-}
-*/
 
 function renderParallelPlot() {
   const margin = { top: 30, right: 80, bottom: 40, left: 30 },

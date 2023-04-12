@@ -6,6 +6,7 @@ import dataPromise, {
   darkgrey,
   danger_red,
 } from "./data.js";
+import { nextStop } from "./swarm.js";
 
 /*
 TODO: Change the lollipop circle colors to meet accessibility criteria
@@ -45,6 +46,13 @@ const selectedCountries = [
   "USA",
 ];
 
+const colorScale = d3
+  .scaleSequential()
+  .domain([1, 7]) // Set the input domain
+  .interpolator(d3.interpolateReds); // Set the color range
+
+const format = d3.format(".1f"); // Format function that rounds to 1 decimal point
+
 dataPromise.then(function ([
   coffeepercap_pn_data,
   coffeetotaldata,
@@ -71,8 +79,10 @@ dataPromise.then(function ([
   rankParameter("productivity");
   //drawCorrelationMatrix();
 
-  compositionParameter("ghg");
+  var svg = compositionParameter("ghg");
   compositionParameter("land");
+
+  nextStop(svg, "swarm-container", "Top", -250, -150);
 });
 
 function testData() {
@@ -192,181 +202,6 @@ function fixData() {
   });
 }
 
-function drawCorrelationMatrix() {
-  var data = combinedPositiveData;
-  console.log(data);
-
-  const smallRectWidth = 50,
-    smallRectHeight = 50;
-
-  // Load data from CSV file
-
-  // Extract variable names from data
-  var variables = ["twodecimalplaces", "cantrilladderscore", "productivity"];
-
-  console.log(variables);
-
-  // Create a 2D array to hold the correlation values
-  var corr = new Array(variables.length);
-  for (var i = 0; i < variables.length; i++) {
-    corr[i] = new Array(variables.length);
-  }
-
-  // Calculate mean and standard deviation for each variable
-  var means = new Array(variables.length);
-  var stdDevs = new Array(variables.length);
-  for (var i = 0; i < variables.length; i++) {
-    means[i] = d3.mean(data, function (d) {
-      return +d[variables[i]];
-    });
-    stdDevs[i] = d3.deviation(data, function (d) {
-      return +d[variables[i]];
-    });
-  }
-
-  // Calculate correlation between each pair of variables
-  for (var i = 0; i < variables.length; i++) {
-    for (var j = 0; j < variables.length; j++) {
-      if (i == j) {
-        corr[i][j] = 1;
-      } else {
-        var sum = 0;
-        for (var k = 0; k < data.length; k++) {
-          var x = (+data[k][variables[i]] - means[i]) / stdDevs[i];
-          var y = (+data[k][variables[j]] - means[j]) / stdDevs[j];
-          sum += x * y;
-        }
-        corr[i][j] = sum / (data.length - 1);
-      }
-    }
-  }
-
-  // Create color scale to map correlation values to colors
-  var colorScale = d3
-    .scaleLinear()
-    .domain([-1, 0, 1])
-    .range(["red", "white", "green"]);
-
-  // Create SVG element with responsive viewbox
-  var svg = d3
-    .select("#heatmap-div")
-    .append("svg")
-    .attr("viewBox", [0, 0, 500, 500])
-    .attr("preserveAspectRatio", "xMidYMid meet");
-
-  // Create a group for the matrix
-  var matrix = svg.append("g").attr("transform", "translate(100,100)");
-
-  // Create a rectangle for each pair of variables
-  var rects = matrix
-    .selectAll("rect")
-    .data(corr)
-    .enter()
-    .append("g")
-    .attr("transform", function (d, i) {
-      return "translate(0," + i * smallRectWidth + ")";
-    })
-    .selectAll("rect")
-    .data(function (d, i) {
-      return d.map(function (e, j) {
-        return {
-          i: i,
-          j: j,
-          value: e,
-        };
-      });
-    })
-    .enter()
-    .append("rect")
-    .attr("x", function (d) {
-      return d.j * smallRectHeight;
-    })
-    .attr("width", smallRectWidth)
-    .attr("height", smallRectHeight)
-    .style("fill", function (d) {
-      return colorScale(d.value);
-    });
-
-  // Add text labels for each variable
-  var xLabels = matrix
-    .selectAll(".xLabel")
-    .data(variables)
-    .enter()
-    .append("text")
-    .text(function (d) {
-      return d;
-    })
-    .attr("x", function (d, i) {
-      return i * smallRectWidth + 55;
-    })
-    .attr("y", -50)
-    .attr("text-anchor", "end")
-    .attr("class", "xLabel")
-    .attr("transform", "rotate(-45)");
-
-  var yLabels = matrix
-    .selectAll(".yLabel")
-    .data(variables)
-    .enter()
-    .append("text")
-    .text(function (d) {
-      return d;
-    })
-    .attr("x", 0)
-    .attr("y", function (d, i) {
-      return i * smallRectHeight + 25;
-    })
-    .attr("text-anchor", "end")
-    .attr("class", "yLabel");
-  // Add tooltips for each rectangle showing the correlation value
-  rects.append("title").text(function (d) {
-    return (
-      variables[d.i] + " and " + variables[d.j] + ": " + d.value.toFixed(2)
-    );
-  });
-
-  // Add legend for color scale
-  var legend = svg.append("g").attr("transform", "translate(400,150)");
-
-  var legendData = d3.range(-1, 1.01, 0.01);
-
-  legend
-    .selectAll("rect")
-    .data(legendData)
-    .enter()
-    .append("rect")
-    .attr("x", 0)
-    .attr("y", function (d, i) {
-      return i;
-    })
-    .attr("width", 20)
-    .attr("height", 1)
-    .style("fill", function (d) {
-      return colorScale(d);
-    });
-
-  legend
-    .append("text")
-    .text("Strong negative correlation")
-    .attr("x", 30)
-    .attr("y", 0)
-    .style("text-anchor", "start");
-
-  legend
-    .append("text")
-    .text("Strong positive correlation")
-    .attr("x", 30)
-    .attr("y", 100)
-    .style("text-anchor", "start");
-
-  legend
-    .append("text")
-    .text("0 correlation")
-    .attr("x", 30)
-    .attr("y", 200)
-    .style("text-anchor", "start");
-}
-
 function rankParameter(divIDStart) {
   const margin = { top: 0, right: 20, bottom: 0, left: 80 };
   const width = 1000 - margin.left - margin.right;
@@ -399,9 +234,9 @@ function rankParameter(divIDStart) {
   const g = svg.select("g");
 
   // Set the height of the group element to the window height
-  g.attr("height", windowHeight);
+  // /g.attr("height", windowHeight);
 
-  var lol_margin = { top: 5, right: 0, bottom: 100, left: 120 };
+  var lol_margin = { top: 30, right: 20, bottom: 120, left: 100 };
 
   var innerWidth = width - lol_margin.left - lol_margin.right + 10; //this is the width of the barchart
   var innerHeight = height - lol_margin.top - lol_margin.bottom; // this is the height of the barchart
@@ -416,12 +251,13 @@ function rankParameter(divIDStart) {
     })
     .attr(
       "transform",
-      `translate(${lol_margin.left + innerWidth / 2},${lol_margin.top + 17})`
+      `translate(${lol_margin.left + 20},${lol_margin.top - 13})`
     )
     .attr("font-size", "1.5em")
     // .attr("font-weight", "bold")
-    .attr("text-anchor", "middle")
-    .attr("fill", darkgrey);
+    .attr("text-anchor", "start")
+    .attr("fill", darkgrey)
+    .classed("underline", true);
   // .attr("font-weight", "bold");
 
   var svgg = svg
@@ -429,6 +265,9 @@ function rankParameter(divIDStart) {
     .attr("id", "lollipop-group")
     .attr("transform", `translate(${lol_margin.left},${lol_margin.top})`)
     .attr("border", "1px solid black");
+
+  // Set the height of the group element to the window height
+  svgg.attr("height", windowHeight);
   // .attr();
 
   svgg
@@ -440,7 +279,7 @@ function rankParameter(divIDStart) {
     .attr("rx", 10)
     .attr("ry", 10)
     .style("fill", "none")
-    .style("stroke", lightgrey)
+    .style("stroke", "none")
     .style("stroke-width", 1);
 
   createLollipopChart(svgg, innerWidth, innerHeight, divIDStart);
@@ -478,6 +317,11 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
       "#d62728",
     ]);
   console.log("createLollipop Chart");
+
+  const colorScale1 = d3
+    .scaleSequential()
+    .domain(selectedCountries) // Set the input domain
+    .interpolator(d3.interpolateReds); // Set the color range
 
   /* Sort data based on chosen indicator */
 
@@ -527,7 +371,7 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .join("circle")
     .attr("cx", (d) => xScale(d.country) + xScale.bandwidth() / 2)
     .attr("cy", (d) => yScale(d.value))
-    .attr("r", 10)
+    .attr("r", 12)
     .attr("fill", function (d) {
       return colorScale(d.isocode);
     })
@@ -622,7 +466,7 @@ function lollipop_mouseout(currElement, event, d, divIDStart, svg) {
 }
 
 function compositionParameter(divIDStart) {
-  const margin = { top: 20, right: 20, bottom: 150, left: 40 };
+  const margin = { top: 30, right: 20, bottom: 110, left: 40 };
   const width = 200 - margin.left - margin.right;
   const height = 800 - margin.top - margin.bottom;
 
@@ -653,6 +497,7 @@ function compositionParameter(divIDStart) {
 
   //createStackedBar(svg, width, height, margin, divIDStart);
   createVertical(svg, width, height, margin, divIDStart);
+  return svg;
 }
 
 function createVertical(svg, width, height, margin, divIDStart) {
@@ -688,31 +533,31 @@ function createVertical(svg, width, height, margin, divIDStart) {
   rectw = width;
   x1 = 0;
   lastperc = 0;
+  var curlyX1, curlyY1, curlyX2, curlyY2, mainX, mainY, coffeeX, coffeeY;
+  var otherPerc, mainPerc;
 
-  // Define the color scale
-  // const colorScale = d3
-  //   .scaleLinear()
-  //   .domain([1, 2, 3, 4, 5, 6, 7])
-  //   .range([
-  //     "#1f77b4",
-  //     "#ff7f0e",
-  //     "#2ca02c",
-  //     "#d62728",
-  //     "#9467bd",
-  //     "#8c564b",
-  //     grey,
-  //   ]);
+  // Select the element to be observed
+  /*
+  const observerTarget = document.querySelector("#pos-div");
 
-  const colorScale = d3
-    .scaleSequential()
-    .domain([1, 7]) // Set the input domain
-    .interpolator(d3.interpolateReds); // Set the color range
+  // Set up  observer
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1, // trigger when the element is 100% in view
+  };
 
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        */
   for (var i = 0; i < stackedData.length; i++) {
     console.log(stackedData[i]);
     var perc = stackedData[i].percentage;
     //console.log(perc);
 
+    /* CALCULATIONS */
     y1 = perc + lastperc;
     recth = perc;
     lastperc = lastperc + perc;
@@ -728,7 +573,7 @@ function createVertical(svg, width, height, margin, divIDStart) {
     console.log("(x,y): " + x2 + "," + yScale(y2));
     console.log("height: " + yScale(y1 - y2));
 
-    /* Position check
+    /* Position check - do not remove
     svg.append("text").attr("x", 0).attr("y", 0).text("hello");
     svg
       .append("text")
@@ -736,6 +581,41 @@ function createVertical(svg, width, height, margin, divIDStart) {
       .attr("y", height - 20)
       .text("hello");
       */
+
+    if (i == 0) {
+      if (divIDStart == "ghg") {
+        curlyX1 = x2 + 8;
+      } else {
+        curlyX1 = x1 - 8;
+      }
+      curlyY1 = yScale(y2);
+    }
+    if (i == 6) {
+      if (divIDStart == "ghg") {
+        curlyX2 = x2 + 8;
+        mainX = curlyX2 + x2 / 2;
+      } else {
+        curlyX2 = x1 - 8;
+        mainX = curlyX2 - x2 / 2;
+      }
+
+      curlyY2 = yScale(y2);
+      otherPerc = stackedData[i].percentage;
+      mainPerc = 100 - otherPerc;
+      console.log(otherPerc);
+      console.log(mainPerc);
+      mainY = (curlyY2 - curlyY1) / 2;
+    }
+
+    if (stackedData[i].Entity == "Coffee") {
+      if (divIDStart == "ghg") {
+        coffeeX = x2;
+      } else {
+        coffeeX = x1;
+      }
+      coffeeY = yScale(y2) + yScale(y1 - y2) / 2 + 5;
+    }
+
     svg
       .append("rect")
       .attr("x", x1)
@@ -743,12 +623,16 @@ function createVertical(svg, width, height, margin, divIDStart) {
       .attr("width", width)
       .attr("height", 0)
       .attr("fill", function () {
-        if (stackedData[i].Entity == "Others") return lightgrey;
+        if (stackedData[i].Entity == "Others (26)") return lightgrey;
         else return colorScale(i + 1);
       })
       .attr("rx", 10)
       .attr("ry", 10)
-      .attr("stroke", grey)
+      .attr("stroke", function () {
+        if (i < 1) return lightgrey;
+        else return "white";
+      })
+      .attr("stroke-width", 2)
       .transition()
       .duration(function () {
         return i * 500;
@@ -766,11 +650,33 @@ function createVertical(svg, width, height, margin, divIDStart) {
         else return "start";
       })
       .attr("y", yScale(y2) + yScale(y1 - y2) / 2 + 5)
-      .text(stackedData[i].Entity);
+      .text(stackedData[i].Entity)
+      .attr("font-weight", function () {
+        if (stackedData[i].Entity == "Coffee") return "bold";
+        else return "normal";
+      })
+      .attr("fill", darkgrey);
+
+    svg
+      .append("text")
+      .attr("x", width / 2)
+      .attr("text-anchor", "middle")
+      .attr("y", yScale(y2) + yScale(y1 - y2) / 2 + 5)
+      .text(format(stackedData[i].percentage) + " %")
+      .attr("fill", function () {
+        if (i < 2 || i == 6) return darkgrey;
+        else return "white";
+      })
+      .attr("opacity", 0)
+      .transition()
+      .duration(function () {
+        return i * 700;
+      })
+      .attr("opacity", 1);
   }
 
   var svgID = "#" + divIDStart + "-svg";
-  console.log(svgID);
+
   d3.select(svgID)
     .append("text")
     .text(function () {
@@ -785,5 +691,148 @@ function createVertical(svg, width, height, margin, divIDStart) {
     )
     .attr("text-anchor", "middle")
     .attr("font-size", "1.5em")
+    .attr("fill", darkgrey)
+    .attr("class", "neg-caption");
+
+  drawBracket(
+    svg,
+    width,
+    divIDStart,
+    curlyX1,
+    curlyX2,
+    curlyY1,
+    curlyY2,
+    mainX,
+    mainY,
+    mainPerc
+  );
+
+  annotateCoffee(svg, width, height, margin, divIDStart, coffeeX, coffeeY);
+
+  /*
+        // Disconnect observer
+        observer.disconnect();
+      }
+    });
+  }, observerOptions);
+*/
+}
+
+function drawBracket(
+  svg,
+  width,
+  divIDStart,
+  curlyX1,
+  curlyX2,
+  curlyY1,
+  curlyY2,
+  mainX,
+  mainY,
+  mainPerc
+) {
+  const startPoint = { x: curlyX1, y: curlyY1 };
+  const endPoint = { x: curlyX2, y: curlyY2 };
+  const horizontalWidth = width / 20;
+
+  // Create a <path> element to represent the square bracket
+  const path = d3.path();
+  path.moveTo(startPoint.x, startPoint.y);
+  if (divIDStart == "ghg") {
+    path.lineTo(startPoint.x + horizontalWidth, startPoint.y);
+    path.lineTo(startPoint.x + horizontalWidth, endPoint.y);
+  } else {
+    path.lineTo(startPoint.x - horizontalWidth, startPoint.y);
+    path.lineTo(startPoint.x - horizontalWidth, endPoint.y);
+  }
+
+  path.lineTo(endPoint.x, endPoint.y);
+  //path.lineTo(startPoint.x, startPoint.y);
+
+  svg
+    .append("path")
+    .attr("d", path.toString())
+    .attr("stroke", grey)
+    .attr("stroke-width", 2)
+    .attr("fill", "none");
+
+  svg
+    .append("text")
+    .attr("x", mainX)
+    .attr("y", mainY)
+    .text(format(mainPerc) + " %")
+    .attr("text-anchor", function () {
+      if (divIDStart == "ghg") return "end";
+      else return "start";
+    })
     .attr("fill", darkgrey);
+}
+
+function annotateCoffee(
+  svg,
+  width,
+  height,
+  margin,
+  divIDStart,
+  coffeeX,
+  coffeeY
+) {
+  const startPoint = { x: coffeeX, y: coffeeY };
+  const horizontalWidth = width;
+  const endPoint = {
+    x: coffeeX + horizontalWidth,
+    y: coffeeY + height + margin.bottom,
+  };
+
+  // Create a <path> element to represent the square bracket
+  const path = d3.path();
+  path.moveTo(startPoint.x, startPoint.y);
+  if (divIDStart == "ghg") {
+    path.lineTo(startPoint.x + horizontalWidth, startPoint.y);
+    path.lineTo(startPoint.x + horizontalWidth, endPoint.y);
+  } else {
+    path.lineTo(startPoint.x - horizontalWidth, startPoint.y);
+    path.lineTo(startPoint.x - horizontalWidth, endPoint.y);
+  }
+
+  // path.lineTo(endPoint.x, endPoint.y);
+  //path.lineTo(startPoint.x, startPoint.y);
+
+  svg
+    .append("path")
+    .attr("d", path.toString())
+    .attr("stroke", grey)
+    .attr("stroke-width", 2)
+    .attr("stroke-dasharray", "5 3")
+    .attr("fill", "none");
+
+  addAnnotationText("neg-annotation");
+}
+
+function addAnnotationText(divIDStart) {
+  // const margin = { top: 0, right: 0, bottom: 0, left: 0 };
+  // const width = 20 - margin.left - margin.right;
+  // const height = 20 - margin.top - margin.bottom;
+  // var divID = "#" + divIDStart + "-div";
+  // var groupClass = "g" + divIDStart;
+  // var groupID = divIDStart + "-group";
+  // var svgClass = divIDStart + "-svg";
+  // var svgID = divIDStart + "-svg";
+  // // Define the SVG and add the margins
+  // const svg = d3
+  //   .select(divID)
+  //   .append("svg")
+  //   .attr("viewBox", [
+  //     0,
+  //     0,
+  //     width + margin.left + margin.right,
+  //     height + margin.top + margin.bottom,
+  //   ])
+  //   .attr("class", "svg")
+  //   .attr("class", svgClass)
+  //   .attr("id", svgID)
+  //   .append("g")
+  //   .attr("class", groupClass)
+  //   .attr("id", groupID)
+  //   .attr("transform", `translate(${margin.left}, ${margin.top})`)
+  //   .attr("preserveAspectRatio", "xMinYMin meet");
 }

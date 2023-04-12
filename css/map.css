@@ -60,3 +60,17 @@
   /* background-color: blanchedalmond; */
   width: 100%;
 }
+
+#par-caption {
+  font-family: "Times New Roman", Times, serif;
+  /* font-size: 0.9rem; */
+  font-weight: normal;
+  max-height: 10rem;
+  min-height: 5rem;
+  margin-left: 2rem;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  color: #727171;
+  /* background-color: blanchedalmond; */
+  width: 100%;
+}

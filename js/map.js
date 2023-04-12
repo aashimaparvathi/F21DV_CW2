@@ -8,6 +8,7 @@ import dataPromise, {
 } from "./data.js";
 
 import { drawParallelPlot } from "./parallel.js";
+import { nextStop } from "./swarm.js";
 
 var coffeepercap1, coffeetotal, world, sunshine, temperature, leisure;
 var annotateDelay = 1000;
@@ -291,6 +292,9 @@ function drawMap() {
   addZoom(svg);
 
   drawParallelPlot(sunshine, temperature, leisure, coffeepercap1);
+
+  var tLeft = width - margin.left - margin.right - 50;
+  nextStop(svg, "posneg-container", "Next", tLeft, 0);
 }
 
 function drawCircles(svg, zoomfactor) {
@@ -501,7 +505,7 @@ function addZoom(svg) {
   // create a rectangle to act as the button
   button
     .append("rect")
-    .attr("width", 60)
+    .attr("width", 80)
     .attr("height", 40)
     .attr("rx", 10)
     .attr("ry", 10)
@@ -514,11 +518,11 @@ function addZoom(svg) {
   // add the text "Zoom" to the button
   button
     .append("text")
-    .attr("x", 30)
+    .attr("x", 40)
     .attr("y", 25)
     .attr("text-anchor", "middle")
     .attr("class", "button-text")
-    .text("Zoom")
+    .text("Zoom In")
     .on("click", function () {
       d3.select(this.parentNode)
         .select("rect")
@@ -539,6 +543,7 @@ function addZoom(svg) {
     d3.select(this).classed("clicked", !d3.select(this).classed("clicked"));
     if (isEnabled == true) {
       console.log("zooming...");
+      d3.select(this).select("text").text("Zoom Out");
       zoom = d3
         .zoom()
         .scaleExtent([1, 8])
@@ -549,6 +554,7 @@ function addZoom(svg) {
       svg.call(zoom);
     } else if (isEnabled == false) {
       console.log("not zooming...");
+      d3.select(this).select("text").text("Zoom In");
       // svg.call(zoom.transform, d3.zoomIdentity);
       svg.on(".zoom", null);
       svg

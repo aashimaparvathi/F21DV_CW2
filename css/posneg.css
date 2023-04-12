@@ -42,7 +42,7 @@
 
 #pos-title-div {
   /* background-color: lightcyan; */
-  height: 10%;
+  height: 9%;
   width: 100%;
 }
 
@@ -53,15 +53,30 @@
   /* margin-left: 0rem; */
 }
 
-#lol-caption {
-  color: #6291d3;
-  margin-top: 0.9em;
+#posneg-title {
+  /* margin-left: 0.5em; */
+  /* text-anchor: middle; */
+  margin-top: 0;
+}
 
-  /* color: #6291d3; */
+#lol-caption-1,
+#lol-caption-2 {
+  color: #62350e;
+
+  margin-left: 3em;
+  text-anchor: middle;
+  margin-top: 0.9em;
   /* background-color: blanchedalmond; */
   width: 100%;
 }
 
+/* #lol-caption-1 {
+  color: #636262;
+}
+
+#lol-caption-2 {
+  color: #636262;
+} */
 #rank-div {
   height: 90%;
   width: 100%;
@@ -80,6 +95,7 @@
 #productivity-div {
   height: 50%;
   width: 100%;
+
   /* background-color: lightpink; */
 }
 
@@ -98,16 +114,17 @@
 #neg-div {
   height: 80%;
   width: 100%;
+
   /* background-color: lightcyan; */
 }
 
 #neg-title-div {
   /* background-color: beige; */
-  height: 15%;
+  height: 10%;
 }
 
 #par-div {
-  height: 85%;
+  height: 90%;
 }
 
 #neg-annotation-div {
@@ -131,12 +148,47 @@
 #land-div {
   height: 100%;
   width: 50%;
-  background-color: whitesmoke;
+  /* background-color: azure; */
 }
+
+#column-div,
+#neg-title-div,
+#neg-annotation-div {
+  /* background-color: whitesmoke; */
+}
+
+#column-div {
+  border-left: 1px solid #ccc;
+}
+
+/* #pos-div,
+#pos-title-div {
+  background-color: whitesmoke;
+} */
 
 @media screen and (max-width: 768px) {
   .positive-container,
   .negative-container {
     width: 100%;
   }
+}
+
+#neg-annotation-div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+h4 {
+  margin: 5;
+  width: 50%;
+  text-align: center;
+  border: 2px solid #dfdede;
+  border-radius: 10px;
+  /* color: #747373; */
+  color: #636262;
+  font-weight: normal;
+  padding: 10;
+  font-size: 1.1em;
+  /* background-color: #; */
 }

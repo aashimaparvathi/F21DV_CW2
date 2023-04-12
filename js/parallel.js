@@ -271,7 +271,7 @@ function renderParallelPlot() {
         .attr("y", -15)
         .html(function (d) {
           if (d == "twodecimalplaces") return "Coffee (per cap)";
-          else if (d === "leisuretime") return "Leisure (h)";
+          else if (d === "leisuretime") return "Leisure (min)";
           else if (d === "temperature") return "Temperature (°C)";
           else return "Sunshine (h)";
         })
@@ -294,7 +294,7 @@ function renderParallelPlot() {
   const legend = svg
     .append("g")
     .attr("class", "legend")
-    .attr("id", "par-legend")
+    .attr("id", "map-legend")
     .attr("transform", "translate(10, " + (height - 60) + ")");
 
   // Append a rectangle and text element for each legend item

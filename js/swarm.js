@@ -227,7 +227,7 @@ function drawSwarm() {
   norwayAnnotation(svg, gAxis);
   finlandAnnotation(svg, gAxis);
 
-  nextStop(svg);
+  nextStop(svg, "why-container", "Next", 0, 150);
 
   // svg
   //   .append("image")
@@ -537,10 +537,10 @@ function othersAnnotations(svg, gAxis) {
   }
 }
 
-function nextStop(svg) {
+export function nextStop(svg, whereto, bText, tLeft, tRight) {
   const gButton = svg
     .append("g")
-    .attr("transform", `translate(${margin.left}, ${height - 150})`);
+    .attr("transform", `translate(${margin.left + tLeft}, ${height - tRight})`);
 
   const button = gButton
     .append("circle")
@@ -561,7 +561,7 @@ function nextStop(svg) {
 
   const buttonText = gButton
     .append("text")
-    .text("Next")
+    .text(bText)
     // .attr("transform", `translate(30, 30)`)
     .attr("x", 49)
     .attr("y", 44)
@@ -585,7 +585,7 @@ function nextStop(svg) {
 
   button.on("click", function () {
     // Navigate to the next div on the same page with a given ID
-    const nextDiv = d3.select("#why-container");
+    const nextDiv = d3.select("#" + whereto);
     const yOffset = 0;
     const y =
       nextDiv.node().getBoundingClientRect().top + window.pageYOffset + yOffset;

@@ -192,3 +192,10 @@ h3 {
     transform: translateY(-10px);
   }
 }
+
+#swarm-container,
+#why-container,
+#posneg-container {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}

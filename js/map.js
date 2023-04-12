@@ -34,6 +34,7 @@ const labelZoomFactor = 2.8;
  TODO: Increase width of zoom button
  and change text to zoom in
  Toggle it to say zoom out when clicked
+ Add hover over legend
 */
 
 const tooltip = d3
@@ -248,7 +249,7 @@ function drawMap() {
     .append("g")
     .attr("class", "legend")
     .attr("id", "map-legend")
-    .attr("transform", "translate(10, " + (height - 70) + ")");
+    .attr("transform", "translate(10, " + (height - 40) + ")");
 
   // Append a rectangle and text element for each legend item
   legend
@@ -257,9 +258,9 @@ function drawMap() {
     .enter()
     .append("rect")
     .attr("x", 50)
-    .attr("y", (d, i) => i * 25)
-    .attr("width", 20)
-    .attr("height", 20)
+    .attr("y", (d, i) => i * 27)
+    .attr("width", 21)
+    .attr("height", 21)
     .attr("rx", 10)
     .attr("ry", 10)
     .attr("fill", (d) => d.color)
@@ -271,12 +272,13 @@ function drawMap() {
     .data(legendItems)
     .enter()
     .append("text")
-    .attr("x", 50 + 25)
-    .attr("y", (d, i) => i * 25 + 3.5)
+    .attr("x", 50 + 27)
+    .attr("y", (d, i) => i * 27 + 4)
     .attr("text-anchor", "start")
     .attr("dominant-baseline", "hanging")
     .text((d) => d.label)
-    .attr("fill", darkgrey);
+    .attr("fill", darkgrey)
+    .attr("font-size", "1.1rem");
 
   mapAnnotate(svg);
 

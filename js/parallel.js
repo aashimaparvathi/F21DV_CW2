@@ -24,6 +24,8 @@ const selectedCountries = [
   "USA",
 ];
 
+const nordic = ["FIN", "NOR", "DNK", "SWE"];
+
 /*
   TODO:
   Add title and annotations - "Let's see if the top coffee consuming countries
@@ -36,6 +38,8 @@ const selectedCountries = [
   Go to: Set up tooltip here
 
   Add a next-stop button without the bounce
+
+  Add hover over legend
 */
 
 var filteredSunshine,
@@ -165,12 +169,12 @@ function fixData(sunshine, temperature, leisure, coffeepercap2) {
 }
 
 function renderParallelPlot() {
-  const margin = { top: 30, right: 80, bottom: 40, left: 30 },
+  const margin = { top: 20, right: 85, bottom: 40, left: 30 },
     width =
       document.querySelector("#param1-div").getBoundingClientRect().width -
       margin.left -
       margin.right,
-    height = window.innerHeight * 0.7 - margin.top - margin.bottom;
+    height = window.innerHeight * 0.68 - margin.top - margin.bottom;
   const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
   // Define the keys to be used in the parallel plot
@@ -229,7 +233,10 @@ function renderParallelPlot() {
       return colorScale(d[0]);
     })
     .attr("stroke-opacity", 0.5)
-    .attr("stroke-width", 2)
+    .attr("stroke-width", function (d) {
+      if (nordic.includes(d[0])) return 3;
+      else return 1;
+    })
     .attr("d", (d) =>
       line(keys.map((key) => [key, d[1].find((e) => e[key])?.[key]]))
     )
@@ -273,6 +280,50 @@ function renderParallelPlot() {
     )
     .attr("font-size", "0.7rem")
     .attr("color", grey);
+
+  // Define the legend items
+  //const nordic = ["FIN", "NOR", "ISL", "DNK", "SWE"];
+  const legendItems = [
+    { label: "Finland", color: colorScale("FIN") },
+    { label: "Norway", color: colorScale("NOR") },
+    { label: "Denmark", color: colorScale("DNK") },
+    { label: "Sweden", color: colorScale("SWE") },
+  ];
+
+  // Create a group element for the legend and position it
+  const legend = svg
+    .append("g")
+    .attr("class", "legend")
+    .attr("id", "par-legend")
+    .attr("transform", "translate(10, " + (height - 60) + ")");
+
+  // Append a rectangle and text element for each legend item
+  legend
+    .selectAll("rect")
+    .data(legendItems.slice(0, 4))
+    .enter()
+    .append("rect")
+    .attr("x", width / 2 - 35)
+    .attr("y", (d, i) => i * 25)
+    .attr("width", 20)
+    .attr("height", 20)
+    .attr("rx", 10)
+    .attr("ry", 10)
+    .attr("fill", (d) => d.color)
+    .attr("fill-opacity", 0.8)
+    .attr("stroke", (d) => d.color);
+
+  legend
+    .selectAll("text")
+    .data(legendItems.slice(0, 4))
+    .enter()
+    .append("text")
+    .attr("x", width / 2 - 10)
+    .attr("y", (d, i) => i * 25 + 3.5)
+    .attr("text-anchor", "start")
+    .attr("dominant-baseline", "hanging")
+    .text((d) => d.label)
+    .attr("fill", darkgrey);
 
   const mapCircles = d3.selectAll(".map-circle");
   const plotLines = d3.selectAll(".parallel-plot-line");

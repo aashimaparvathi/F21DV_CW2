@@ -7,6 +7,10 @@ import dataPromise, {
   danger_red,
 } from "./data.js";
 
+/*
+TODO: Change the lollipop circle colors to meet accessibility criteria
+*/
+
 var annotateDelay = 1000;
 var coffeepercap_pn, happiness, productivity, landuse, ghgemission;
 var positiveData, negativeData;
@@ -15,9 +19,6 @@ var mergedPositiveData, combinedPositiveData;
 
 const delayOffset = 1500;
 const shortDelayOffset = 500;
-// const margin = { top: -20, right: 60, bottom: 0, left: 60 };
-// const width = 1000 - margin.left - margin.right;
-// const height = 500 - margin.top - margin.bottom;
 const selectedCountries = [
   "FIN",
   "NOR",
@@ -69,6 +70,9 @@ dataPromise.then(function ([
   rankParameter("happiness");
   rankParameter("productivity");
   //drawCorrelationMatrix();
+
+  compositionParameter("ghg");
+  compositionParameter("land");
 });
 
 function testData() {
@@ -170,6 +174,22 @@ function fixData() {
   });
 
   console.log(combinedPositiveData);
+
+  ghgemission = ghgemission.map(function (d) {
+    return {
+      Entity: d.Entity,
+
+      percentage: +d.percentage, // Convert value to a number
+    };
+  });
+
+  landuse = landuse.map(function (d) {
+    return {
+      Entity: d.Entity,
+
+      percentage: +d.percentage, // Convert value to a number
+    };
+  });
 }
 
 function drawCorrelationMatrix() {
@@ -267,32 +287,6 @@ function drawCorrelationMatrix() {
       return colorScale(d.value);
     });
 
-  // // Add text labels for each variable
-  // var labels = matrix.selectAll("text")
-  //   .data(variables)
-  //   .enter()
-  //   .append("text")
-  //   .text(function(d) { return d; })
-  //   .attr("x", function(d, i) { return i * 25 + 12.5; })
-  //   .attr("y",
-
-  // Add text labels for each variable
-  // var labels = matrix
-  //   .selectAll("text")
-  //   .data(variables)
-  //   .enter()
-  //   .append("text")
-  //   .text(function (d) {
-  //     if (d == "twodecimalplaces") return "Coffee Consumption";
-  //     else if (d == "cantrilladderscore") return "Happiness Index";
-  //     else return "Productivity";
-  //   })
-  //   .attr("x", function (d, i) {
-  //     return i * smallRectWidth + 55;
-  //   })
-  //   .attr("y", -10)
-  //   .style("text-anchor", "middle");
-
   // Add text labels for each variable
   var xLabels = matrix
     .selectAll(".xLabel")
@@ -374,7 +368,7 @@ function drawCorrelationMatrix() {
 }
 
 function rankParameter(divIDStart) {
-  const margin = { top: -20, right: 60, bottom: 0, left: 60 };
+  const margin = { top: 0, right: 20, bottom: 0, left: 80 };
   const width = 1000 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
@@ -407,9 +401,9 @@ function rankParameter(divIDStart) {
   // Set the height of the group element to the window height
   g.attr("height", windowHeight);
 
-  var lol_margin = { top: 50, right: 0, bottom: 100, left: 90 };
+  var lol_margin = { top: 5, right: 0, bottom: 100, left: 120 };
 
-  var innerWidth = width - lol_margin.left - lol_margin.right + 50; //this is the width of the barchart
+  var innerWidth = width - lol_margin.left - lol_margin.right + 10; //this is the width of the barchart
   var innerHeight = height - lol_margin.top - lol_margin.bottom; // this is the height of the barchart
 
   svg
@@ -420,11 +414,15 @@ function rankParameter(divIDStart) {
       else
         return "Countries ranked by overall productivity of its people (GDP per hour worked $)";
     })
-    .attr("transform", `translate(${lol_margin.left},${lol_margin.top - 15})`)
-    .attr("font-size", "1.4em")
+    .attr(
+      "transform",
+      `translate(${lol_margin.left + innerWidth / 2},${lol_margin.top + 17})`
+    )
+    .attr("font-size", "1.5em")
     // .attr("font-weight", "bold")
-    .attr("text-anchor", "start")
+    .attr("text-anchor", "middle")
     .attr("fill", darkgrey);
+  // .attr("font-weight", "bold");
 
   var svgg = svg
     .append("g")
@@ -439,11 +437,11 @@ function rankParameter(divIDStart) {
     .attr("y", -5)
     .attr("width", innerWidth + 80)
     .attr("height", innerHeight + 90)
-    .attr("rx", 10) // Set the horizontal radius of the corners
-    .attr("ry", 10) // Set the vertical radius of the corners
-    .style("fill", "none") // Set the fill to none to make it transparent
-    .style("stroke", lightgrey) // Set the color of the border to black
-    .style("stroke-width", 1); // Set the width of the border to 2 pixels
+    .attr("rx", 10)
+    .attr("ry", 10)
+    .style("fill", "none")
+    .style("stroke", lightgrey)
+    .style("stroke-width", 1);
 
   createLollipopChart(svgg, innerWidth, innerHeight, divIDStart);
 }
@@ -452,7 +450,33 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
   const colorScale = d3
     .scaleOrdinal()
     .domain(selectedCountries)
-    .range(d3.schemeCategory10);
+    .range([
+      "#1f77b4",
+      "#ff7f0e",
+      "#2ca02c",
+      "#d62728",
+      "#9467bd",
+      "#8c564b",
+      "#e377c2",
+      "#7f7f7f",
+      "#bcbd22",
+      "#17becf",
+      "#8f5902",
+      "#9c9ede",
+      "#737373",
+      "#8c6d31",
+      "#f2b0c9",
+      "#c5b0d5",
+      "#4f4a4a",
+      "#cec7b7",
+      "#ada397",
+      "#ffbb78",
+      "#2c6497",
+      "#a05d56",
+      "#ff9896",
+      "#9467bd",
+      "#d62728",
+    ]);
   console.log("createLollipop Chart");
 
   /* Sort data based on chosen indicator */
@@ -486,8 +510,8 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .scaleBand()
     .domain(data.map((d) => d.country))
     .range([0, innerWidth])
-    .paddingInner(17)
-    .paddingOuter(0.6);
+    .paddingInner(5)
+    .paddingOuter(1);
 
   var extra = maxInd / 10;
 
@@ -507,7 +531,20 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .attr("fill", function (d) {
       return colorScale(d.isocode);
     })
-    .attr("fill-opacity", 1);
+    .attr("fill-opacity", function (d) {
+      if (selectedCountries.slice(0, 10).includes(d.isocode)) return 1;
+      else return 0.2;
+    })
+    .attr("class", function (d) {
+      return "lol-circle-" + d.isocode;
+    })
+    .classed("lol-circle", true)
+    .on("mouseover", function (event, d) {
+      lollipop_mouseover(this, event, d, divIDStart, svg);
+    })
+    .on("mouseout", function (event, d) {
+      lollipop_mouseout(this, event, d, divIDStart, svg);
+    });
 
   // Draw the vertical lines for the lollipop chart
   const lines = svg
@@ -519,7 +556,15 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .attr("x2", (d) => xScale(d.country) + xScale.bandwidth() / 2)
     .attr("y2", innerHeight - 2)
     .attr("stroke", darkgrey)
-    .attr("stroke-width", 1);
+    .attr("stroke-width", 1)
+    .attr("stroke-opacity", function (d) {
+      if (selectedCountries.slice(0, 10).includes(d.isocode)) return 1;
+      else return 0.2;
+    })
+    .attr("class", function (d) {
+      return "lol-stem-" + d.isocode;
+    })
+    .classed("lol-stem", true);
 
   // Add x-axis
   const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
@@ -529,7 +574,7 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .attr("transform", `translate(0, ${innerHeight})`)
     .call(xAxis)
     .attr("class", "axis")
-    .call((g) => g.selectAll(".tick text").attr("font-size", "1.5em"))
+    .call((g) => g.selectAll(".tick text").attr("font-size", "1.4em"))
     .call((g) => g.selectAll(".tick line").attr("color", lightgrey))
     .selectAll("text")
     .style("text-anchor", "end")
@@ -542,8 +587,203 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .append("g")
     .call(yAxis.ticks(5))
     .attr("class", "axis")
-    .call((g) => g.selectAll(".tick text").attr("font-size", "1.5em"))
+    .call((g) => g.selectAll(".tick text").attr("font-size", "1.4em"))
     .call((g) => g.selectAll(".tick line").attr("color", lightgrey))
     .selectAll("text")
+    .attr("fill", darkgrey);
+}
+
+function lollipop_mouseover(currElement, event, d, divIDStart, svg) {
+  console.log(d.isocode);
+  var circle = d3.selectAll(".lol-circle-" + d.isocode);
+  var stem = d3.selectAll(".lol-stem-" + d.isocode);
+  console.log(circle);
+  console.log(stem);
+
+  d3.selectAll(".lol-circle").attr("fill-opacity", 0.2);
+  d3.selectAll(".lol-stem").attr("stroke-opacity", 0.2);
+  circle.attr("fill-opacity", 1);
+  stem.attr("stroke-opacity", 1);
+}
+
+function lollipop_mouseout(currElement, event, d, divIDStart, svg) {
+  var circle = d3.selectAll(".lol-circle");
+  var stem = d3.selectAll(".lol-stem");
+
+  circle.attr("fill-opacity", function (d) {
+    if (selectedCountries.slice(0, 10).includes(d.isocode)) return 1;
+    else return 0.2;
+  });
+
+  stem.attr("stroke-opacity", function (d) {
+    if (selectedCountries.slice(0, 10).includes(d.isocode)) return 1;
+    else return 0.2;
+  });
+}
+
+function compositionParameter(divIDStart) {
+  const margin = { top: 20, right: 20, bottom: 150, left: 40 };
+  const width = 200 - margin.left - margin.right;
+  const height = 800 - margin.top - margin.bottom;
+
+  var divID = "#" + divIDStart + "-div";
+  var groupClass = "g" + divIDStart;
+  var groupID = divIDStart + "-group";
+  var svgClass = divIDStart + "-svg";
+  var svgID = divIDStart + "-svg";
+
+  // Define the SVG and add the margins
+  const svg = d3
+    .select(divID)
+    .append("svg")
+    .attr("viewBox", [
+      0,
+      0,
+      width + margin.left + margin.right,
+      height + margin.top + margin.bottom,
+    ])
+    .attr("class", "svg")
+    .attr("class", svgClass)
+    .attr("id", svgID)
+    .append("g")
+    .attr("class", groupClass)
+    .attr("id", groupID)
+    .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    .attr("preserveAspectRatio", "xMinYMin meet");
+
+  //createStackedBar(svg, width, height, margin, divIDStart);
+  createVertical(svg, width, height, margin, divIDStart);
+}
+
+function createVertical(svg, width, height, margin, divIDStart) {
+  console.log("stacked bar");
+
+  var data;
+
+  if (divIDStart == "ghg") data = ghgemission;
+  else data = landuse;
+
+  // Filter the data for the first 5 countries and combine the rest into one "Others" data point
+  const filteredData = data.slice(0, 6);
+  const othersData = {
+    Entity: "Others (26)",
+    percentage: d3.sum(data.slice(6), (d) => d.percentage),
+  };
+
+  console.log(filteredData);
+
+  console.log(othersData);
+  // Combine the filtered data and the "Others" data into one array
+  var stackedData = [...filteredData, othersData];
+
+  console.log(stackedData);
+  stackedData = stackedData.sort(function (a, b) {
+    return a.percentage - b.percentage;
+  });
+
+  //scale to calculate height of rectangle
+  const yScale = d3.scaleLinear().domain([0, 100]).range([0, height]);
+
+  var x1, y1, x2, y2, rectw, recth, lastperc;
+  rectw = width;
+  x1 = 0;
+  lastperc = 0;
+
+  // Define the color scale
+  // const colorScale = d3
+  //   .scaleLinear()
+  //   .domain([1, 2, 3, 4, 5, 6, 7])
+  //   .range([
+  //     "#1f77b4",
+  //     "#ff7f0e",
+  //     "#2ca02c",
+  //     "#d62728",
+  //     "#9467bd",
+  //     "#8c564b",
+  //     grey,
+  //   ]);
+
+  const colorScale = d3
+    .scaleSequential()
+    .domain([1, 7]) // Set the input domain
+    .interpolator(d3.interpolateReds); // Set the color range
+
+  for (var i = 0; i < stackedData.length; i++) {
+    console.log(stackedData[i]);
+    var perc = stackedData[i].percentage;
+    //console.log(perc);
+
+    y1 = perc + lastperc;
+    recth = perc;
+    lastperc = lastperc + perc;
+    x2 = x1 + rectw;
+    y2 = y1 - recth;
+
+    var h = y1 - y2;
+    // console.log("(x,y): " + "0," + y1);
+    // console.log("(x,y): " + x2 + "," + y2);
+    // console.log("height: " + h);
+
+    console.log("(x,y): " + "0," + yScale(y1));
+    console.log("(x,y): " + x2 + "," + yScale(y2));
+    console.log("height: " + yScale(y1 - y2));
+
+    /* Position check
+    svg.append("text").attr("x", 0).attr("y", 0).text("hello");
+    svg
+      .append("text")
+      .attr("x", width)
+      .attr("y", height - 20)
+      .text("hello");
+      */
+    svg
+      .append("rect")
+      .attr("x", x1)
+      .attr("y", yScale(y2))
+      .attr("width", width)
+      .attr("height", 0)
+      .attr("fill", function () {
+        if (stackedData[i].Entity == "Others") return lightgrey;
+        else return colorScale(i + 1);
+      })
+      .attr("rx", 10)
+      .attr("ry", 10)
+      .attr("stroke", grey)
+      .transition()
+      .duration(function () {
+        return i * 500;
+      })
+      .attr("height", yScale(y1 - y2));
+
+    svg
+      .append("text")
+      .attr("x", function () {
+        if (divIDStart == "ghg") return x1 - 8;
+        else return x2 + 8;
+      })
+      .attr("text-anchor", function () {
+        if (divIDStart == "ghg") return "end";
+        else return "start";
+      })
+      .attr("y", yScale(y2) + yScale(y1 - y2) / 2 + 5)
+      .text(stackedData[i].Entity);
+  }
+
+  var svgID = "#" + divIDStart + "-svg";
+  console.log(svgID);
+  d3.select(svgID)
+    .append("text")
+    .text(function () {
+      if (divIDStart == "ghg") return "GHG Emissions per 100g of Protein";
+      else return "Land Use per 100g of Protein";
+    })
+    .attr(
+      "transform",
+      `translate(${margin.left + width / 2}, ${
+        margin.top + height + margin.bottom / 2
+      })`
+    )
+    .attr("text-anchor", "middle")
+    .attr("font-size", "1.5em")
     .attr("fill", darkgrey);
 }

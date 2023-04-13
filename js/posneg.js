@@ -6,6 +6,34 @@
   testData() - to test data is retrieved correctly
   fixData() - prep the data for visualizations with analytics techniques
 
+  Function: rankParameter()
+  Sets up the svg and overall structure and calls createLollipopChart
+
+  Function: createLollipopChart
+  Common function to create lollipop rank chart for both parameters:
+    happiness
+    productivity
+
+  Function: lollipop_mouseover
+  Event handler for mouseover on lollipop chart elements
+
+  Function: lollipop_mouseout()
+  Event handler for mouseout on lollipop chart elements
+
+  Function: compositionParameter
+  Sets up the svg and overall structure and calls createVertical
+
+  Function: createVertical()
+  Single function to create both stacked column charts:
+    GHG emission
+    Land use
+
+  Function: drawBracket()
+  Draw bracket around the prominent food products that cause higher GHG emissions or land use
+
+  Function: annotateCoffee()
+  Add a text description of where coffee stands in terms of GHG emission and land use
+
 */
 
 import dataPromise, {
@@ -55,10 +83,10 @@ const nordic = ["FIN", "NOR", "ISL", "DNK", "SWE"];
 
 const colorScale = d3
   .scaleSequential()
-  .domain([1, 7]) // Set the input domain
-  .interpolator(d3.interpolateReds); // Set the color range
+  .domain([1, 7])
+  .interpolator(d3.interpolateReds);
 
-const format = d3.format(".1f"); // Format function that rounds to 1 decimal point
+const format = d3.format(".1f"); // Function that rounds to 1 decimal point
 
 const rank_tooltip = d3
   .select("body")
@@ -101,6 +129,7 @@ dataPromise.then(function ([
   var svg = compositionParameter("ghg");
   compositionParameter("land");
 
+  /* Add button to navigate to the first chart */
   nextStop(svg, "swarm-container", "Top", -250, -150);
 });
 
@@ -117,7 +146,7 @@ function testData() {
 }
 
 /*
-  fixData()
+  Function: fixData()
   Perform data analytics techniques on the data retrieved from the CSV files
   And prepare them for the visualizations.
   This function performs operations such as filter, sort, map, group etc.
@@ -231,6 +260,14 @@ function fixData() {
   });
 }
 
+/*
+  Function: rankParameter()
+  Single function to create both lollipop charts:
+    happiness
+    productivity
+
+  Sets up the svg and overall structure and calls createLollipopChart
+*/
 function rankParameter(divIDStart) {
   const margin = { top: 0, right: 20, bottom: 0, left: 80 };
   const width = 1000 - margin.left - margin.right;
@@ -262,13 +299,10 @@ function rankParameter(divIDStart) {
   // Select the group element
   const g = svg.select("g");
 
-  // Set the height of the group element to the window height
-  // /g.attr("height", windowHeight);
-
   var lol_margin = { top: 0, right: 50, bottom: 120, left: 80 };
 
-  var innerWidth = width - lol_margin.left - lol_margin.right + 10; //this is the width of the barchart
-  var innerHeight = height - lol_margin.top - lol_margin.bottom; // this is the height of the barchart
+  var innerWidth = width - lol_margin.left - lol_margin.right + 10;
+  var innerHeight = height - lol_margin.top - lol_margin.bottom;
 
   svg
     .append("text")
@@ -316,6 +350,12 @@ function rankParameter(divIDStart) {
   createLollipopChart(svgg, innerWidth, innerHeight, divIDStart);
 }
 
+/*
+  Function: createLollipopChart
+  Common function to create lollipop rank chart for both parameters:
+    happiness
+    productivity
+ */
 function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
   const colorScale = d3
     .scaleOrdinal()
@@ -475,6 +515,10 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .attr("fill", darkgrey);
 }
 
+/*
+  Function: lollipop_mouseover
+  Event handler for mouseover on lollipop chart elements
+*/
 function lollipop_mouseover(currElement, event, d, divIDStart, svg) {
   console.log(d.isocode);
   var circle = d3.selectAll(".lol-circle-" + d.isocode);
@@ -512,6 +556,11 @@ function lollipop_mouseover(currElement, event, d, divIDStart, svg) {
     .style("top", `${event.pageY}px`);
 }
 
+/*
+  Function: lollipop_mouseout()
+  Event handler for mouseout on lollipop chart elements
+*/
+
 function lollipop_mouseout(currElement, event, d, divIDStart, svg) {
   var circle = d3.selectAll(".lol-circle");
   var stem = d3.selectAll(".lol-stem");
@@ -529,6 +578,14 @@ function lollipop_mouseout(currElement, event, d, divIDStart, svg) {
   rank_tooltip.style("opacity", 0);
 }
 
+/*
+  Function: compositionParameter
+  Single function to create both stacked column charts:
+    GHG emission
+    Land use
+
+  Sets up the svg and overall structure and calls createVertical
+*/
 function compositionParameter(divIDStart) {
   const margin = { top: 30, right: 20, bottom: 110, left: 40 };
   const width = 200 - margin.left - margin.right;
@@ -564,6 +621,12 @@ function compositionParameter(divIDStart) {
   return svg;
 }
 
+/*
+  Function: createVertical()
+  Single function to create both stacked column charts:
+    GHG emission
+    Land use
+*/
 function createVertical(svg, width, height, margin, divIDStart) {
   console.log("stacked bar");
 
@@ -636,15 +699,6 @@ function createVertical(svg, width, height, margin, divIDStart) {
     console.log("(x,y): " + "0," + yScale(y1));
     console.log("(x,y): " + x2 + "," + yScale(y2));
     console.log("height: " + yScale(y1 - y2));
-
-    /* Position check - do not remove
-    svg.append("text").attr("x", 0).attr("y", 0).text("hello");
-    svg
-      .append("text")
-      .attr("x", width)
-      .attr("y", height - 20)
-      .text("hello");
-      */
 
     if (i == 0) {
       if (divIDStart == "ghg") {
@@ -760,6 +814,10 @@ function createVertical(svg, width, height, margin, divIDStart) {
     .attr("fill", darkgrey)
     .attr("class", "neg-caption");
 
+  /*
+    Draw bracket around the prominent food products that cause higher GHG emissions or
+    land use
+    */
   drawBracket(
     svg,
     width,
@@ -773,6 +831,8 @@ function createVertical(svg, width, height, margin, divIDStart) {
     mainPerc
   );
 
+  /* Add a text description of where coffee stands in terms of GHG
+  emission and land use */
   annotateCoffee(svg, width, height, margin, divIDStart, coffeeX, coffeeY);
 
   /*
@@ -784,6 +844,10 @@ function createVertical(svg, width, height, margin, divIDStart) {
 */
 }
 
+/*
+  Function: drawBracket()
+  Draw bracket around the prominent food products that cause higher GHG emissions or land use
+*/
 function drawBracket(
   svg,
   width,
@@ -833,6 +897,10 @@ function drawBracket(
     .attr("fill", darkgrey);
 }
 
+/*
+  Function: annotateCoffee()
+  Add a text description of where coffee stands in terms of GHG emission and land use
+*/
 function annotateCoffee(
   svg,
   width,
@@ -870,35 +938,4 @@ function annotateCoffee(
     .attr("stroke-width", 2)
     .attr("stroke-dasharray", "5 3")
     .attr("fill", "none");
-
-  addAnnotationText("neg-annotation");
-}
-
-function addAnnotationText(divIDStart) {
-  // const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-  // const width = 20 - margin.left - margin.right;
-  // const height = 20 - margin.top - margin.bottom;
-  // var divID = "#" + divIDStart + "-div";
-  // var groupClass = "g" + divIDStart;
-  // var groupID = divIDStart + "-group";
-  // var svgClass = divIDStart + "-svg";
-  // var svgID = divIDStart + "-svg";
-  // // Define the SVG and add the margins
-  // const svg = d3
-  //   .select(divID)
-  //   .append("svg")
-  //   .attr("viewBox", [
-  //     0,
-  //     0,
-  //     width + margin.left + margin.right,
-  //     height + margin.top + margin.bottom,
-  //   ])
-  //   .attr("class", "svg")
-  //   .attr("class", svgClass)
-  //   .attr("id", svgID)
-  //   .append("g")
-  //   .attr("class", groupClass)
-  //   .attr("id", groupID)
-  //   .attr("transform", `translate(${margin.left}, ${margin.top})`)
-  //   .attr("preserveAspectRatio", "xMinYMin meet");
 }

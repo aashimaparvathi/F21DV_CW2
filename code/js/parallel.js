@@ -1,5 +1,6 @@
 /*
   parallel.js
+  To create the parallel coordinate chart
 
   Functions:
   testData() - to test data is retrieved correctly

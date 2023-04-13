@@ -1,6 +1,6 @@
 /*
   posneg.js
-
+  File that caters to the visualization of the positive and negative aspects of coffee consumption
 
   Functions:
   testData() - to test data is retrieved correctly

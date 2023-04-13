@@ -112,15 +112,6 @@
   }
 }
 
-@media (max-height: 900px) {
-  /* for small screens */
-  /* .left-container {
-    height: 85.5%;
-    display: flex;
-    flex-direction: column;
-  } */
-}
-
 .rounded-border {
   border: 1px solid #ccc;
   border-radius: 10px;

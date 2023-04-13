@@ -1,7 +1,7 @@
 import { grey, darkgrey } from "./data.js";
 import { countryByCode } from "./map.js";
 
-const selectedCountries = [
+export const selectedCountries = [
   "FIN",
   "NOR",
   // "ISL",
@@ -169,7 +169,7 @@ function fixData(sunshine, temperature, leisure, coffeepercap2) {
 }
 
 function renderParallelPlot() {
-  const margin = { top: 20, right: 85, bottom: 40, left: 30 },
+  const margin = { top: 30, right: 85, bottom: 40, left: 30 },
     width =
       document.querySelector("#param1-div").getBoundingClientRect().width -
       margin.left -
@@ -281,13 +281,19 @@ function renderParallelPlot() {
     .attr("font-size", "0.7rem")
     .attr("color", grey);
 
+  svg
+    .append("text")
+    .attr("transform", (d) => `translate(${width / 2}, ${height / 2})`)
+    .text("Hello")
+    .attr("id", "hover-legend");
+
   // Define the legend items
-  //const nordic = ["FIN", "NOR", "ISL", "DNK", "SWE"];
+
   const legendItems = [
-    { label: "Finland", color: colorScale("FIN") },
-    { label: "Norway", color: colorScale("NOR") },
-    { label: "Denmark", color: colorScale("DNK") },
-    { label: "Sweden", color: colorScale("SWE") },
+    { label: "Finland", isocode: "FIN", color: colorScale("FIN") },
+    { label: "Norway", isocode: "NOR", color: colorScale("NOR") },
+    { label: "Denmark", isocode: "DNK", color: colorScale("DNK") },
+    { label: "Sweden", isocode: "SWE", color: colorScale("SWE") },
   ];
 
   // Create a group element for the legend and position it
@@ -311,7 +317,11 @@ function renderParallelPlot() {
     .attr("ry", 10)
     .attr("fill", (d) => d.color)
     .attr("fill-opacity", 0.8)
-    .attr("stroke", (d) => d.color);
+    .attr("stroke", (d) => d.color)
+    .attr("class", "line-leg")
+    .attr("id", function (d) {
+      return "line-leg-" + d.isocode;
+    });
 
   legend
     .selectAll("text")
@@ -323,8 +333,11 @@ function renderParallelPlot() {
     .attr("text-anchor", "start")
     .attr("dominant-baseline", "hanging")
     .text((d) => d.label)
-    .attr("fill", darkgrey);
-
+    .attr("fill", darkgrey)
+    .attr("class", "line-leg")
+    .attr("id", function (d) {
+      return "line-leg-text-" + d.isocode;
+    });
   const mapCircles = d3.selectAll(".map-circle");
   const plotLines = d3.selectAll(".parallel-plot-line");
 

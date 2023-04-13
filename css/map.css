@@ -65,12 +65,20 @@
   font-family: "Times New Roman", Times, serif;
   /* font-size: 0.9rem; */
   font-weight: normal;
-  max-height: 10rem;
-  min-height: 5rem;
+  max-height: 4rem;
+  min-height: 4rem;
   margin-left: 2rem;
   margin-top: 0%;
   margin-bottom: 0%;
   color: #727171;
   /* background-color: blanchedalmond; */
   width: 100%;
+}
+
+#hover-legend {
+  opacity: 0;
+}
+
+#hover-legend.hovered {
+  opacity: 1;
 }

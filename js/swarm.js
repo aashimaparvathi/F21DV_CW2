@@ -460,8 +460,16 @@ function averageAnnotation(svg, gAxis) {
     .append("tspan")
     .attr("x", 50)
     .attr("dy", "1em")
-    .text("we have all 5 Nordic countries in the top 10! ->")
+    .text("we have all 5 Nordic countries in the top 10 .. >>")
     .attr("font-weight", "bold")
+    .attr("fill", brown)
+    .attr("class", "tick-box-avg-content");
+
+  averagesText
+    .append("tspan")
+    .attr("x", 50)
+    .attr("dy", "1em")
+    .text("(8 - 9 kg)")
     .attr("fill", brown)
     .attr("class", "tick-box-avg-content");
 }
@@ -535,6 +543,18 @@ function othersAnnotations(svg, gAxis) {
       .attr("fill", grey)
       .attr("class", "tick-box-others-content");
   }
+
+  othersText
+    .append("tspan")
+    .attr("x", -95)
+    .attr("dy", "1em")
+    .attr("text-anchor", "start")
+    .transition()
+    .duration(duration_medium)
+    // .delay(i * 10)
+    .text("(5 - 7 kg)")
+    .attr("fill", grey)
+    .attr("class", "tick-box-others-content");
 }
 
 export function nextStop(svg, whereto, bText, tLeft, tRight) {
@@ -579,9 +599,9 @@ export function nextStop(svg, whereto, bText, tLeft, tRight) {
     .delay(annotateDelay)
     .attr("opacity", 1);
 
-  setTimeout(function () {
-    animateButton();
-  }, annotateDelay);
+  // setTimeout(function () {
+  //   animateButton();
+  // }, annotateDelay);
 
   button.on("click", function () {
     // Navigate to the next div on the same page with a given ID

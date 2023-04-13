@@ -9,6 +9,7 @@ import dataPromise, {
 
 import { drawParallelPlot } from "./parallel.js";
 import { nextStop } from "./swarm.js";
+import { selectedCountries } from "./parallel.js";
 
 var coffeepercap1, coffeetotal, world, sunshine, temperature, leisure;
 var annotateDelay = 1000;
@@ -32,9 +33,7 @@ const mapLabelOffset = 3;
 const labelZoomFactor = 2.8;
 
 /*
- TODO: Increase width of zoom button
- and change text to zoom in
- Toggle it to say zoom out when clicked
+ TODO:
  Add hover over legend
 */
 
@@ -54,6 +53,18 @@ const tooltip = d3
   .html(
     '<svg id="svgToolTip" viewBox="0 0 500 250" class="countryTip" width="100%" height="100%"></svg>'
   );
+
+const nodata_tooltip = d3
+  .select("body")
+  .append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0)
+  .style("position", "absolute")
+  .style("pointer-events", "none")
+  .style("background-color", "#fff")
+  .style("padding", "10px")
+  .style("border-radius", "5px")
+  .style("box-shadow", "0 2px 2px rgba(0,0,0,0.1)");
 
 var circleRadiusScale, circleColorScale;
 var projection, path, isocodes, filteredFeatures;
@@ -354,58 +365,66 @@ function drawCircles(svg, zoomfactor) {
       var data = isocode_group.get(d.id);
       var country = d.properties.name;
 
-      if (!(typeof data === "undefined"))
+      if (typeof data === "undefined") {
+        nodata_tooltip
+          .style("opacity", 1)
+          .html(`No data for ${country}`)
+          .style("color", brown)
+          .style("left", `${event.pageX}px`)
+          .style("top", `${event.pageY}px`);
+      } else if (!(typeof data === "undefined")) {
+        nodata_tooltip.style("opacity", 0);
         tooltip.transition().duration(200).style("opacity", 0.9);
-      // Position tooltip at mouse pointer
-      console.log(d.id);
-      tooltip
-        // .html(getLineChartHtml1(d.id))
-        .style("left", event.pageX + 10 + "px")
-        .style("top", event.pageY - 28 + "px");
+        // Position tooltip at mouse pointer
+        console.log(d.id);
+        tooltip
+          // .html(getLineChartHtml1(d.id))
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
 
-      var svgToolTip = d3.select("#svgToolTip");
-      // const svgToolTipWidth = +svgToolTip.attr("width");
-      // const svgToolTipHeight = +svgToolTip.attr("height");
+        var svgToolTip = d3.select("#svgToolTip");
+        // const svgToolTipWidth = +svgToolTip.attr("width");
+        // const svgToolTipHeight = +svgToolTip.attr("height");
 
-      // Extract viewBox values
-      const viewBox = svgToolTip.attr("viewBox").split(" ");
-      const svgToolTipWidth = viewBox[2];
-      const svgToolTipHeight = viewBox[3];
+        // Extract viewBox values
+        const viewBox = svgToolTip.attr("viewBox").split(" ");
+        const svgToolTipWidth = viewBox[2];
+        const svgToolTipHeight = viewBox[3];
 
-      console.log("tooltip width and height");
-      console.log(svgToolTipWidth + ", " + svgToolTipHeight);
+        console.log("tooltip width and height");
+        console.log(svgToolTipWidth + ", " + svgToolTipHeight);
 
-      /* Margins if using line chart for total consumption */
-      /* var margin = { top: 0, right: 0, bottom: 50, left: 50 }; */
-      /* Margins if using lollipop chart for total consumption */
-      var margin = { top: 20, right: 10, bottom: 30, left: 40 };
+        /* Margins if using line chart for total consumption */
+        /* var margin = { top: 0, right: 0, bottom: 50, left: 50 }; */
+        /* Margins if using lollipop chart for total consumption */
+        var margin = { top: 20, right: 10, bottom: 30, left: 40 };
 
-      var innerWidth = svgToolTipWidth - margin.left - margin.right; //this is the width of the barchart
-      var innerHeight = svgToolTipHeight - margin.top - margin.bottom; // this is the height of the barchart
+        var innerWidth = svgToolTipWidth - margin.left - margin.right; //this is the width of the barchart
+        var innerHeight = svgToolTipHeight - margin.top - margin.bottom; // this is the height of the barchart
 
-      // append the svg object to the body of the page
-      var svg = svgToolTip
-        .append("g")
-        .attr("id", "line-group")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+        // append the svg object to the body of the page
+        var svg = svgToolTip
+          .append("g")
+          .attr("id", "line-group")
+          .attr("transform", `translate(${margin.left},${margin.top})`);
 
-      svg
-        .append("text")
-        .text(
-          "Total coffee consumed by " +
-            country +
-            " per year (in thousands of 60kg-bags)"
-        )
-        .attr("transform", `translate(${200},${-5})`)
-        .attr("font-size", "0.9em")
-        .attr("font-weight", "bold")
-        .attr("text-anchor", "middle");
-      const color = d3.scaleOrdinal().range(["red"]);
+        svg
+          .append("text")
+          .text(
+            "Total coffee consumed by " +
+              country +
+              " per year (in thousands of 60kg-bags)"
+          )
+          .attr("transform", `translate(${200},${-5})`)
+          .attr("font-size", "0.9em")
+          .attr("font-weight", "bold")
+          .attr("text-anchor", "middle");
+        const color = d3.scaleOrdinal().range(["red"]);
 
-      /* Uncomment drawLineChart if using line chart */
-      /* drawLineChart(svg, d.id, innerHeight, innerWidth, color); */
-      createLollipopChart(svg, d.id, innerWidth, innerHeight, country);
-
+        /* Uncomment drawLineChart if using line chart */
+        /* drawLineChart(svg, d.id, innerHeight, innerWidth, color); */
+        createLollipopChart(svg, d.id, innerWidth, innerHeight, country);
+      }
       const mapCircles = d3.selectAll(".map-circle");
       const plotLines = d3.selectAll(".parallel-plot-line");
 
@@ -422,8 +441,21 @@ function drawCircles(svg, zoomfactor) {
       plotLines.classed("unselected", true);
       hoveredLine.classed("selected", true);
       hoveredLine.classed("unselected", false);
+
+      if (selectedCountries.includes(isoHover)) {
+        d3.selectAll(".line-leg").style("opacity", 0);
+        console.log("#line-leg-" + isoHover);
+        d3.select("#line-leg-" + isoHover).style("opacity", 1);
+        d3.select("#line-leg-text-" + isoHover).style("opacity", 1);
+      }
+
+      d3.select("#hover-legend")
+        .select("text")
+        .text(country)
+        .classed("hovered", true);
     })
     .on("mouseout", function (event, d) {
+      var isoHover = d.id;
       const mapCircles = d3.selectAll(".map-circle");
       const plotLines = d3.selectAll(".parallel-plot-line");
 
@@ -438,6 +470,12 @@ function drawCircles(svg, zoomfactor) {
       mapCircles.classed("unselected", false);
       plotLines.classed("selected", false);
       plotLines.classed("unselected", false);
+
+      nodata_tooltip.style("opacity", 0);
+
+      if (selectedCountries.includes(isoHover)) {
+        d3.selectAll(".line-leg").style("opacity", 1);
+      }
     });
 
   if (zoomfactor > labelZoomFactor) {

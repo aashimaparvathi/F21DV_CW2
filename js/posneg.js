@@ -45,6 +45,7 @@ const selectedCountries = [
   "PRT",
   "USA",
 ];
+const nordic = ["FIN", "NOR", "ISL", "DNK", "SWE"];
 
 const colorScale = d3
   .scaleSequential()
@@ -205,7 +206,7 @@ function fixData() {
 function rankParameter(divIDStart) {
   const margin = { top: 0, right: 20, bottom: 0, left: 80 };
   const width = 1000 - margin.left - margin.right;
-  const height = 500 - margin.top - margin.bottom;
+  const height = 400 - margin.top - margin.bottom;
 
   var divID = "#" + divIDStart + "-div";
   var groupClass = "g" + divIDStart;
@@ -236,7 +237,7 @@ function rankParameter(divIDStart) {
   // Set the height of the group element to the window height
   // /g.attr("height", windowHeight);
 
-  var lol_margin = { top: 30, right: 20, bottom: 120, left: 100 };
+  var lol_margin = { top: 0, right: 50, bottom: 120, left: 80 };
 
   var innerWidth = width - lol_margin.left - lol_margin.right + 10; //this is the width of the barchart
   var innerHeight = height - lol_margin.top - lol_margin.bottom; // this is the height of the barchart
@@ -245,19 +246,21 @@ function rankParameter(divIDStart) {
     .append("text")
     .text(function (d) {
       if (divIDStart == "happiness")
-        return "Countries ranked by the happiness of its people (Scale 1 to 10)";
+        return "Countries ranked by the happiness of its people (Scale 0 to 10)";
       else
         return "Countries ranked by overall productivity of its people (GDP per hour worked $)";
     })
     .attr(
       "transform",
-      `translate(${lol_margin.left + 20},${lol_margin.top - 13})`
+      `translate(${lol_margin.left + innerWidth / 2},${
+        innerHeight + margin.bottom + margin.top + 100
+      })`
     )
-    .attr("font-size", "1.5em")
+    .attr("font-size", "1.4em")
     // .attr("font-weight", "bold")
-    .attr("text-anchor", "start")
+    .attr("text-anchor", "middle")
     .attr("fill", darkgrey)
-    .classed("underline", true);
+    .classed("underline", false);
   // .attr("font-weight", "bold");
 
   var svgg = svg
@@ -320,8 +323,8 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
 
   const colorScale1 = d3
     .scaleSequential()
-    .domain(selectedCountries) // Set the input domain
-    .interpolator(d3.interpolateReds); // Set the color range
+    .domain([25, 0]) // Set the input domain
+    .interpolator(d3.interpolateGreens); // Set the color range
 
   /* Sort data based on chosen indicator */
 
@@ -364,6 +367,9 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .domain([0, maxInd + extra])
     .range([innerHeight, 0]);
 
+  var i = 0;
+  const total = 23;
+
   // Draw the circles for the lollipop chart
   const circles = svg
     .selectAll("circle")
@@ -371,13 +377,14 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .join("circle")
     .attr("cx", (d) => xScale(d.country) + xScale.bandwidth() / 2)
     .attr("cy", (d) => yScale(d.value))
-    .attr("r", 12)
+    .attr("r", 10)
     .attr("fill", function (d) {
-      return colorScale(d.isocode);
+      i++;
+      return colorScale1(i);
     })
     .attr("fill-opacity", function (d) {
       if (selectedCountries.slice(0, 10).includes(d.isocode)) return 1;
-      else return 0.2;
+      else return 0.3;
     })
     .attr("class", function (d) {
       return "lol-circle-" + d.isocode;
@@ -418,7 +425,7 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .attr("transform", `translate(0, ${innerHeight})`)
     .call(xAxis)
     .attr("class", "axis")
-    .call((g) => g.selectAll(".tick text").attr("font-size", "1.4em"))
+    .call((g) => g.selectAll(".tick text").attr("font-size", "1.5em"))
     .call((g) => g.selectAll(".tick line").attr("color", lightgrey))
     .selectAll("text")
     .style("text-anchor", "end")
@@ -431,7 +438,7 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
     .append("g")
     .call(yAxis.ticks(5))
     .attr("class", "axis")
-    .call((g) => g.selectAll(".tick text").attr("font-size", "1.4em"))
+    .call((g) => g.selectAll(".tick text").attr("font-size", "1.5em"))
     .call((g) => g.selectAll(".tick line").attr("color", lightgrey))
     .selectAll("text")
     .attr("fill", darkgrey);
@@ -651,11 +658,13 @@ function createVertical(svg, width, height, margin, divIDStart) {
       })
       .attr("y", yScale(y2) + yScale(y1 - y2) / 2 + 5)
       .text(stackedData[i].Entity)
+      .attr("class", "axis")
       .attr("font-weight", function () {
         if (stackedData[i].Entity == "Coffee") return "bold";
         else return "normal";
       })
-      .attr("fill", darkgrey);
+      .attr("fill", darkgrey)
+      .attr("font-size", "1.1em");
 
     svg
       .append("text")

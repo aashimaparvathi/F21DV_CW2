@@ -1,3 +1,8 @@
+/*
+  swarm.js
+  The file corresponding to the first visualization, i.e., swarm plot
+*/
+
 import dataPromise from "./data.js";
 import {
   brown,
@@ -20,12 +25,6 @@ const height = 500 - margin.top - margin.bottom;
 var annotateDelay = 1000;
 const delayOffset = 1500;
 
-/*
-  Color from https://colorable.jxnblk.com/62350e/ffffff
-  10.32AAA
-  https://coolors.co/contrast-checker/62350e-ffffff
-*/
-
 const tooltip = d3
   .select("body")
   .append("div")
@@ -43,17 +42,27 @@ dataPromise.then(function ([coffeepercapdata]) {
   coffeepercap = coffeepercapdata;
 
   /* Test that data is retrieved correctly */
-  //testData();
+  testData();
   fixData();
   console.log(coffeepercap);
 
   drawSwarm();
 });
 
+/*
+  testData()
+  Function to ensure data is correctly retrieved for all use in the current file
+*/
 function testData() {
   console.log(coffeepercap);
 }
 
+/*
+  fixData()
+  Perform data analytics techniques on the data retrieved from the CSV files
+  And prepare them for the visualizations.
+  This function performs operations such as filter, sort, map, group etc.
+*/
 function fixData() {
   coffeepercap.forEach(function (d) {
     d.percapitaconsumption = +d.percapitaconsumption;
@@ -164,7 +173,7 @@ function drawSwarm() {
 
   //console.log(ticksData);
 
-  // execute the rest of your code with ticksData
+  // execute the rest of the code with ticksData
 
   ticksData.forEach((d) => {
     const tick = d.tick;
@@ -194,6 +203,10 @@ function drawSwarm() {
             return "./images/bean_extreme.png";
           }
         })
+        .attr(
+          "alt",
+          "Images of coffee beans are used to represent countries on the chart showing the distribution of per capita coffee consumption of various countries"
+        )
         .attr("x", cx - 8)
         .attr("y", cy - 20)
         .attr("width", 20)

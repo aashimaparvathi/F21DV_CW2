@@ -4,13 +4,10 @@ import { countryByCode } from "./map.js";
 export const selectedCountries = [
   "FIN",
   "NOR",
-  // "ISL",
   "DNK",
   "NLD",
   "SWE",
-  // "CHE",
   "BEL",
-  // "LUX",
   "CAN",
   "AUT",
   "ITA",
@@ -26,20 +23,9 @@ export const selectedCountries = [
 
 const nordic = ["FIN", "NOR", "DNK", "SWE"];
 
-/*
-  TODO:
-  Add title and annotations - "Let's see if the top coffee consuming countries
-  have high leisure hours, low temperatures", and low sunshine duration.
-
-  Link the map and parallel plot lines on hover over either - did one way
-  hover over circle and only the corresponding line remains
-
+/* TODO
   Add hover over line (code nearly in place) to show the country corresponding to the ISO code.
   Go to: Set up tooltip here
-
-  Add a next-stop button without the bounce
-
-  Add hover over legend
 */
 
 var filteredSunshine,
@@ -62,6 +48,10 @@ export function drawParallelPlot(
   renderParallelPlot();
 }
 
+/*
+  testData()
+  Function to ensure data is correctly retrieved for all use in the current file
+*/
 function testData(sunshine, temperature, leisure, coffeepercap2) {
   console.log(coffeepercap2);
   console.log(sunshine);
@@ -69,6 +59,12 @@ function testData(sunshine, temperature, leisure, coffeepercap2) {
   console.log(leisure);
 }
 
+/*
+  fixData()
+  Perform data analytics techniques on the data retrieved from the CSV files
+  And prepare them for the visualizations.
+  This function performs operations such as filter, sort, map, group etc.
+*/
 function fixData(sunshine, temperature, leisure, coffeepercap2) {
   /* Filter data */
 

@@ -1,11 +1,10 @@
 /*
-  data.js: To load all required data
-  TODO: Add sourcing information here.
-
-  world.geojson: "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"
-  Removed Antarctica as it is nt crucial to the story and the map remains relatable even without it
+  data.js
+  Load all required data and exports it.
+  Defines the colors for the visualization
 */
 
+/* Loading all datasets */
 const dataPromise = Promise.all([
   d3.csv("./data/coffeeConsumption.csv"),
   d3.csv("./data/totalConsumption.csv"),
@@ -17,7 +16,6 @@ const dataPromise = Promise.all([
   d3.csv("./data/laborProductivity.csv"),
   d3.csv("./data/landUsePer100g.csv"),
   d3.csv("./data/ghgPer100g.csv"),
-  d3.csv("./data/freshWaterPer100g.csv"),
 ]);
 
 export default dataPromise;
@@ -43,40 +41,3 @@ export {
   duration_medium,
   duration_small,
 };
-
-/* For ease of copy paste */
-
-// coffeepercapdata,
-// coffeetotaldata,
-// worlddata,
-// sunshinedata,
-// temperaturedata,
-// leisuredata,
-// happinessdata,
-// productivitydata,
-// landusedata,
-// ghgemissiondata,
-// freshwaterdata,
-
-// coffeepercap,
-// coffeetotal,
-// world,
-// sunshine,
-// temperature,
-// leisure,
-// happiness,
-// productivity,
-// landuse,
-// ghgemission,
-// freshwater,
-
-// console.log(coffeepercap);
-// console.log(coffeetotal);
-// console.log(sunshine);
-// console.log(temperature);
-// console.log(leisure);
-// console.log(happiness);
-// console.log(productivity);
-// console.log(landuse);
-// console.log(ghgemission);
-// console.log(freshwater);

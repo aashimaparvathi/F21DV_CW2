@@ -1,3 +1,8 @@
+/*
+  map.js
+  The
+*/
+
 import dataPromise, {
   lightgrey,
   grey,
@@ -31,11 +36,6 @@ const continents = new Set();
 const mapgrey = "#949494";
 const mapLabelOffset = 3;
 const labelZoomFactor = 2.8;
-
-/*
- TODO:
- Add hover over legend
-*/
 
 const tooltip = d3
   .select("body")
@@ -94,6 +94,10 @@ dataPromise.then(function ([
   drawMap();
 });
 
+/*
+  testData()
+  Function to ensure data is correctly retrieved for all use in the current file
+*/
 function testData() {
   console.log(coffeepercap1);
   console.log(coffeetotal);
@@ -103,6 +107,12 @@ function testData() {
   // console.log(leisure);
 }
 
+/*
+  fixData()
+  Perform data analytics techniques on the data retrieved from the CSV files
+  And prepare them for the visualizations.
+  This function performs operations such as filter, sort, map, group etc.
+*/
 function fixData() {
   coffeepercap1.forEach(function (d) {
     d.twodecimalplaces = +d.twodecimalplaces;

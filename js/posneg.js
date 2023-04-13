@@ -8,10 +8,6 @@ import dataPromise, {
 } from "./data.js";
 import { nextStop } from "./swarm.js";
 
-/*
-TODO: Change the lollipop circle colors to meet accessibility criteria
-*/
-
 var annotateDelay = 1000;
 var coffeepercap_pn, happiness, productivity, landuse, ghgemission;
 var positiveData, negativeData;
@@ -54,6 +50,18 @@ const colorScale = d3
 
 const format = d3.format(".1f"); // Format function that rounds to 1 decimal point
 
+const rank_tooltip = d3
+  .select("body")
+  .append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0)
+  .style("position", "absolute")
+  .style("pointer-events", "none")
+  .style("background-color", "#fff")
+  .style("padding", "10px")
+  .style("border-radius", "5px")
+  .style("box-shadow", "0 2px 2px rgba(0,0,0,0.1)");
+
 dataPromise.then(function ([
   coffeepercap_pn_data,
   coffeetotaldata,
@@ -86,6 +94,10 @@ dataPromise.then(function ([
   nextStop(svg, "swarm-container", "Top", -250, -150);
 });
 
+/*
+  testData()
+  Function to ensure data is correctly retrieved for all use in the current file
+*/
 function testData() {
   console.log(coffeepercap_pn);
   console.log(happiness);
@@ -94,6 +106,12 @@ function testData() {
   console.log(landuse);
 }
 
+/*
+  fixData()
+  Perform data analytics techniques on the data retrieved from the CSV files
+  And prepare them for the visualizations.
+  This function performs operations such as filter, sort, map, group etc.
+*/
 function fixData() {
   filteredHappiness = happiness.filter((d) =>
     selectedCountries.includes(d.isocode)
@@ -390,6 +408,9 @@ function createLollipopChart(svg, innerWidth, innerHeight, divIDStart) {
       return "lol-circle-" + d.isocode;
     })
     .classed("lol-circle", true)
+    .attr("id", function (d, i) {
+      return i + "-rank-" + divIDStart;
+    })
     .on("mouseover", function (event, d) {
       lollipop_mouseover(this, event, d, divIDStart, svg);
     })
@@ -455,6 +476,30 @@ function lollipop_mouseover(currElement, event, d, divIDStart, svg) {
   d3.selectAll(".lol-stem").attr("stroke-opacity", 0.2);
   circle.attr("fill-opacity", 1);
   stem.attr("stroke-opacity", 1);
+
+  /* 1-rank-happiness */
+  /* 5-rank-productivity */
+
+  var id;
+  var ids = [];
+  var ranks = [];
+  var params = [];
+  circle.each(function () {
+    id = d3.select(this).attr("id");
+    ids.push(id);
+    ranks.push(+id.split("-")[0]);
+    params.push(id.split("-")[2]);
+  });
+  console.log(ids);
+  console.log(ranks);
+  console.log(params);
+
+  rank_tooltip
+    .style("opacity", 1)
+    .html(`${params[0]}: #${ranks[0] + 1} <br/>${params[1]}: #${ranks[1] + 1}`)
+    .style("color", brown)
+    .style("left", `${event.pageX}px`)
+    .style("top", `${event.pageY}px`);
 }
 
 function lollipop_mouseout(currElement, event, d, divIDStart, svg) {
@@ -470,6 +515,8 @@ function lollipop_mouseout(currElement, event, d, divIDStart, svg) {
     if (selectedCountries.slice(0, 10).includes(d.isocode)) return 1;
     else return 0.2;
   });
+
+  rank_tooltip.style("opacity", 0);
 }
 
 function compositionParameter(divIDStart) {

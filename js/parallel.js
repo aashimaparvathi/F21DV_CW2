@@ -1,3 +1,12 @@
+/*
+  parallel.js
+
+  Functions:
+  testData() - to test data is retrieved correctly
+  fixData() - prep the data for visualizations with analytics techniques
+
+*/
+
 import { grey, darkgrey } from "./data.js";
 import { countryByCode } from "./map.js";
 
@@ -164,6 +173,13 @@ function fixData(sunshine, temperature, leisure, coffeepercap2) {
   console.log(mergedData);
 }
 
+/*
+  Function: renderParallelPlot()
+  Generate the parallel coordinate chart for the parameters:
+    leisure hours
+    temperature
+    sunshine duration
+*/
 function renderParallelPlot() {
   const margin = { top: 30, right: 85, bottom: 40, left: 30 },
     width =

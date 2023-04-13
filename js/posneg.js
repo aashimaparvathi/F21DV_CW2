@@ -1,3 +1,13 @@
+/*
+  posneg.js
+
+
+  Functions:
+  testData() - to test data is retrieved correctly
+  fixData() - prep the data for visualizations with analytics techniques
+
+*/
+
 import dataPromise, {
   lightgrey,
   grey,

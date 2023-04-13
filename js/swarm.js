@@ -1,6 +1,22 @@
 /*
   swarm.js
   The file corresponding to the first visualization, i.e., swarm plot
+
+  Functions:
+  testData() - to test data is retrieved correctly
+  fixData() - prep the data for visualizations with analytics techniques
+  drawSwarm() - draw the swarm plot
+
+  Functions to add insight annotations:
+  othersAnnotations();
+  averageAnnotation();
+  norwayAnnotation();
+  finlandAnnotation();
+
+  Function to add a button that helps the user navigate through the visualizations.
+  This function is exported and used by other files in the code project.
+  nextStop(svg, whereto, content, xpos, ypos);
+
 */
 
 import dataPromise from "./data.js";
@@ -73,6 +89,10 @@ function fixData() {
   });
 }
 
+/*
+  drawSwarm()
+  Function to draw the swarm plot
+*/
 function drawSwarm() {
   //draw svg
   const svg = d3
@@ -163,7 +183,8 @@ function drawSwarm() {
   const nestedData = d3.group(coffeepercap, (d) => d.percapitaconsumption);
   //console.log(nestedData);
 
-  // create an array of objects with tick and numCircles properties
+  // create an array of objects with each tick representing the per capita consumption
+  // and the number of countries that belong to each category.
   const ticksData = Array.from(nestedData, ([key, values]) => {
     return {
       tick: key,
@@ -173,13 +194,10 @@ function drawSwarm() {
 
   //console.log(ticksData);
 
-  // execute the rest of the code with ticksData
-
   ticksData.forEach((d) => {
     const tick = d.tick;
     const numCircles = d.numCircles;
     const angleStep = (2 * Math.PI * Math.sin(0.5)) / numCircles;
-    // const angleStep = d.y;
 
     for (let i = 0; i < numCircles; i++) {
       const radius = 30; //* i;
@@ -191,7 +209,6 @@ function drawSwarm() {
       // console.log(country);
       // console.log(nestedData.get(tick)[i]);
 
-      /* TODO: Set alt-text for image */
       gCircles
         .append("image")
         .attr("xlink:href", function (d) {
@@ -235,20 +252,14 @@ function drawSwarm() {
     }
   });
 
+  /* Add all annotations */
   othersAnnotations(svg, gAxis);
   averageAnnotation(svg, gAxis);
   norwayAnnotation(svg, gAxis);
   finlandAnnotation(svg, gAxis);
 
+  /* Add a next button for navigating to the next screen */
   nextStop(svg, "why-container", "Next", 0, 150);
-
-  // svg
-  //   .append("image")
-  //   .attr("xlink:href", "./images/context1.png")
-  //   .attr("width", "50%")
-  //   .attr("height", "30%")
-  //   .attr("x", -60)
-  //   .attr("y", height / 1.5 + 20);
 
   // Window resize behavior
   d3.select(window).on("resize", () => {
@@ -266,7 +277,7 @@ function drawSwarm() {
       }`
     );
 
-    // Update the event listeners for the bean elements
+    // Set the mouseover event for the bean elements
     svg.selectAll(".bean").on("mouseover", (event, d) => {
       tooltip
         .style("opacity", 1)
@@ -277,6 +288,10 @@ function drawSwarm() {
   });
 }
 
+/*
+  Function: finlandAnnotation()
+  Add insights about Finland's coffee consumption
+*/
 function finlandAnnotation(svg, gAxis) {
   // finland tick
   const tickFinland = gAxis.select(".tick:nth-of-type(9)");
@@ -358,6 +373,10 @@ function finlandAnnotation(svg, gAxis) {
     .attr("id", "swarm-tick-box-line4");
 }
 
+/*
+  Function: norwayAnnotation()
+  Add insights about Norway's coffee consumption
+*/
 function norwayAnnotation(svg, gAxis) {
   const tickNorway = gAxis.select(".tick:nth-of-type(7)");
 
@@ -441,6 +460,10 @@ function norwayAnnotation(svg, gAxis) {
     .attr("id", "norway-tick-box-line1");
 }
 
+/*
+  Function: averageAnnotation()
+  Add insights about the average coffee consumers
+*/
 function averageAnnotation(svg, gAxis) {
   const tickAverages = gAxis.select(".tick:nth-of-type(5)");
 
@@ -487,6 +510,10 @@ function averageAnnotation(svg, gAxis) {
     .attr("class", "tick-box-avg-content");
 }
 
+/*
+  Function: othersAnnotation()
+  Add insights about the countries that consume the least coffee per capita
+*/
 function othersAnnotations(svg, gAxis) {
   const tickOthers = gAxis.select(".tick:nth-of-type(3)");
 
@@ -570,6 +597,11 @@ function othersAnnotations(svg, gAxis) {
     .attr("class", "tick-box-others-content");
 }
 
+/*
+  Function to add a button that helps the user navigate through the visualizations.
+  This function is exported and used by other files in the code project.
+  nextStop(svg, whereto, content, xpos, ypos);
+*/
 export function nextStop(svg, whereto, bText, tLeft, tRight) {
   const gButton = svg
     .append("g")
@@ -612,10 +644,6 @@ export function nextStop(svg, whereto, bText, tLeft, tRight) {
     .delay(annotateDelay)
     .attr("opacity", 1);
 
-  // setTimeout(function () {
-  //   animateButton();
-  // }, annotateDelay);
-
   button.on("click", function () {
     // Navigate to the next div on the same page with a given ID
     const nextDiv = d3.select("#" + whereto);
@@ -625,119 +653,3 @@ export function nextStop(svg, whereto, bText, tLeft, tRight) {
     window.scrollTo({ top: y, behavior: "smooth" });
   });
 }
-
-function animateButton() {
-  d3.select("#swarm-next-button")
-    .transition()
-    .duration(duration_medium)
-    .delay(2000)
-    .ease(d3.easeBounceOut)
-    .attr("transform", "translate(0, 0)")
-    .transition()
-    .duration(duration_medium)
-    .ease(d3.easeBounceOut)
-    .attr("transform", "translate(0, 20)")
-    .transition()
-    .duration(duration_medium)
-    .ease(d3.easeBounceOut)
-    .attr("transform", "translate(0, 0)")
-    .on("end", animateButton);
-
-  d3.select("#swarm-next-button-text")
-    .transition()
-    .duration(duration_medium)
-    .delay(2000)
-    .ease(d3.easeBounceOut)
-    .attr("transform", "translate(0, 0)")
-    .transition()
-    .duration(duration_medium)
-    .ease(d3.easeBounceOut)
-    .attr("transform", "translate(0, 20)")
-    .transition()
-    .duration(duration_medium)
-    .ease(d3.easeBounceOut)
-    .attr("transform", "translate(0, 0)")
-    .on("end", animateButton);
-}
-
-// function drawSwarm() {
-//   // Define the dimensions of the SVG
-//   const margin = { top: 50, right: 50, bottom: 50, left: 50 };
-//   const width = window.innerWidth - margin.left - margin.right;
-//   const height = window.innerHeight - margin.top - margin.bottom;
-
-//   // Append the SVG to the container div
-//   const svg = d3
-//     .select("#swarm-container")
-//     .append("svg")
-//     .attr("width", width)
-//     .attr("height", height);
-
-//   // Set the x scale and axis
-//   const xScale = d3
-//     .scaleLinear()
-//     .domain([0, 12])
-//     .range([margin.left, width - margin.right]);
-//   const xAxis = d3.axisBottom(xScale).tickSize(0).tickPadding(10);
-
-//   const yScale = d3
-//     .scaleLinear()
-//     .domain([5,6,7,8,9,10,11,12])
-//     .range([]);
-//   // Append the x axis to the SVG
-//   svg
-//     .append("g")
-//     .attr("transform", `translate(0, ${height / 2})`)
-//     .call(xAxis)
-//     .call((g) => g.select(".domain").remove())
-//     .call((g) =>
-//       g
-//         .selectAll(".tick")
-//         .select("text")
-//         .attr("y", "15")
-//         .style("font-size", "12px")
-//         .style("font-weight", "bold")
-//     );
-
-//   // Load the rice consumption data from the CSV file
-
-//   // Append the rice grain images to the SVG
-//   svg
-//     .selectAll("image")
-//     .data(coffeepercap)
-//     .enter()
-//     .append("svg:image")
-//     .attr("xlink:href", "./images/bean.png")
-//     .attr("width", "20")
-//     .attr("height", "20")
-//     .attr("x", (d) => xScale(d.percapitaconsumption))
-//     .attr("y", (d) => {
-//       return height / 2 - d.y;
-//       // let yPositions = {
-//       //   5: [10, 20, 30, 40, 50, 60],
-//       //   6: [10, 20, 30, 40, 50, 60, 70],
-//       //   7: [10, 20, 30, 40, 50],
-//       //   8: [10],
-//       //   9: [10, 20, 30, 40],
-//       //   10: [10],
-//       //   12: [10],
-//       // };
-//       // return yPositions[d.percapitaconsumption][
-//       //   Math.floor(Math.random() * yPositions[d.percapitaconsumption].length)
-//       // ];
-//     });
-
-//   // Set the title of the webpage
-//   d3.select("title").text("per capita rice consumption");
-
-//   // Make the webpage responsive
-//   d3.select(window).on("resize", function () {
-//     const w = window.innerWidth;
-//     svg.attr("width", w);
-//     xScale.range([margin.left, w - margin.right]);
-//     svg
-//       .select("g")
-//       .attr("transform", `translate(0, ${height / 2})`)
-//       .call(xAxis);
-//   });
-// }

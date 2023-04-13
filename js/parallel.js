@@ -5,6 +5,11 @@
   testData() - to test data is retrieved correctly
   fixData() - prep the data for visualizations with analytics techniques
 
+    Function: renderParallelPlot()
+  Generate the parallel coordinate chart for the parameters:
+    leisure hours
+    temperature
+    sunshine duration
 */
 
 import { grey, darkgrey } from "./data.js";
@@ -220,9 +225,6 @@ function renderParallelPlot() {
   // Create the SVG container for the visualization
   const svg = d3
     .select("#param1-div")
-    // .append("g")
-    // .attr("class", "group")
-    // .attr("id", "gParallel")
     .append("svg")
     .attr("viewBox", [
       0,
@@ -255,14 +257,14 @@ function renderParallelPlot() {
     .attr("class", "parallel-plot-line")
     .attr("id", (d) => d[0] + "-line");
 
-  // Add the x-axis to the visualization
+  // x axis
   const xAxis = svg
     .append("g")
     .attr("transform", `translate(${margin.left},${height + margin.top})`)
     .call(d3.axisBottom(x))
     .attr("color", "white");
 
-  // Add the y-axes to the visualization
+  // y axis
   const yAxis = svg
     .selectAll("g.y-axis")
     .data(keys)

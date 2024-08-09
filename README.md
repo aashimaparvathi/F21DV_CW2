@@ -1,5 +1,7 @@
 # Coffee Consumption Trends and Impact
 
+**Please ensure to cite this repository if you use any of its code**
+
 ## Overview
 
 Coffee is one of the top 5 most popular beverages in the world and it is the second or the most popular hot beverage according to various statistical publications. While this is a generally popular and accepted piece of information, this coursework delves deeper to understand how the popularity of coffee varies across countries with a particular focus on the Nordic Countries (Denmark, Finland, Iceland, Norway, Sweden), the potential reasons behind this coffee culture, and the impact on people and the environment.

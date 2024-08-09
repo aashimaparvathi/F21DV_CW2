@@ -1,6 +1,6 @@
 # Coffee Consumption Trends and Impact
 
-**Please ensure to cite this repository if you use any of its code**
+### **Please ensure to cite this repository if you use any of its code**
 
 ## Overview
 
